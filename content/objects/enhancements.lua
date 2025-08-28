@@ -99,14 +99,18 @@ SMODS.Enhancement{
           if context.full_hand[pos - 1] then
             sea(
             function ()
-              context.full_hand[pos - 1]:set_ability(G.P_CENTERS["m_blood"], nil, true)
+              if context.full_hand[pos - 1] then
+                context.full_hand[pos - 1]:set_ability(G.P_CENTERS["m_blood"], nil, true)  
+              end
               return true
             end)
           end
           if context.full_hand[pos + 1] then
             sea(
             function ()
-              context.full_hand[pos + 1]:set_ability(G.P_CENTERS["m_blood"], nil, true)
+              if context.full_hand[pos + 1] then
+                context.full_hand[pos + 1]:set_ability(G.P_CENTERS["m_blood"], nil, true)
+              end
               return true
             end)
           end
