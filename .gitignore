@@ -1,0 +1,13 @@
+#GITIGNORE
+
+#Neuratro Specific Ignores here
+
+#Common Editor temp files
+*~
+*.swp
+
+#Common OS cache files
+.DS_Store
+Thumbs.db
+._*
+.apdisk
