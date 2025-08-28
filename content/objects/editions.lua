@@ -56,5 +56,8 @@ SMODS.Edition{
       end
       return {repetitions = 1, message = "Again!"}
     end
+  end,
+  on_apply = function (card) --adds randomness to the filtered effect so they aren't uniform
+        card.edition.filtered_seed = (pseudorandom('filtered_seed') * 2 - 1) * 1000
   end
 }
