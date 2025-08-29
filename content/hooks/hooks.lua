@@ -176,3 +176,23 @@ function G.FUNCS.start_run(e, args)
 	prev_money = 0
 	start_run(e, args)
 end
+
+-- arg shader for her deck. simple. scuffed. gets the job done
+-- surely no other mods will ever replace the CRT shader :glueless:
+-- replace "Deck Name"
+local originalshader = false
+
+local drawg = Game.draw
+function Game:draw(args)
+    local x = {drawg(self,args)}
+    if(G.SHADERS['CRT'] and not originalshader) then
+        originalshader = G.SHADERS['CRT']
+    else
+        if(self.STATE ~= self.STATES.MENU and self.GAME.selected_back and self.GAME.selected_back.name == "Deck Name") then
+            G.SHADERS['CRT'] = G.SHADERS['arg']
+        else
+            G.SHADERS['CRT'] = originalshader
+        end
+    end
+    return x
+end
