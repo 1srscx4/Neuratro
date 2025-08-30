@@ -707,7 +707,7 @@ discovered = false,
 blueprint_compat = true, 
 eternal_compat = true, 
 perishable_compat = true,
-pos = { x = 1, y = 0 },
+pos = { x = 6, y = 8 },
 config = { extra = { cycle = 1, dollars = 2, tarots = 2 }},
 loc_vars = function(self,info_queue,center)
 local ret = ""
@@ -1276,7 +1276,7 @@ discovered = false,
 blueprint_compat = false, 
 eternal_compat = false, 
 perishable_compat = true, 
-pos = {x = 1, y = 0},
+pos = {x = 8, y = 8},
 config = { extra = { gain = 1 , upg = 1, no_bit_hands = 0, max_no_bit_hands = 2 } },
 loc_vars = function(self,info_queue,center)
 info_queue[#info_queue + 1] = G.P_CENTERS.m_dono
