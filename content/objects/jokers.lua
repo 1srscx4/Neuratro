@@ -415,7 +415,7 @@ blueprint_compat = true,
 eternal_compat = true, 
 perishable_compat = true, 
 pos = {x = 8, y = 1}, 
-config = { extra = { odds = 3 , xmult = 3, base = 1} },
+config = { extra = { odds = 2 , xmult = 2.5, base = 1} },
 loc_vars = function(self,info_queue,center)
 return {vars = {G.GAME.probabilities.normal * center.ability.extra.base,center.ability.extra.odds,center.ability.extra.xmult}}
 end,
@@ -2571,7 +2571,7 @@ loc_txt = {
 name = "Queenpb",
 text = {
 "Gives {X:mult,C:white}x#1#{} mult. Increase this by {X:mult,C:white}x#2#{} at {C:attention}end of round{}.",
-"Changes music to {C:attention}LIFE{} or {C:attention}BOOM{}."
+"Changes music to {C:attention}LIFE{}, {C:attention}BOOM{} or {C:attention}NEVER{}."
 }
 },
 credits = {
@@ -2597,7 +2597,7 @@ loc_vars = function(self,info_queue,center)
 return {vars = {center.ability.extra.xmult,center.ability.extra.upg} }
 end,
 add_to_deck = function (self, card, from_debuff)
-card.ability.extra.song = pseudorandom_element({"LIFE","BOOM"},pseudoseed("pb"))
+card.ability.extra.song = pseudorandom_element({"LIFE","BOOM","NEVER"},pseudoseed("pb"))
 for pos,joker in ipairs(G.jokers.cards) do
 if joker.config.center.key == "j_queenpb" and joker ~= card then
 card.ability.extra.song = G.jokers.cards[pos].ability.extra.song
@@ -2611,26 +2611,33 @@ end
 if card.ability.extra.song == "BOOM" then
 G.GAME.pool_flags.BOOM = true
 G.GAME.pool_flags.LIFE = false
+G.GAME.pool_flags.NEVER = false
 end
 if card.ability.extra.song == "LIFE" then
 G.GAME.pool_flags.LIFE = true
 G.GAME.pool_flags.BOOM = false
+G.GAME.pool_flags.NEVER = false
+end
+if card.ability.extra.song == "NEVER" then
+  G.GAME.pool_flags.LIFE = false
+  G.GAME.pool_flags.BOOM = false
+  G.GAME.pool_flags.NEVER = true
 end
 end,
 remove_from_deck = function (self, card, from_debuff)
+for pos,joker in ipairs(G.jokers.cards) do
+if joker.config.center.key == "j_queenpb" and joker ~= card then
+return
+end
+end
 for pos,joker in ipairs(G.playbook_extra.cards) do
 if joker.config.center.key == "j_queenpb" and joker ~= card then
 return 
 end
 end
-if card.ability.extra.song == "BOOM" then
-G.GAME.pool_flags.BOOM = false
-G.GAME.pool_flags.LIFE = false
-end
-if card.ability.extra.song == "LIFE" then
 G.GAME.pool_flags.LIFE = false
 G.GAME.pool_flags.BOOM = false
-end
+G.GAME.pool_flags.NEVER = false
 end,
 calculate = function (self, card, context)
 if context.end_of_round and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker then 
@@ -4157,7 +4164,7 @@ SMODS.Joker{
     text = {
       "Gives {X:mult,C:white}X#1#{} Mult for every {C:attention}#2#%{} overkill",
       "chips scored in the {C:attention}previous{} blind",
-      "{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult out of {X:mult,C:white}X#4#{C:inactive} Mult){}){}"
+      "{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult out of {X:mult,C:white}X#4#{C:inactive} Mult){}"
     }
   },
   credits = {

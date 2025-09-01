@@ -25,7 +25,16 @@ SMODS.Sound({
     key = "music_LIFE",
     path = "LIFE.ogg",
     select_music_track = function()
-    return G.GAME.pool_flags.LIFE and 99 or false
+    return G.GAME.pool_flags.LIFE and 98 or false
+    end,
+})
+SMODS.Sound({
+    vol = 0.6,
+    pitch = 1,
+    key = "music_NEVER",
+    path = "NEVER.ogg",
+    select_music_track = function()
+    return G.GAME.pool_flags.NEVER and 99 or false
     end,
 })
 SMODS.Sound({
