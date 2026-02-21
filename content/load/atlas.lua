@@ -47,3 +47,42 @@ SMODS.Atlas{
   px = 34,
   py = 34,
 }
+SMODS.Atlas {
+	key = 'ARG_cards',
+	px = 71,
+	py = 95,
+	disable_mipmap = true,
+	path = 'neuroCards3.png'
+    }
+SMODS.DeckSkin({
+	key = '???',
+	suit = "Hearts",
+	ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" },
+  display_ranks = {"9","8","7"},
+	lc_atlas = 'ARG_cards',
+	pos_style = 'deck'
+	})
+SMODS.DeckSkin({
+	key = '??',
+	suit = "Spades",
+	ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" },
+  display_ranks = {"9","8","7"},
+	lc_atlas = 'ARG_cards',
+	pos_style = 'deck'
+	})
+SMODS.DeckSkin({
+	key = '????',
+	suit = "Clubs",
+	ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" },
+  display_ranks = {"9","8","7"},
+	lc_atlas = 'ARG_cards',
+	pos_style = 'deck'
+	})
+SMODS.DeckSkin({
+  key = '?',
+  suit = "Diamonds",
+  ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" },
+  display_ranks = {"9","8","7"},
+  lc_atlas = 'ARG_cards',
+  pos_style = 'deck'
+  })

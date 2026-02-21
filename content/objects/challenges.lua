@@ -374,3 +374,49 @@ SMODS.Challenge{
     {id = "j_xdx|", eternal = true},{id = "j_xdx|", eternal = true},{id = "j_xdx|", eternal = true},{id = "j_xdx|", eternal = true},{id = "j_xdx|", eternal = true}
   }
 }
+SMODS.Challenge {
+    key = 'Schizochal',
+    loc_txt= {name = "Schizo"},
+    rules = {
+        custom = {
+            { id = 'no_shop_jokers' },
+        },
+        modifiers = {
+            { id = 'joker_slots', value = 0 },
+        }
+    },
+    restrictions = {
+        banned_cards = {
+            { id = 'c_judgement' },
+            { id = 'c_wraith' },
+            { id = 'c_soul' },
+            { id = 'p_standard_normal_1', ids = {
+                'p_standard_normal_1', 'p_standard_normal_2',
+                'p_standard_normal_3', 'p_standard_normal_4',
+                'p_standard_jumbo_1', 'p_standard_jumbo_2',
+                'p_standard_mega_1', 'p_standard_mega_2' }
+            },
+        },
+        banned_tags = {
+            { id = 'tag_uncommon' },
+            { id = 'tag_rare' },
+            { id = 'tag_negative' },
+            { id = 'tag_foil' },
+            { id = 'tag_holographic' },
+            { id = 'tag_polychrome' },
+            { id = 'tag_buffoon' },
+            { id = 'tag_top_up' },
+            { id = 'tag_filter_tag' },
+            { id = 'tag_eliv_tag' },
+        },
+        banned_other = {
+            { id = 'bl_final_heart', type = 'blind' },
+            { id = 'bl_final_leaf',  type = 'blind' },
+            { id = 'bl_final_acorn', type = 'blind' },
+        },
+        
+    },
+    jokers = {
+          {id = "j_schizoedm",eternal = true}, {id = "j_schizoedm",eternal = true}, {id = "j_schizoedm",eternal = true}, {id = "j_schizoedm",eternal = true}, {id = "j_schizoedm",eternal = true}
+        }
+}

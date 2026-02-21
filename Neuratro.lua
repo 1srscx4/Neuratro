@@ -13,11 +13,10 @@
 -- -Put the debuff from filtered cards inside of an event
 -- -Mod purge hates me
 -- -Make the neurocards version a deckskin
--- -check 2k messages up for arg deck
+-- -arg arg arg arg
 -- -Mod Menu to deactivate Life and BOOM, once it's made the music system will have to be reworked
 -- -fix negatives in G.playbook
--- -Voices in my head challenge: no jokers in shop, start with 5 schizo
--- -Update the assets please
+
 
 
 -- These 5 lines of code are from the mod aikoyori's playbook made by aikoyori. Check their mods out!

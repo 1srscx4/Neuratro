@@ -124,3 +124,27 @@ SMODS.Back{
         
         end}))
       end}
+SMODS.Back{
+  key = "ARGdeck",
+  loc_txt = {
+    name = "ARG Deck",
+    text = {
+      "{C:dark_edition,E:1}Does nothing.",
+      "{s:0.7}like genuinely, it does nothing"
+    }
+  },
+  atlas = "neuroEnh",
+  pos = { x = 2, y = 1},
+  credits = {
+    idea = {"A lot of people."},
+    art = {"Evil Sand"},
+    code = {"1srscx4","Pers"}
+  },
+  apply = function (self, back)
+    G.GAME.ARG = true
+  end,
+  calculate = function (self, back, context)
+   if context.setting_blind then
+   end
+  end
+  }

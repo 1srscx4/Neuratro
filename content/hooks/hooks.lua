@@ -188,7 +188,7 @@ function Game:draw(args)
     if(G.SHADERS['CRT'] and not originalshader) then
         originalshader = G.SHADERS['CRT']
     else
-        if(self.STATE ~= self.STATES.MENU and self.GAME.selected_back and self.GAME.selected_back.name == "Deck Name") then
+        if false then
             G.SHADERS['CRT'] = G.SHADERS['arg']
         else
             G.SHADERS['CRT'] = originalshader

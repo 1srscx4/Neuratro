@@ -355,7 +355,7 @@ SMODS.Joker{
     name = "Neuro Bread",
     text = {
       "{C:attention}Stone Cards{} instead give {C:mult}+#1#{} Mult.",
-      "{C:mult}-#2#{} Mult at {C:attention}end of round{}."
+      "Decrease by {C:mult}#2#{} Mult at {C:attention}end of round{}."
     }
   },
   
@@ -415,7 +415,7 @@ blueprint_compat = true,
 eternal_compat = true, 
 perishable_compat = true, 
 pos = {x = 8, y = 1}, 
-config = { extra = { odds = 2 , xmult = 2.5, base = 1} },
+config = { extra = { odds = 3 , xmult = 3, base = 1} },
 loc_vars = function(self,info_queue,center)
 return {vars = {G.GAME.probabilities.normal * center.ability.extra.base,center.ability.extra.odds,center.ability.extra.xmult}}
 end,
@@ -696,7 +696,7 @@ text = {
 },
 credits = {
 idea = {"PaulaMarina"},
-art = {"None"},
+art = {"Kloovree"},
 code = {"PaulaMarina"}
 },
 atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true}, 
@@ -866,7 +866,7 @@ atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true},
 rarity = 2, 
 credits = {
 idea = {"1srscx4"},
-art = {"None"},
+art = {"Kloovree"},
 code = {"1srscx4"}
 },
 cost = 6, 
@@ -875,7 +875,7 @@ discovered = false,
 blueprint_compat = true, 
 eternal_compat = true, 
 perishable_compat = true, 
-pos = {x = 1, y = 0},
+pos = {x = 5, y = 9},
 loc_vars = function(self,info_queue,center)
 info_queue[#info_queue+1] = G.P_CENTERS.m_twin
 return 
@@ -923,7 +923,7 @@ blueprint_compat = true,
 eternal_compat = true, 
 perishable_compat = true, 
 pos = {x = 1, y = 0},
-config = { extra = { mult = 0, base = 5} },
+config = { extra = { mult = 0, base = 4} },
 loc_vars = function(self,info_queue,center)
 return {vars = {center.ability.extra.mult,center.ability.extra.base}}
 end,
@@ -1268,7 +1268,7 @@ cost = 6,
 credits = {
 sug = {"2nd Umbrella"},
 idea = {"That one guy"},
-art = {"None"},
+art = {"Tony7268"},
 code = {"PaulaMarina"}
 },
 unlocked = true,  
@@ -1680,7 +1680,7 @@ rarity = 2,
 credits = {
 suggested = {"pers"},
 idea = {"1srscx4"},
-art = {"None"},
+art = {"Kloovree"},
 code = {"1srscx4"}
 },
 cost = 7, 
@@ -1689,7 +1689,7 @@ discovered = false,
 blueprint_compat = false, 
 eternal_compat = true, 
 perishable_compat = true,
-pos = { x = 1, y = 0 },
+pos = { x = 4, y = 9 },
 in_pool = function(self, args) 
 return true
 end,
@@ -1782,7 +1782,7 @@ SMODS.Joker{
 
 key = "camila",
 loc_txt = {
-name = "Cumilq",
+name = "Camila",
 text = {"All played {C:attention}6s{} get retriggered",
 "and give {X:mult,C:white}X#1#{} mult."}
 },
@@ -1790,7 +1790,7 @@ atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true},
 rarity = 3,
 credits = {
 idea = {"Evil Sand"},
-art = {"None"},
+art = {"Kloovree"},
 code = {"1srscx4"}
 },
 cost = 8, 
@@ -1799,7 +1799,7 @@ discovered = false,
 blueprint_compat = true, 
 eternal_compat = true, 
 perishable_compat = true, 
-pos = {x = 1, y = 0},
+pos = {x = 6, y = 9},
 config = { extra = { xmult = 1.3 } },
 loc_vars = function(self,info_queue,center)
 return {vars = {center.ability.extra.xmult}}
@@ -2092,18 +2092,18 @@ text = {
 },
 credits = {
 idea = {"Evil Sand"},
-art = {"None"},
+art = {"Kloovree"},
 code = {"1srscx4"}
 },
-rarity = 2,
-cost = 8, 
+rarity = 3,
+cost = 9, 
 unlocked = true, 
 discovered = false, 
 blueprint_compat = true, 
 eternal_compat = true, 
 perishable_compat = true,
 atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true},
-pos = { x = 1, y = 0 },
+pos = { x = 9, y = 8 },
 in_pool = function(self, args) 
 return true
 end,
@@ -2276,8 +2276,8 @@ if context.setting_blind and pseudorandom("seed") <= (G.GAME.probabilities.norma
 SMODS.add_card({set = "Joker",area = G.jokers,  key = "j_neurodog"})
 return {message = "Ely!"}
 end
-end
-}
+end}
+
 SMODS.Joker{
 key = "neurodog",
 loc_txt = {
@@ -2312,6 +2312,7 @@ return { mult = card.ability.extra.mult , chips = card.ability.extra.chips }
 end
 end
 }
+
 --Layna
 
 SMODS.Joker{
@@ -2365,7 +2366,7 @@ end
 SMODS.Joker{
   key = "cakelayna",
   loc_txt = {
-    name = "Abomnination Cake",
+    name = "Abomination Cake",
     text = {
       "Gives {C:mult}+#1#{} Mult for each",
       "{C:attention}Bloody card{} in {C:attention}full deck{}.",
@@ -2566,12 +2567,117 @@ end
 end
 }
 SMODS.Joker{
+key = "layna",
+loc_txt = {
+name = "Layna",
+text = {
+"If scored hand has a {C:attention}9{},",
+"all scored cards give {X:mult,C:white}x#1#{} mult",
+"and {C:red,E:1}destroy{} themselves."
+}
+},
+credits = {
+idea = {"1srscx4"},
+art = {"Etzyio+"},
+code = {"1srscx4"}
+},
+atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true}, 
+rarity = 3, 
+cost = 9, 
+unlocked = true, 
+discovered = false, 
+blueprint_compat = true, 
+eternal_compat = true, 
+perishable_compat = true,
+pos = { x = 9, y = 3 },
+in_pool = function(self, args) 
+return true
+end,
+config = { extra = {xmult = 3, works = false} },
+loc_vars = function(self,info_queue,center)
+return {vars = {center.ability.extra.xmult} }
+end,
+calculate = function (self, card, context)
+if context.before then
+for _,play_card in ipairs(context.scoring_hand) do 
+if play_card:get_id() == 9 then
+card.ability.extra.works = true
+return {message = "Active"}
+else 
+card.ability.extra.works = false
+end
+end
+end
+if context.individual and context.cardarea == G.play and context.other_card and card.ability.extra.works then
+return {xmult = card.ability.extra.xmult, func = function() SMODS.destroy_cards(context.other_card)
+end}
+end
+end
+}
+SMODS.Joker{
+  key = "cakelayna",
+  loc_txt = {
+    name = "Abomnination Cake",
+    text = {
+      "Gives {C:mult}+#1#{} Mult for each",
+      "{C:attention}Bloody card{} in {C:attention}full deck{}.",
+      "{C:inactive}(Currently: {C:mult}+#2#{C:inactive} Mult)"
+    }
+  },
+credits = {
+idea = {"1srscx4"},
+art = {"None"},
+code = {"1srscx4"}
+},
+atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true}, 
+rarity = 1, 
+cost = 5, 
+unlocked = true, 
+discovered = false, 
+blueprint_compat = true, 
+eternal_compat = true, 
+perishable_compat = true,
+pos = { x = 1, y = 0 },
+in_pool = function(self, args) 
+for _,pcard in ipairs(G.playing_cards) do
+  if SMODS.has_enhancement(pcard,"m_blood") then
+    return true
+  end
+end
+return false
+end,
+config = { extra = {mult = 3} },
+loc_vars = function(self,info_queue,center)
+  info_queue[#info_queue+1] = G.P_CENTERS.m_blood
+  local blood = 0
+  if G.playing_cards then
+    for _,pcard in ipairs(G.playing_cards) do
+      if SMODS.has_enhancement(pcard,"m_blood") then
+        blood = blood + 1
+      end
+    end
+  end
+return {vars = {center.ability.extra.mult, center.ability.extra.mult * blood} }
+end,
+calculate = function (self, card, context)
+  if context.joker_main then
+    local blood = 0
+    for _,pcard in ipairs(G.playing_cards) do
+      if SMODS.has_enhancement(pcard,"m_blood") then
+        blood = blood + 1
+      end
+    end
+    return {mult = card.ability.extra.mult * blood}
+  end
+end
+}
+SMODS.Joker{
 key = "queenpb",
 loc_txt = {
 name = "Queenpb",
 text = {
 "Gives {X:mult,C:white}x#1#{} mult. Increase this by {X:mult,C:white}x#2#{} at {C:attention}end of round{}.",
-"Changes music to {C:attention}LIFE{}, {C:attention}BOOM{} or {C:attention}NEVER{}."
+"Changes music to {C:attention}LIFE{} or {C:attention}BOOM{}."
 }
 },
 credits = {
@@ -2619,25 +2725,52 @@ G.GAME.pool_flags.BOOM = false
 G.GAME.pool_flags.NEVER = false
 end
 if card.ability.extra.song == "NEVER" then
-  G.GAME.pool_flags.LIFE = false
-  G.GAME.pool_flags.BOOM = false
-  G.GAME.pool_flags.NEVER = true
+G.GAME.pool_flags.LIFE = false
+G.GAME.pool_flags.BOOM = false
+G.GAME.pool_flags.NEVER = true
 end
 end,
 remove_from_deck = function (self, card, from_debuff)
 for pos,joker in ipairs(G.jokers.cards) do
 if joker.config.center.key == "j_queenpb" and joker ~= card then
-return
+return 
 end
+end
+if card.ability.extra.song == "BOOM" then
+G.GAME.pool_flags.BOOM = false
+G.GAME.pool_flags.LIFE = false
+G.GAME.pool_flags.NEVER = false
+end
+if card.ability.extra.song == "LIFE" then
+G.GAME.pool_flags.LIFE = false
+G.GAME.pool_flags.BOOM = false
+G.GAME.pool_flags.NEVER = false
+end
+if card.ability.extra.song == "NEVER" then
+G.GAME.pool_flags.LIFE = false
+G.GAME.pool_flags.BOOM = false
+G.GAME.pool_flags.NEVER = false
 end
 for pos,joker in ipairs(G.playbook_extra.cards) do
 if joker.config.center.key == "j_queenpb" and joker ~= card then
 return 
 end
 end
+if card.ability.extra.song == "BOOM" then
+G.GAME.pool_flags.BOOM = false
+G.GAME.pool_flags.LIFE = false
+G.GAME.pool_flags.NEVER = false
+end
+if card.ability.extra.song == "LIFE" then
 G.GAME.pool_flags.LIFE = false
 G.GAME.pool_flags.BOOM = false
 G.GAME.pool_flags.NEVER = false
+end
+if card.ability.extra.song == "NEVER" then
+G.GAME.pool_flags.LIFE = false
+G.GAME.pool_flags.BOOM = false
+G.GAME.pool_flags.NEVER = false
+end
 end,
 calculate = function (self, card, context)
 if context.end_of_round and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker then 
@@ -3048,7 +3181,7 @@ blueprint_compat = true,
 eternal_compat = true, 
 perishable_compat = true, 
 pos = {x = 7, y = 2},
-config = { extra = { min = 1 , max = 40} },
+config = { extra = { min = 1 , max = 60} },
 loc_vars = function(self,info_queue,center)
 return {vars = {center.ability.extra.min/10,center.ability.extra.max/10}}
 end,
@@ -3133,7 +3266,7 @@ text = {
 credits = {
 sug = {"Mr. Jdk"},
 idea = {"Evil Sand"},
-art = {"None"},
+art = {"Kloovree"},
 code = {"1srscx4"}
 },
 atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true}, 
@@ -3323,7 +3456,8 @@ loc_txt = {
 name = "Erm Fish",
 text = {
 "Gives {X:dark_edition,C:white}^#1#{} mult if",
-"you have {C:attention}neurooper{}"
+"you have {C:attention}neurooper{}",
+"Currently crashes the game, sorry."
 }
 },
 credits = {
@@ -3386,7 +3520,7 @@ SMODS.Joker{
   },
 credits = {
   idea = {"1srscx4"},
-  art = {"None"},
+  art = {"Tony7268"},
   code = {"1srscx4"}
 },
 atlas = "neuroCustomJokers", pools = { ["neurJoker"] = true}, 
@@ -3447,7 +3581,7 @@ max = 10
 }
 },
 loc_vars = function(self,info_queue,center)
-return {vars = {center.ability.extra.min,center.ability.extra.max}} --#1# is replaced with card.ability.extra.Xmult
+return {vars = {center.ability.extra.min,center.ability.extra.max}} 
 end,
 
 calculate = function(self,card,context)
@@ -3600,7 +3734,7 @@ rarity = 2,
 credits = {
 sug = {"Evil Sand"},
 idea = {"Evil Sand"},
-art = {"None"},
+art = {"Tony7268"},
 code = {"PaulaMarina"}
 },
 cost = 6, 
@@ -3854,177 +3988,185 @@ end
 }
 -- Part of the code from the next joker is also done by Aikoyori, again, check them out!
 SMODS.Joker{
-  key = "j_evilsand",
-  unlocked = true,
-  discovered = false,
-  blueprint_compat = true,
-  eternal_compat = false,
-  perishable_compat = false,
-  rental_compat = false,
-  in_pool = function (self, args)
-    return true
-  end,
-  config = {extra = {card1 = nil, card2 = nil, turn = "1", sold = 0, goal = 50}, extras = {}},
-  add_to_deck = function (self, card, from_debuff)
-    for pos, joker in ipairs(G.jokers.cards) do
-      if joker.config.center.key == "j_evilsand" and joker ~= card then
-        G.playbook_extra.config.card_limit = ((G.playbook_extra.config.card_limit - 2) * 2) + 2
-        SMODS.destroy_cards(card)
-        return true
+key = "j_evilsand",
+loc_txt = {
+name = "Evil Sand",
+text = {
+{
+"Plays the last two {C:attention}destroyed{} cards."
+},
+{
+"{C:attention}Stores{} the last {C:attention}#1# jokers sold{}.",
+"When you sell a total value of {C:money}$#2#{},",
+"increase this amount by {C:attention}1{}. {C:inactive}({C:money}$#3#{C:inactive} left)",
+"If you get a second copy of this joker,",
+"destroy it and {C:attention}double{} this joker's storage",
+"{C:inactive}Click on the joker to check the jokers stored.",
+"{C:inactive}(This part of the code was done by {C:attention}Aikoyori{C:inactive}, check them out!)"
+}
+}
+},
+unlocked = true, 
+discovered = false, 
+blueprint_compat = true, 
+eternal_compat = false, 
+perishable_compat = false,
+rental_compat = false,
+in_pool = function (self, args)
+return true
+end,
+config = { extra = { card1 = nil, card2 = nil, turn = "1", sold = 0, goal = 50}, extras = {}},
+add_to_deck = function (self, card, from_debuff)
+for pos,joker in ipairs(G.jokers.cards) do
+if joker.config.center.key == "j_evilsand" and joker ~= card then
+G.playbook_extra.config.card_limit = ((G.playbook_extra.config.card_limit - 2) * 2) + 2
+SMODS.destroy_cards(card)
+return true
+end
+end
+G.playbook_extra.states.collide.can = true
+G.playbook_extra.states.visible = false
+G.playbook_extra.config.card_limit = 4
+sea(
+function()
+G.GAME.playbook_hph = #SMODS.find_card("j_evilsand",true)
+return true
+end, 0)
+end,
+remove_from_deck = function (self, card, from_debuff)
+  local rst = true
+for pos,joker in ipairs(G.jokers.cards) do
+  if joker.config.center.key == "j_evilsand" and joker ~= card then
+    rst = false
+  end
+end
+if rst then
+  for _, v in ipairs(G.playbook_extra.cards) do
+    if v.ability and v.ability.set == "Default" then
+      v:start_dissolve()
+    end
+  end
+end
+sea(
+function()
+G.GAME.playbook_hph = #SMODS.find_card("j_evilsand",true)
+if G.GAME.playbook_hph < 1 then
+G.playbook_extra.states.collide.can = false
+G.playbook_extra.states.visible = false
+for _,cr in ipairs(G.playbook_extra.cards) do
+if cr.ability.consumeable then
+draw_card(G.playbook_extra,G.consumeables,nil,nil,false,cr)
+elseif cr.ability.set == "Joker" then
+draw_card(G.playbook_extra,G.jokers,nil,nil,false,cr)
+else
+draw_card(G.playbook_extra,G.deck,nil,nil,false,cr)
+end
+end
+end
+return true
+end, 0)
+end,
+credits = {
+idea = {"Evil Sand"},
+art = {"Evil Sand"},
+code = {"Aikoyori","1srscx4","Aikoyori"}
+},
+rarity = "dev",
+cost = 20,
+atlas = "neuroCustomJokers",
+pos = { x = 0, y = 1 },
+soul_pos =  { x = 1, y = 1 },
+loc_vars = function (self, info_queue, card)
+local yes = false
+if G.jokers and #G.jokers.cards > 0 then
+for _,joker in ipairs(G.jokers.cards) do
+if joker.config.center.key == "j_evilsand" then
+yes = true
+break
+end
+end
+end
+return { vars = {G.playbook_extra and yes and (G.playbook_extra.config.card_limit - 2)  or 2,card.ability.extra.goal,card.ability.extra.goal - card.ability.extra.sold}}
+end,
+calculate = function (self, card, context)
+if context.selling_card and context.card ~= card and context.card.area == G.jokers and not context.blueprint and not context.retrigger_joker then
+  card.ability.extra.sold = card.ability.extra.sold + context.card.sell_cost 
+  if card.ability.extra.sold >= card.ability.extra.goal then
+    card.ability.extra.sold = card.ability.extra.sold - card.ability.extra.goal
+    G.playbook_extra.config.card_limit = G.playbook_extra.config.card_limit + 1
+  end
+  local thing = copy_card(context.card)
+  G.playbook_extra:emplace(thing)
+  local def_cards = 0
+  for _, v in ipairs(G.playbook_extra.cards) do
+    if v.ability and v.ability.set == "Default" then
+      def_cards = def_cards + 1
+    end
+  end
+  if #G.playbook_extra.cards - def_cards > G.playbook_extra.config.card_limit - 2 then
+    for _, v in ipairs(G.playbook_extra.cards) do
+      if v.ability and v.ability.set == "Joker" then
+        SMODS.destroy_cards(v,true)
+        break
       end
     end
-    G.playbook_extra.states.collide.can = true
-    G.playbook_extra.states.visible = false
-    G.playbook_extra.config.card_limit = 4
-    sea(
-      function()
-        G.GAME.playbook_hph = #SMODS.find_card("j_evilsand", true)
-        return true
-      end,
-    0)
-  end,
-  remove_from_deck = function (self, card, from_debuff)
-    local rst = true
-    for pos, joker in ipairs(G.jokers.cards) do
-      if joker.config.center.key == "j_evilsand" and joker ~= card then
-        rst = false
-      end
+  end
+end
+if context.remove_playing_cards and not context.blueprint and not context.retrigger_joker then
+  for _,cards in ipairs(context.removed) do
+    if tonumber(card.ability.extra.turn) == 1 then
+      card.ability.extra.turn = "2"
+      local pcard = copy_card(cards)
+      SMODS.debuff_card(pcard,true,"sand")
+      G.playbook_extra:emplace(pcard)
+      card.ability.extra.card1 = true
+    elseif tonumber(card.ability.extra.turn) == 2 then
+      card.ability.extra.turn = "1"
+      local pcard = copy_card(cards)
+      SMODS.debuff_card(pcard,true,"sand")
+      G.playbook_extra:emplace(pcard)
+      card.ability.extra.card2 = true
     end
-    if rst then
-      for _, v in ipairs(G.playbook_extra.cards) do
-        if v.ability and v.ability.set == "Default" then
-          v:start_dissolve()
-        end
-      end
+  end
+  local def_cards = 0
+  for _, v in ipairs(G.playbook_extra.cards) do
+    if v.ability and v.ability.set == "Default" then
+      def_cards = def_cards + 1
     end
-    sea(
-      function()
-        G.GAME.playbook_hph = #SMODS.find_card("j_evilsand", true)
-        if G.GAME.playbook_hph < 1 then
-          G.playbook_extra.states.collide.can = false
-          G.playbook_extra.states.visible = false
-        for _, cr in ipairs(G.playbook_extra.cards) do
-          if cr.ability.consumeable then
-            draw_card(G.playbook_extra, G.consumeables, nil, nil, false, cr)
-          elseif cr.ability.set == "Joker" then
-            draw_card(G.playbook_extra, G.jokers, nil, nil, false, cr)
-          else
-            draw_card(G.playbook_extra, G.deck, nil, nil, false, cr)
-          end
-        end
-      end
-      return true
-      end,
-    0)
-  end,
-  credits = {
-    idea = {"Evil Sand"},
-    art = {"Evil Sand"},
-  code = {"Aikoyori", "1srscx4", "Aikoyori"}
-  },
-  rarity = "dev",
-  cost = 20,
-  atlas = "neuroCustomJokers",
-  pos = {x = 0, y = 1},
-  soul_pos = {x = 1, y = 1},
-  loc_vars = function (self, info_queue, card)
-    local yes = false
-    if G.jokers and #G.jokers.cards > 0 then
-      for _, joker in ipairs(G.jokers.cards) do
-        if joker.config.center.key == "j_evilsand" then
-          yes = true
+  end
+  if def_cards > 2 then
+    for _, v in ipairs(G.playbook_extra.cards) do
+      if v.ability and v.ability.set == "Default" then
+        v:start_dissolve()
+        def_cards = def_cards - 1
+        if def_cards <= 2 then
           break
         end
       end
     end
-    return {
-      vars = {
-        G.playbook_extra and yes and (G.playbook_extra.config.card_limit - 2) or 2,
-        card.ability.extra.goal, 
-        card.ability.extra.goal - card.ability.extra.sold
-      },
-      key = (card.edition and card.edition.key == "e_negative" and "j_goodsand") or "j_evilsand" 
-    }
-  end,
-  calculate = function (self, card, context)
-    if context.selling_card and context.card ~= card and context.card.area == G.jokers and not context.blueprint and not context.retrigger_joker then
-      card.ability.extra.sold = card.ability.extra.sold + context.card.sell_cost
-      if card.ability.extra.sold >= card.ability.extra.goal then
-        card.ability.extra.sold = card.ability.extra.sold - card.ability.extra.goal
-        G.playbook_extra.config.card_limit = G.playbook_extra.config.card_limit + 1
-      end
-      local thing = copy_card(context.card)
-      G.playbook_extra:emplace(thing)
-      local def_cards = 0
-      for _, v in ipairs(G.playbook_extra.cards) do
-        if v.ability and v.ability.set == "Default" then
-          def_cards = def_cards + 1
-        end
-      end
-      if #G.playbook_extra.cards - def_cards > G.playbook_extra.config.card_limit - 2 then
-        for _, v in ipairs(G.playbook_extra.cards) do
-          if v.ability and v.ability.set == "Joker" then
-            SMODS.destroy_cards(v, true)
-            break
-          end
-        end
-      end
+  end
+end
+if context.before and not context.blueprint and not context.retrigger_joker then
+  for _, pcard in ipairs(G.playbook_extra.cards) do
+    print(pcard.ability.set )
+    if pcard.ability.set == "Default" then
+      local added = copy_card(pcard)
+      SMODS.debuff_card(added,false,"sand")
+      table.insert(G.playing_cards, added)
+      G.play:emplace(added)
+      table.insert(context.scoring_hand, added)
     end
-    if context.remove_playing_cards and not context.blueprint and not context.retrigger_joker then
-      for _, cards in ipairs(context.removed) do
-        if tonumber(card.ability.extra.turn) == 1 then
-          card.ability.extra.turn = "2"
-          local pcard = copy_card(cards)
-          SMODS.debuff_card(pcard, true, "sand")
-          G.playbook_extra:emplace(pcard)
-          card.ability.extra.card1 = true
-        elseif tonumber(card.ability.extra.turn) == 2 then
-          card.ability.extra.turn = "1"
-          local pcard = copy_card(cards)
-          SMODS.debuff_card(pcard, true, "sand")
-          G.playbook_extra:emplace(pcard)
-          card.ability.extra.card2 = true
-        end
-      end
-      local def_cards = 0
-      for _, v in ipairs(G.playbook_extra.cards) do
-        if v.ability and v.ability.set == "Default" then
-          def_cards = def_cards + 1
-        end
-      end
-      if def_cards > 2 then
-        for _, v in ipairs(G.playbook_extra.cards) do
-          if v.ability and v.ability.set == "Default" then
-            v:start_dissolve()
-            def_cards = def_cards - 1
-            if def_cards <= 2 then
-              break
-            end
-          end
-        end
-      end
-    end
-    if context.before and not context.blueprint and not context.retrigger_joker then
-      for _, pcard in ipairs(G.playbook_extra.cards) do
-        print(pcard.ability.set)
-        if pcard.ability.set == "Default" then
-          local added = copy_card(pcard)
-          SMODS.debuff_card(added, false, "sand")
-          table.insert(G.playing_cards, added)
-          G.play:emplace(added)
-          table.insert(context.scoring_hand, added)
-        end
-      end
-    end
-    if context.after and not context.blueprint and not context.retrigger_joker then
-      if card.ability.extra.card1 then
-        SMODS.destroy_cards(context.full_hand[card.ability.extra.card2 ~= nil and #context.full_hand - 1 or #context.full_hand])
-      end
-      if card.ability.extra.card2 then
-        SMODS.destroy_cards(context.full_hand[#context.full_hand])
-      end
-    end
-  end,
+  end
+end
+if context.after and not context.blueprint and not context.retrigger_joker then
+  if card.ability.extra.card1 then
+    SMODS.destroy_cards(context.full_hand[card.ability.extra.card2 ~= nil and #context.full_hand - 1 or #context.full_hand])
+  end
+  if card.ability.extra.card2 then
+    SMODS.destroy_cards(context.full_hand[#context.full_hand])
+  end
+end
+end,
 }
 --
 SMODS.Joker:take_ownership('smiley', {
@@ -4069,6 +4211,143 @@ local vedals_items = {
   ["j_tutelsoup"] = true, 
   ["j_vedds"] = true, 
   ["j_abandonedarchive"] = true
+}
+SMODS.Joker{
+  key = "vedal",
+  loc_txt = {
+    name = "Vedal",
+    text = {
+      "Gives {X:mult,C:white}X#1#{} Mult for every {C:money}$#2#{} gained this {C:attention}run{}.",
+      "Each {C:attention}Vedal Item {C:inactive}(Currently owned: #5#){}",
+      "increases the base amount by {X:mult,C:white}X#3#{} Mult",
+      "{C:inactive}(Currently {X:mult,C:white}X#4#{} {C:inactive}Mult){}"
+    }
+  },
+  credits = {
+    idea = {"Evil Sand"},
+    art = {"None"},
+    code = {"luq"}
+  },
+  rarity = 4,
+  cost = 20,
+  unlocked = true,
+  discovered = false,
+  blueprint_compat = true,
+  eternal_compat = true, 
+  perishable_compat = true,
+  atlas = "neuroCustomJokers",
+  pos = {x = 1, y = 0},
+  config = {extra = { dollars = 1, upg = 0.01, vedal_bonus = 0.01}},
+  loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue + 1] = {set = "Other", key = "Vedal_items_desc"} 
+    local ved_cards = 0
+    if G and G.jokers then
+      for _,area in ipairs({G.jokers.cards,G.playbook_extra.cards}) do 
+        for _, v in ipairs(area) do
+          if vedals_items[v.config.center.key] then ved_cards = ved_cards + 1 end
+        end
+      end
+    end
+    local mult = math.floor(MONEY_EARNED / card.ability.extra.dollars) * (ved_cards * card.ability.extra.vedal_bonus + card.ability.extra.upg) 
+    return {vars = {card.ability.extra.upg, 
+                    card.ability.extra.dollars, 
+                    card.ability.extra.vedal_bonus,
+                    mult + 1,
+                    ved_cards}}
+  end,
+  calculate = function(self, card, context) 
+    local ved_cards = 0
+    if context.joker_main then
+      for _,area in ipairs({G.jokers.cards,G.playbook_extra.cards}) do 
+        for _, v in ipairs(area) do
+          if vedals_items[v.config.center.key] then ved_cards = ved_cards + 1 end
+        end
+      end
+      local mult = math.floor(MONEY_EARNED / card.ability.extra.dollars) * (ved_cards * card.ability.extra.vedal_bonus + card.ability.extra.upg) 
+      return {xmult = mult + 1}
+    end
+  end
+}
+SMODS.Joker{
+  key = "neuro",
+  loc_txt = {
+    name = "Neuro",
+    text = {
+      "Gives {X:mult,C:white}X#1#{} Mult for every {C:attention}#2#%{} overkill",
+      "chips scored in the {C:attention}previous{} blind",
+      "{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult){}"
+    }
+  },
+  credits = {
+    idea = {"Evil Sand"},
+    art = {"Kloovree"},
+    code = {"luq"}
+  },
+  rarity = 4,
+  cost = 20,
+  unlocked = true,
+  discovered = false,
+  blueprint_compat = true,
+  eternal_compat = true, 
+  perishable_compat = true,
+  atlas = "neuroCustomJokers",
+  pos = { x = 1, y = 8 },
+  soul_pos = { x = 1, y = 9 },
+  config = { extra = {xmult = 1, xmult_gain = 0.2, overkill = 1}},
+  loc_vars = function(self, info_queue, card) 
+    return { vars = {card.ability.extra.xmult_gain, card.ability.extra.overkill, card.ability.extra.xmult}}
+  end,
+  calculate = function(self, card, context) 
+    if context.blind_defeated then
+      if G.GAME.chips / G.GAME.blind.chips >= 1.0 then
+        card.ability.extra.xmult = (G.GAME.chips / G.GAME.blind.chips - 1) * 100 / card.ability.extra.overkill * card.ability.extra.xmult_gain
+      else 
+        card.ability.extra.xmult = 1
+      end
+    end
+    if context.joker_main then
+      return {xmult = card.ability.extra.xmult}
+    end
+  end
+}
+SMODS.Joker{
+  key = "evil",
+  loc_txt = {
+    name = "Evil",
+    text = {
+      "This joker gains {X:mult,C:white}X#1#{} Mult",
+      "for every {C:attention}playing card{} destroyed",
+      "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
+    }
+  },
+  credits = {
+    idea = {"Evil Sand"},
+    art = {"Evil Sand"},
+    code = {"luq"}
+  },
+  rarity = 4,
+  cost = 20,
+  unlocked = true,
+  discovered = false,
+  blueprint_compat = true,
+  eternal_compat = true, 
+  perishable_compat = true,
+  atlas = "neuroCustomJokers",
+  pos = { x = 2, y = 8 },
+  soul_pos = { x = 2, y = 9 },
+  config = { extra = {xmult = 1, upg = 0.2}},
+  loc_vars = function(self, info_queue, card) 
+    return { vars = {card.ability.extra.upg, card.ability.extra.xmult}}
+  end,
+  calculate = function(self, card, context) 
+    if context.remove_playing_cards and not context.blueprint then
+      card.ability.extra.xmult = card.ability.extra.xmult + (card.ability.extra.upg * #context.removed)
+      return { message = "Upgrade!"}
+    end
+    if context.joker_main then
+      return {xmult = card.ability.extra.xmult}
+    end
+  end
 }
 SMODS.Joker{
 key = "anny",
@@ -4157,141 +4436,3 @@ xmult = card.ability.extra.xmult
 end
 end
 }
-SMODS.Joker{
-  key = "neuro",
-  loc_txt = {
-    name = "Neuro",
-    text = {
-      "Gives {X:mult,C:white}X#1#{} Mult for every {C:attention}#2#%{} overkill",
-      "chips scored in the {C:attention}previous{} blind",
-      "{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult out of {X:mult,C:white}X#4#{C:inactive} Mult){}"
-    }
-  },
-  credits = {
-    idea = {"Evil Sand"},
-    art = {"Kloovree"},
-    code = {"luq"}
-  },
-  rarity = 4,
-  cost = 20,
-  unlocked = true,
-  discovered = false,
-  blueprint_compat = true,
-  eternal_compat = true, 
-  perishable_compat = true,
-  atlas = "neuroCustomJokers",
-  pos = { x = 1, y = 8 },
-  soul_pos = { x = 1, y = 9 },
-  config = { extra = {xmult = 1, xmult_gain = 0.1, overkill = 1, cap = 100}},
-  loc_vars = function(self, info_queue, card) 
-    return { vars = { card.ability.extra.xmult_gain, card.ability.extra.overkill, card.ability.extra.xmult >= card.ability.extra.cap and card.ability.extra.cap or card.ability.extra.xmult, card.ability.extra.cap}}
-  end,
-  calculate = function(self, card, context) 
-    if context.blind_defeated then
-      if G.GAME.chips / G.GAME.blind.chips >= 1.0 then
-        card.ability.extra.xmult = (G.GAME.chips / G.GAME.blind.chips - 1) * 100 / card.ability.extra.overkill * card.ability.extra.xmult_gain
-      else 
-        card.ability.extra.xmult = 1
-      end
-    end
-    if context.joker_main then
-      return {xmult = card.ability.extra.xmult >= card.ability.extra.cap and card.ability.extra.cap or card.ability.extra.xmult}
-    end
-  end
-}
-SMODS.Joker{
-  key = "evil",
-  loc_txt = {
-    name = "Evil",
-    text = {
-      "This joker gains {X:mult,C:white}X#1#{} Mult",
-      "for every {C:attention}playing card{} destroyed",
-      "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
-    }
-  },
-  credits = {
-    idea = {"Evil Sand"},
-    art = {"Evil Sand"},
-    code = {"luq"}
-  },
-  rarity = 4,
-  cost = 20,
-  unlocked = true,
-  discovered = false,
-  blueprint_compat = true,
-  eternal_compat = true, 
-  perishable_compat = true,
-  atlas = "neuroCustomJokers",
-  pos = { x = 2, y = 8 },
-  soul_pos = { x = 2, y = 9 },
-  config = { extra = {xmult = 1, upg = 0.2}},
-  loc_vars = function(self, info_queue, card) 
-    return { vars = {card.ability.extra.upg, card.ability.extra.xmult}}
-  end,
-  calculate = function(self, card, context) 
-    if context.remove_playing_cards and not context.blueprint then
-      card.ability.extra.xmult = card.ability.extra.xmult + (card.ability.extra.upg * #context.removed)
-      return { message = "Upgrade!"}
-    end
-    if context.joker_main then
-      return {xmult = card.ability.extra.xmult}
-    end
-  end
-}
-SMODS.Joker{
-  key = "vedal",
-  loc_txt = {
-    name = "Vedal",
-    text = {
-      "Gives {X:mult,C:white}X#1#{} Mult for every {C:money}$#2#{} gained this {C:attention}run{}.",
-      "Each {C:attention}Vedal Item {C:inactive}(Currently owned: #5#){}",
-      "increases the base amount by {X:mult,C:white}X#3#{} Mult",
-      "{C:inactive}(Currently {X:mult,C:white}X#4#{} {C:inactive}Mult){}"
-    }
-  },
-  credits = {
-    idea = {"Evil Sand"},
-    art = {"None"},
-    code = {"luq"}
-  },
-  rarity = 4,
-  cost = 20,
-  unlocked = true,
-  discovered = false,
-  blueprint_compat = true,
-  eternal_compat = true, 
-  perishable_compat = true,
-  atlas = "neuroCustomJokers",
-  pos = {x = 1, y = 0},
-  config = {extra = { dollars = 1, upg = 0.01, vedal_bonus = 0.01}},
-  loc_vars = function(self, info_queue, card)
-    info_queue[#info_queue + 1] = {set = "Other", key = "Vedal_items_desc"} 
-    local ved_cards = 0
-    if G and G.jokers then
-      for _,area in ipairs({G.jokers.cards,G.playbook_extra.cards}) do 
-        for _, v in ipairs(area) do
-          if vedals_items[v.config.center.key] then ved_cards = ved_cards + 1 end
-        end
-      end
-    end
-    local mult = math.floor(MONEY_EARNED / card.ability.extra.dollars) * (ved_cards * card.ability.extra.vedal_bonus + card.ability.extra.upg) 
-    return {vars = {card.ability.extra.upg, 
-                    card.ability.extra.dollars, 
-                    card.ability.extra.vedal_bonus,
-                    mult + 1,
-                    ved_cards}}
-  end,
-  calculate = function(self, card, context) 
-    local ved_cards = 0
-    if context.joker_main then
-      for _,area in ipairs({G.jokers.cards,G.playbook_extra.cards}) do 
-        for _, v in ipairs(area) do
-          if vedals_items[v.config.center.key] then ved_cards = ved_cards + 1 end
-        end
-      end
-      local mult = math.floor(MONEY_EARNED / card.ability.extra.dollars) * (ved_cards * card.ability.extra.vedal_bonus + card.ability.extra.upg) 
-      return {xmult = mult + 1}
-    end
-  end
-}
-
