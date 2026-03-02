@@ -1,40 +1,39 @@
 local er_ref = end_round
 function end_round()
-   	er_ref()
-   	local hiyori = false
-   	for _,joker in ipairs(G.jokers.cards)do
+	er_ref()
+	local hiyori = false
+	for _, joker in ipairs(G.jokers.cards) do
 		if joker.config.center.key == "j_hiyori" then
 			hiyori = true
 		end
-   	end
-   	for _,joker in ipairs(G.playbook_extra.cards)do
+	end
+	for _, joker in ipairs(G.playbook_extra.cards) do
 		if joker.config.center.key == "j_hiyori" then
 			hiyori = true
 		end
-   	end
-	for _,v in ipairs(G.playing_cards) do
-		SMODS.debuff_card(v,false,"filter")
+	end
+	for _, v in ipairs(G.playing_cards) do
+		SMODS.debuff_card(v, false, "filter")
 		if v:is_suit("Hearts") and hiyori then
-			SMODS.debuff_card(v,true,"filter")
+			SMODS.debuff_card(v, true, "filter")
 		end
 	end
-	for _,v in ipairs(G.jokers.cards) do
-		SMODS.debuff_card(v,false,"filter")
+	for _, v in ipairs(G.jokers.cards) do
+		SMODS.debuff_card(v, false, "filter")
 	end
-	for _,v in ipairs(G.playbook_extra.cards) do
-		SMODS.debuff_card(v,false,"filter")
-	end 
+	for _, v in ipairs(G.playbook_extra.cards) do
+		SMODS.debuff_card(v, false, "filter")
+	end
 end
 
 local oldsell = Card.sell_card
 function Card:sell_card()
-  
-  if self.area == G.playbook_extra then
-    return true
-  else
-    local w = oldsell(self)
-    return w
-  end
+	if self.area == G.playbook_extra then
+		return true
+	else
+		local w = oldsell(self)
+		return w
+	end
 end
 
 local smcmb = SMODS.create_mod_badges
@@ -59,18 +58,18 @@ function SMODS.create_mod_badges(obj, badges)
 			local scale_fac = {}
 			local min_scale_fac = 1
 			local strings = { "Neuratro" }
-			for pos, v in ipairs({ "sug","idea", "art", "code" }) do
+			for pos, v in ipairs({ "sug", "idea", "art", "code" }) do
 				if obj.credits[v] then
 					for i = 1, #obj.credits[v] do
-            if pos == 1 then
-              strings[#strings + 1] = "Suggested by: " .. obj.credits.sug[1]
-            elseif pos == 2 then 
-				strings[#strings + 1] = "Idea: " .. obj.credits.idea[i]
-            elseif pos == 3 then
-              strings[#strings + 1] = "Art: " .. obj.credits.art[1]
-            elseif pos == 4 then
-              strings[#strings + 1] = "Code: " .. obj.credits.code[1]
-            end
+						if pos == 1 then
+							strings[#strings + 1] = "Suggested by: " .. obj.credits.sug[1]
+						elseif pos == 2 then
+							strings[#strings + 1] = "Idea: " .. obj.credits.idea[i]
+						elseif pos == 3 then
+							strings[#strings + 1] = "Art: " .. obj.credits.art[1]
+						elseif pos == 4 then
+							strings[#strings + 1] = "Code: " .. obj.credits.code[1]
+						end
 					end
 				end
 			end
@@ -122,11 +121,11 @@ function SMODS.create_mod_badges(obj, badges)
 				},
 			}
 			for i = 1, #badges do
-        if i == #badges then
+				if i == #badges then
 					badges[i].nodes[1].nodes[2].config.object:remove()
 					badges[i] = badge
 					break
-        end
+				end
 			end
 		end
 	end
@@ -134,22 +133,31 @@ end
 
 local smods_showman_ref = SMODS.showman
 function SMODS.showman(card_key)
-    if next(SMODS.find_card('j_emojiman')) and card_key == "j_smiley" then
-        return true
-    end
-    return smods_showman_ref(card_key)
+	if next(SMODS.find_card("j_emojiman")) and card_key == "j_smiley" then
+		return true
+	end
+	return smods_showman_ref(card_key)
 end
 
 local oldcardgetchipbonus = Card.get_chip_bonus
 function Card:get_chip_bonus()
-    local g = oldcardgetchipbonus(self)
-    if self.base.suit == "Glorpsuit" and SMODS.has_enhancement(self, "m_bonus") then g = (g-30) * 10 + 30
-    elseif self.base.suit == "Glorpsuit" and not SMODS.has_enhancement(self, "m_stone") then g = g * 10 end
-    return g
+	local g = oldcardgetchipbonus(self)
+	if self.base.suit == "Glorpsuit" and SMODS.has_enhancement(self, "m_bonus") then
+		g = (g - 30) * 10 + 30
+	elseif self.base.suit == "Glorpsuit" and not SMODS.has_enhancement(self, "m_stone") then
+		g = g * 10
+	end
+	return g
 end
 
 SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypass_roll)
-	if G.GAME.stake ~= 8 or pseudorandom("rentalapply") <= 0.7 or card.ability.set ~= 'Joker' or card.config.center.rarity == "dev" or card.config.center.rarity == 4 then
+	if
+		G.GAME.stake ~= 8
+		or pseudorandom("rentalapply") <= 0.7
+		or card.ability.set ~= "Joker"
+		or card.config.center.rarity == "dev"
+		or card.config.center.rarity == 4
+	then
 		return false
 	end
 	return true
@@ -164,7 +172,7 @@ function Game:update(dt)
 	if self.GAME and self.GAME.dollars then
 		local money = self.GAME.dollars
 		if money > prev_money then
-			MONEY_EARNED = MONEY_EARNED + money - prev_money	
+			MONEY_EARNED = MONEY_EARNED + money - prev_money
 		end
 		prev_money = money
 	end
@@ -184,15 +192,15 @@ local originalshader = false
 
 local drawg = Game.draw
 function Game:draw(args)
-    local x = {drawg(self,args)}
-    if(G.SHADERS['CRT'] and not originalshader) then
-        originalshader = G.SHADERS['CRT']
-    else
-        if false then
-            G.SHADERS['CRT'] = G.SHADERS['arg']
-        else
-            G.SHADERS['CRT'] = originalshader
-        end
-    end
-    return x
+	local x = { drawg(self, args) }
+	if G.SHADERS["CRT"] and not originalshader then
+		originalshader = G.SHADERS["CRT"]
+	else
+		if false then
+			G.SHADERS["CRT"] = G.SHADERS["arg"]
+		else
+			G.SHADERS["CRT"] = originalshader
+		end
+	end
+	return x
 end

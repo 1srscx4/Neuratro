@@ -1,25 +1,25 @@
-SMODS.Tag{
-  key = "filter_tag",
-  loc_txt = {
-    name = "Filtered tag",
-    text = {
-      "Next base edition shop",
-      "joker is free and",
-      "becomes {V:1}filtered{}."
-    }
-  },
-  atlas = "neuroTags",
-  pos = {x = 0, y = 0},
-  discovered = false,
-  in_pool = function (self, args)
-    return true
-  end,
-  loc_vars = function(self,info_queue,center)
-    info_queue[#info_queue+1] = G.P_CENTERS.e_filtered
-    return {vars = { colours = {HEX("589c4b")} } }
-  end,
-  apply = function (self, tag, context)
-    if context.type == "store_joker_modify" then
+SMODS.Tag({
+	key = "filter_tag",
+	loc_txt = {
+		name = "Filtered tag",
+		text = {
+			"Next base edition shop",
+			"joker is free and",
+			"becomes {V:1}filtered{}.",
+		},
+	},
+	atlas = "neuroTags",
+	pos = { x = 0, y = 0 },
+	discovered = false,
+	in_pool = function(self, args)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_filtered
+		return { vars = { colours = { HEX("589c4b") } } }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
 			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
@@ -37,27 +37,27 @@ SMODS.Tag{
 				tag.triggered = true
 			end
 		end
-  end
-}
-SMODS.Tag{
-  key = "eliv_tag",
-  loc_txt = {
-    name = "Eliv tag",
-    text = {
-      "Gives a free",
-      "{C:attention}Evil Pack"
-    }
-  },
-  atlas = "neuroTags",
-  pos = {x = 1, y = 0},
-  discovered = false,
-  in_pool = function (self, args)
-    return true
-  end,
-  loc_vars = function(self,info_queue,center)
-    info_queue[#info_queue+1] = G.P_CENTERS.p_neurpack4
-  end,
-  apply = function(self, tag, context)
+	end,
+})
+SMODS.Tag({
+	key = "eliv_tag",
+	loc_txt = {
+		name = "Eliv tag",
+		text = {
+			"Gives a free",
+			"{C:attention}Evil Pack",
+		},
+	},
+	atlas = "neuroTags",
+	pos = { x = 1, y = 0 },
+	discovered = false,
+	in_pool = function(self, args)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.p_neurpack4
+	end,
+	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
@@ -83,4 +83,4 @@ SMODS.Tag{
 			return true
 		end
 	end,
-}
+})
