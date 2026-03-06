@@ -1427,7 +1427,7 @@ SMODS.Joker({
 		name = "Abandoned Archive 2",
 		text = {
 			"When a joker is {C:attention}sold{}, gain mult",
-			"{C:attention}equal{} to its {C:attention}sell value{}.",
+			"{C:attention}to its {C:attention}sell value{}.",
 			"{C:inactive}(Currently {C:mult}+#1# {C:inactive}mult)",
 		},
 	},
