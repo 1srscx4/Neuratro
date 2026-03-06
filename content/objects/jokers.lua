@@ -101,6 +101,14 @@ local function set_queenpb_pool_flags(song)
 	G.GAME.pool_flags.NEVER = song == "NEVER"
 end
 
+local function joker_cards()
+	return G and G.jokers and G.jokers.cards or {}
+end
+
+local function playbook_cards()
+	return G and G.playbook_extra and G.playbook_extra.cards or {}
+end
+
 --Neuro related
 SMODS.Joker({
 	key = "3heart",
@@ -162,7 +170,7 @@ SMODS.Joker({
 			return { xmult = card.ability.extra.Xmult }
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -200,7 +208,7 @@ SMODS.Joker({
 		G.hand:change_size(1)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_evilsand" and card.area ~= G.playbook_extra then
 				return
 			end
@@ -578,7 +586,7 @@ SMODS.Joker({
 			return { Xmult = card.ability.extra.xmult }
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -630,7 +638,7 @@ SMODS.Joker({
 			end
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -1052,7 +1060,7 @@ SMODS.Joker({
 			}
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -1092,7 +1100,7 @@ SMODS.Joker({
 			end
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		local inpool = false
 		for _, cards in ipairs(G.playing_cards) do
 			if SMODS.has_enhancement(cards, "m_twin") then
@@ -1145,7 +1153,7 @@ SMODS.Joker({
 			return { mult = card.ability.extra.mult }
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -1190,7 +1198,7 @@ SMODS.Joker({
 			return { message = "Reset" }
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -1552,7 +1560,7 @@ SMODS.Joker({
 			end
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -2150,7 +2158,7 @@ SMODS.Joker({
 			return { xmult = card.ability.extra.xmult }
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -2257,7 +2265,7 @@ SMODS.Joker({
 			}))
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -2686,12 +2694,12 @@ SMODS.Joker({
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_neurodog
 		local result = 1
 		if G.jokers then
-			for _, joker in ipairs(G.jokers.cards) do
+			for _, joker in ipairs(joker_cards()) do
 				if joker.config.center.key == "j_neurodog" then
 					result = result + center.ability.extra.upg
 				end
 			end
-			for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for _, joker in ipairs(playbook_cards()) do
 				if joker.config.center.key == "j_neurodog" then
 					result = result + center.ability.extra.upg
 				end
@@ -2709,12 +2717,12 @@ SMODS.Joker({
 	calculate = function(self, card, context)
 		if context.joker_main then
 			local result = 1
-			for _, joker in ipairs(G.jokers.cards) do
+			for _, joker in ipairs(joker_cards()) do
 				if joker.config.center.key == "j_neurodog" then
 					result = result + card.ability.extra.upg
 				end
 			end
-			for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for _, joker in ipairs(playbook_cards()) do
 				if joker.config.center.key == "j_neurodog" then
 					result = result + card.ability.extra.upg
 				end
@@ -2724,6 +2732,9 @@ SMODS.Joker({
 		if
 			context.setting_blind
 			and roll_with_odds("seed", card.ability.extra.base, card.ability.extra.odds)
+			and G.jokers
+			and G.jokers.cards
+			and G.jokers.config
 			and #G.jokers.cards < G.jokers.config.card_limit
 		then
 			SMODS.add_card({ set = "Joker", area = G.jokers, key = "j_neurodog" })
@@ -2920,13 +2931,13 @@ SMODS.Joker({
 	end,
 	in_pool = function(self, args)
 		local inpool = false
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.edition and joker.edition.key == "e_negative" then
 				inpool = true
 				break
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.edition and joker.edition.key == "e_negative" then
 				inpool = true
 				break
@@ -3010,7 +3021,7 @@ SMODS.Joker({
 		G.shared_seals["shoomiminion_seal"] = Sprite(0, 0, 71, 95, G.ASSET_ATLAS["neuroEnh"], { x = 8, y = 0 })
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if
 				joker.config.center.key == "j_shoomimi"
 				or (joker.config.center.key == "j_evilsand" and card.area ~= G.playbook_extra)
@@ -3018,7 +3029,7 @@ SMODS.Joker({
 				return
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_shoomimi" then
 				return
 			end
@@ -3083,12 +3094,12 @@ SMODS.Joker({
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.song = pseudorandom_element({ "LIFE", "BOOM", "NEVER" }, pseudoseed("pb"))
-		for pos, joker in ipairs(G.jokers.cards) do
+		for pos, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_queenpb" and joker ~= card then
 				card.ability.extra.song = joker.ability.extra.song
 			end
 		end
-		for pos, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for pos, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_queenpb" and joker ~= card then
 				card.ability.extra.song = joker.ability.extra.song
 			end
@@ -3096,12 +3107,12 @@ SMODS.Joker({
 		set_queenpb_pool_flags(card.ability.extra.song)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		for pos, joker in ipairs(G.jokers.cards) do
+		for pos, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_queenpb" and joker ~= card then
 				return
 			end
 		end
-		for pos, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for pos, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_queenpb" and joker ~= card then
 				return
 			end
@@ -3422,13 +3433,13 @@ SMODS.Joker({
 	pos = { x = 0, y = 4 },
 	in_pool = function(self, args)
 		local is_in_pool = false
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_Glorp" then
 				is_in_pool = true
 				break
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_Glorp" then
 				is_in_pool = true
 				break
@@ -3560,7 +3571,7 @@ SMODS.Joker({
 			end
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -3598,7 +3609,7 @@ SMODS.Joker({
 			return { xmult = pseudorandom("seed", card.ability.extra.min, card.ability.extra.max) / 10 }
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		return true
 	end,
 })
@@ -3699,7 +3710,7 @@ SMODS.Joker({
 		local multiplier = 1
 		local to_do = tonumber(card.ability.extra.oa6added) or 0
 		local done = 0
-		for pos, joker in ipairs(G.jokers.cards) do
+		for pos, joker in ipairs(joker_cards()) do
 			if done < to_do then
 				if joker.config.center.key == "j_oops" then
 					multiplier = multiplier * 2
@@ -3708,7 +3719,7 @@ SMODS.Joker({
 			end
 		end
 		if done < to_do then
-			for pos, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for pos, joker in ipairs(playbook_cards()) do
 				if joker.config.center.key == "j_oops" then
 					if done < to_do then
 						multiplier = multiplier * 2
@@ -3783,7 +3794,7 @@ SMODS.Joker({
 	calculate = function(self, card, context)
 		if context.end_of_round and context.game_over and context.main_eval and not context.blueprint then
 			local valid_index = {}
-			for pos, joker in ipairs(G.jokers.cards) do
+			for pos, joker in ipairs(joker_cards()) do
 				if not joker.ability.eternal and joker ~= card then
 					valid_index[#valid_index + 1] = pos
 				end
@@ -3796,9 +3807,11 @@ SMODS.Joker({
 					play_sound("tarot1")
 					card:start_dissolve()
 					local victim = nil
-					if #valid_index > 0 then
+					if G and G.jokers and G.jokers.cards and #valid_index > 0 then
 						victim = G.jokers.cards[pseudorandom_element(valid_index, pseudoseed("purge"))]
-						victim:start_dissolve()
+						if victim then
+							victim:start_dissolve()
+						end
 					end
 					return true
 				end,
@@ -3836,34 +3849,34 @@ SMODS.Joker({
 	perishable_compat = true,
 	pos = { x = 8, y = 4 },
 	add_to_deck = function(self, card, from_debuff)
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_Ermfish" then
 				joker.children.center:set_sprite_pos({ x = 1, y = 7 })
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_Ermfish" then
 				joker.children.center:set_sprite_pos({ x = 1, y = 7 })
 			end
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_nwooper" then
 				return
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_nwooper" then
 				return
 			end
 		end
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_Ermfish" then
 				joker.children.center:set_sprite_pos({ x = 0, y = 7 })
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_Ermfish" then
 				joker.children.center:set_sprite_pos({ x = 0, y = 7 })
 			end
@@ -3902,12 +3915,12 @@ SMODS.Joker({
 		return true
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_nwooper" then
 				card.children.center:set_sprite_pos({ x = 1, y = 7 })
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.config.center.key == "j_nwooper" then
 				card.children.center:set_sprite_pos({ x = 1, y = 7 })
 			end
@@ -3920,7 +3933,7 @@ SMODS.Joker({
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main then
-			for _, pcard in ipairs(G.jokers.cards) do
+			for _, pcard in ipairs(joker_cards()) do
 				if pcard.config.center.key == "j_nwooper" then
 					return {
 						remove_default_message = true,
@@ -3931,7 +3944,7 @@ SMODS.Joker({
 					}
 				end
 			end
-			for _, pcard in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for _, pcard in ipairs(playbook_cards()) do
 				if pcard.config.center.key == "j_nwooper" then
 					return {
 						remove_default_message = true,
@@ -3986,7 +3999,7 @@ SMODS.Joker({
 			G.GAME.schizo = false
 		end
 		if context.end_of_round and context.main_eval and not context.blueprint then
-			for _, joker in ipairs(G.jokers.cards) do
+			for _, joker in ipairs(joker_cards()) do
 				if joker.ability.schizo_sticker then
 					SMODS.destroy_cards(joker)
 				end
@@ -4050,7 +4063,7 @@ SMODS.Joker({
 			return { repetitions = pseudorandom("seed", card.ability.extra.min, card.ability.extra.max) }
 		end
 	end,
-	in_pool = function(self, wawa, wawa2)
+	in_pool = function(self, args)
 		--whether or not this card is in the pool, return true if it is, return false if its not
 		return true
 	end,
@@ -4155,13 +4168,13 @@ SMODS.Joker({
 	pos = { x = 7, y = 6 },
 	in_pool = function(self, args)
 		local inpool = false
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.edition and joker.edition.key == "e_filtered" then
 				inpool = true
 				break
 			end
 		end
-		for _, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+		for _, joker in ipairs(playbook_cards()) do
 			if joker.edition and joker.edition.key == "e_filtered" then
 				inpool = true
 				break
@@ -4454,9 +4467,12 @@ SMODS.Joker({
 			end
 		end
 		if context.hand_drawn and not context.blueprint and not context.retrigger_joker then
-			for i = 1, #G.hand.cards do
+			for i = 1, #(G.hand and G.hand.cards or {}) do
 				if
-					G.hand.cards[i].edition
+					G.hand
+					and G.hand.cards
+					and G.hand.cards[i]
+					and G.hand.cards[i].edition
 					and G.hand.cards[i].edition.key == "e_negative"
 					and G.hand.cards[i].debuff
 				then
@@ -4464,7 +4480,10 @@ SMODS.Joker({
 					G.hand:change_size(1)
 				end
 				if
-					G.hand.cards[i].edition
+					G.hand
+					and G.hand.cards
+					and G.hand.cards[i]
+					and G.hand.cards[i].edition
 					and G.hand.cards[i].edition.key == "e_negative"
 					and G.hand.cards[i].facing == "back"
 				then
@@ -4545,7 +4564,7 @@ SMODS.Joker({
 		if not G.playbook_extra then
 			return
 		end
-		for pos, joker in ipairs(G.jokers.cards) do
+		for pos, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_evilsand" and joker ~= card then
 				G.playbook_extra.config.card_limit = math.min(
 					((G.playbook_extra.config.card_limit - 2) * 2) + 2,
@@ -4568,13 +4587,13 @@ SMODS.Joker({
 			return
 		end
 		local rst = true
-		for pos, joker in ipairs(G.jokers.cards) do
+		for pos, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_evilsand" and joker ~= card then
 				rst = false
 			end
 		end
 		if rst then
-			for _, v in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for _, v in ipairs(playbook_cards()) do
 				if v.ability and v.ability.set == "Default" then
 					v:start_dissolve()
 				end
@@ -4585,7 +4604,7 @@ SMODS.Joker({
 			if G.GAME.playbook_hph < 1 then
 				G.playbook_extra.states.collide.can = false
 				G.playbook_extra.states.visible = false
-				for _, cr in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+				for _, cr in ipairs(playbook_cards()) do
 					if cr.ability.consumeable then
 						draw_card(G.playbook_extra, G.consumeables, nil, nil, false, cr)
 					elseif cr.ability.set == "Joker" then
@@ -4611,7 +4630,7 @@ SMODS.Joker({
 	loc_vars = function(self, info_queue, card)
 		local yes = false
 		if G.jokers and #G.jokers.cards > 0 then
-			for _, joker in ipairs(G.jokers.cards) do
+			for _, joker in ipairs(joker_cards()) do
 				if joker.config.center.key == "j_evilsand" then
 					yes = true
 					break
@@ -4648,14 +4667,14 @@ SMODS.Joker({
 			local thing = copy_card(context.card)
 			G.playbook_extra:emplace(thing)
 			local def_cards = 0
-			for _, v in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for _, v in ipairs(playbook_cards()) do
 				if v.ability and v.ability.set == "Default" then
 					def_cards = def_cards + 1
 				end
 			end
 			local extra_cards = G.playbook_extra and G.playbook_extra.cards or {}
 			if #extra_cards - def_cards > G.playbook_extra.config.card_limit - 2 then
-				for _, v in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+				for _, v in ipairs(playbook_cards()) do
 					if v.ability and v.ability.set == "Joker" then
 						SMODS.destroy_cards(v, true)
 						break
@@ -4681,13 +4700,13 @@ SMODS.Joker({
 				end
 			end
 			local def_cards = 0
-			for _, v in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for _, v in ipairs(playbook_cards()) do
 				if v.ability and v.ability.set == "Default" then
 					def_cards = def_cards + 1
 				end
 			end
 			if def_cards > 2 then
-				for _, v in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+				for _, v in ipairs(playbook_cards()) do
 					if v.ability and v.ability.set == "Default" then
 						v:start_dissolve()
 						def_cards = def_cards - 1
@@ -4700,7 +4719,7 @@ SMODS.Joker({
 		end
 		if context.before and not context.blueprint and not context.retrigger_joker then
 			local extra_scoring_cards = {}
-			for _, pcard in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+			for _, pcard in ipairs(playbook_cards()) do
 
 				if pcard.ability.set == "Default" then
 					local added = copy_card(pcard)
@@ -4749,7 +4768,7 @@ SMODS.Joker:take_ownership("smiley", {
 			local deved = false
 			local emoji_pos = 0
 			local area = nil
-			for pos, joker in ipairs(G.jokers.cards) do
+			for pos, joker in ipairs(joker_cards()) do
 				if joker.config.center.key == "j_emojiman" then
 					emoji_pos = pos
 					deved = true
@@ -4757,7 +4776,7 @@ SMODS.Joker:take_ownership("smiley", {
 				end
 			end
 			if not deved then
-				for pos, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+				for pos, joker in ipairs(playbook_cards()) do
 					if joker.config.center.key == "j_emojiman" then
 						emoji_pos = pos
 						deved = true
@@ -5229,7 +5248,7 @@ SMODS.Joker({
 		end
 	end,
 	in_pool = function(self, args)
-		for _, joker in ipairs(G.jokers.cards) do
+		for _, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_toma" then
 				return true
 			end
@@ -5338,8 +5357,9 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 0, y = 0 },
+	hidden = true,
 	in_pool = function(self, args)
-		return true
+		return false
 	end,
 	calculate = function(self, card, context)
 		-- TODO: implement Bao effect
@@ -5385,7 +5405,7 @@ SMODS.Joker({
 		info_queue[#info_queue + 1] = { set = "Other", key = "Vedal_items_desc" }
 		local ved_cards = 0
 		if G and G.jokers then
-			for _, area in ipairs({ G.jokers.cards, G.playbook_extra and G.playbook_extra.cards or {} }) do
+			for _, area in ipairs({ joker_cards(), playbook_cards() }) do
 				for _, v in ipairs(area) do
 					if vedals_items[v.config.center.key] then
 						ved_cards = ved_cards + 1
@@ -5409,7 +5429,7 @@ SMODS.Joker({
 	calculate = function(self, card, context)
 		local ved_cards = 0
 		if context.joker_main then
-			for _, area in ipairs({ G.jokers.cards, G.playbook_extra and G.playbook_extra.cards or {} }) do
+			for _, area in ipairs({ joker_cards(), playbook_cards() }) do
 				for _, v in ipairs(area) do
 					if vedals_items[v.config.center.key] then
 						ved_cards = ved_cards + 1

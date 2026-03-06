@@ -4,6 +4,10 @@ SMODS.PokerHandPart({
 	func = function(hand)
 		-- calculate threshold
 		local threshold = 5
+		local suit_keys = {}
+		for suit, _ in pairs(SMODS.Suits) do
+			suit_keys[#suit_keys + 1] = suit
+		end
 		if next(SMODS.find_card("j_fourtoes")) then
 			sendDebugMessage("Four Toes detected, threshold = 4", "part._mix")
 			threshold = 4
@@ -19,7 +23,7 @@ SMODS.PokerHandPart({
 			if not SMODS.has_enhancement(hand[i], "m_wild") then -- optimization #1: place non-wild cards before wild cards to minimize backtracking later on
 				local index = #applicable_suits + 1
 				applicable_suits[index] = {}
-				for suit, _ in pairs(SMODS.Suits) do
+				for _, suit in ipairs(suit_keys) do
 					if hand[i]:is_suit(suit, true) then
 						applicable_suits[index][#applicable_suits[index] + 1] = suit
 					end
@@ -30,7 +34,7 @@ SMODS.PokerHandPart({
 			if SMODS.has_enhancement(hand[i], "m_wild") then
 				local index = #applicable_suits + 1
 				applicable_suits[index] = {}
-				for suit, _ in pairs(SMODS.Suits) do
+				for _, suit in ipairs(suit_keys) do
 					if hand[i]:is_suit(suit, true) then
 						applicable_suits[index][#applicable_suits[index] + 1] = suit
 					end

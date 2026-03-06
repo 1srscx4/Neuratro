@@ -49,6 +49,30 @@ SMODS.Atlas({
 	py = 34,
 })
 SMODS.Atlas({
+	key = "animeschizo",
+	path = "animation/AnimeSchizo.png",
+	atlas_table = "ANIMATION_ATLAS",
+	frames = 12,
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
+	key = "animebao",
+	path = "animation/AnimeBao.png",
+	atlas_table = "ANIMATION_ATLAS",
+	frames = 6,
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
+	key = "animeplasma",
+	path = "animation/AnimePlasma.png",
+	atlas_table = "ANIMATION_ATLAS",
+	frames = 6,
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
 	key = "ARG_cards",
 	px = 71,
 	py = 95,

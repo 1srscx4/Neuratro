@@ -62,7 +62,7 @@ SMODS.Consumable({
 	set = "Tarot",
 	discovered = false,
 	atlas = "neuroCons",
-	pos = { x = 1, y = 0 },
+	pos = { x = 2, y = 0 },
 	config = { max_highlighted = 1, mod_conv = "m_blood" },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.mod_conv]
@@ -194,7 +194,7 @@ SMODS.Consumable({
 		SMODS.Consumable.process_loc_text(self)
 		G.localization.descriptions[self.set][self.key].text = target_text
 	end,
-	generate_ui = 0,
+
 	loc_txt = {
 		name = "Io",
 	},
@@ -218,7 +218,7 @@ SMODS.Consumable({
 		SMODS.Consumable.process_loc_text(self)
 		G.localization.descriptions[self.set][self.key].text = target_text
 	end,
-	generate_ui = 0,
+
 	loc_txt = {
 		name = "Europa",
 	},
@@ -242,7 +242,7 @@ SMODS.Consumable({
 		SMODS.Consumable.process_loc_text(self)
 		G.localization.descriptions[self.set][self.key].text = target_text
 	end,
-	generate_ui = 0,
+
 	loc_txt = {
 		name = "Ganymede",
 	},
@@ -266,7 +266,7 @@ SMODS.Consumable({
 		SMODS.Consumable.process_loc_text(self)
 		G.localization.descriptions[self.set][self.key].text = target_text
 	end,
-	generate_ui = 0,
+
 	loc_txt = {
 		name = "Callisto",
 	},
