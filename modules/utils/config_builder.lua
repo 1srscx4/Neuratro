@@ -2,6 +2,7 @@
 -- Factory functions for common joker configuration patterns
 
 Neuratro = Neuratro or {}
+Neuratro.build_config = Neuratro.build_config or {}
 
 -- Build config for xmult cycler joker (cycles between multiple xmult values)
 -- @param base The base/current xmult value

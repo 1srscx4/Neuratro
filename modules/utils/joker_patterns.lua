@@ -2,6 +2,7 @@
 -- Common calculate() function patterns for jokers
 
 Neuratro = Neuratro or {}
+Neuratro.patterns = Neuratro.patterns or {}
 
 -- Pattern: Upgrade on specific hand type
 -- Use when joker upgrades when playing a specific hand
