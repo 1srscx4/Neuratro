@@ -2314,7 +2314,7 @@ SMODS.Joker({
 		end
 	end,
 	calculate = function(self, card, context)
-		if G.GAME and G.deck and #G.deck.cards > 0 and context.playing_card_added then
+		if G.GAME and G.deck and #G.deck.cards > 0 and context.playing_card_added and not context.blueprint then
 			if card and card:get_id() == 2 then
 				card:set_edition("e_negative", true)
 			end
