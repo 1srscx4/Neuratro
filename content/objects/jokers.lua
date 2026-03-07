@@ -356,7 +356,7 @@ SMODS.Joker({
 					end, 0.35, "before")
 					sea(function()
 						context.full_hand[#context.full_hand - pos + 2]:set_seal(
-							context.full_hand[#context.full_hand + 1 - pos].seal
+							context.full_hand[#context.full_hand + 1 - pos].seal, nil, true
 						)
 						return true
 					end, 0.55, "before")
