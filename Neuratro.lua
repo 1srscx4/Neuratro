@@ -18,14 +18,23 @@
 -- -fix negatives in G.playbook
 
 -- These 5 lines of code are from the mod aikoyori's playbook made by aikoyori. Check their mods out!
-assert(
-	SMODS.current_mod.lovely,
-	"Lovely patches were not loaded.\nMake sure your mod folder is not nested (there should be a bunch of files in the mod folder and not just another folder)."
-)
+if not SMODS.current_mod.lovely then
+	print("[Neuratro] Warning: Lovely patches were not loaded. Some features may not work correctly.")
+end
 AKYRS = SMODS.current_mod
 AKYRS.emplace_funcs = {}
 assert(SMODS.load_file("./modules/hooks/general.lua"))()
 assert(SMODS.load_file("./modules/content/cardarea.lua"))()
+
+-- Load utility modules (order matters - constants first, then utilities)
+assert(SMODS.load_file("./modules/utils/constants.lua"))()
+assert(SMODS.load_file("./modules/utils/joker_utils.lua"))()
+assert(SMODS.load_file("./modules/utils/probability.lua"))()
+assert(SMODS.load_file("./modules/utils/card_analysis.lua"))()
+assert(SMODS.load_file("./modules/utils/random_utils.lua"))()
+assert(SMODS.load_file("./modules/utils/config_builder.lua"))()
+assert(SMODS.load_file("./modules/utils/joker_patterns.lua"))()
+assert(SMODS.load_file("./modules/utils/safety.lua"))()
 --
 
 function SMODS.INIT.DecColors()
@@ -35,31 +44,11 @@ function SMODS.INIT.DecColors()
 	local sprite_logo = SMODS.Sprite:new("balatro", dec_mod.path, "neuratro.png", 333, 216, "asset_atli")
 	local sprite_enhancers = SMODS.Sprite:new("centers", dec_mod.path, "neuroEnhancers.png", 71, 95, "asset_atli")
 
-	sprite_deck1:register()
+sprite_deck1:register()
 	sprite_deck2:register()
 	sprite_logo:register()
 	sprite_enhancers:register()
 end
-
---This will be deleted at some point
-jokers = {
-	j_gros_michel = { pos = 0 },
-	j_joker = { pos = 1 },
-}
-SMODS.Atlas({
-	key = "neuroJokers",
-	path = "neuroJokers.png",
-	px = 71,
-	py = 95,
-})
-for jkr, data in pairs(jokers) do
-	SMODS["Joker"]:take_ownership(
-		jkr,
-		{ atlas = "neuroJokers", pos = { x = 0 + data.pos, y = 0 }, soul_pos = { x = 0 + data.pos, y = 1 } },
-		true
-	)
-end
---
 
 assert(SMODS.load_file("./content/hooks/hooks.lua"))()
 assert(SMODS.load_file("./content/hooks/nothooks.lua"))()
