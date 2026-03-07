@@ -11,3 +11,5 @@
 Thumbs.db
 ._*
 .apdisk
+/.luarc.json
+/.pre-commit-config.yaml
