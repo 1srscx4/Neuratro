@@ -5179,9 +5179,11 @@ SMODS.Joker({
 		end
 	end,
 	in_pool = function(self, args)
-		for _, pcard in ipairs(G.playing_cards) do
-			if SMODS.has_enhancement(pcard, "m_blood") then
-				return true
+		if G and G.playing_cards then
+			for _, pcard in ipairs(G.playing_cards) do
+				if SMODS.has_enhancement(pcard, "m_blood") then
+					return true
+				end
 			end
 		end
 		return false
@@ -5248,9 +5250,11 @@ SMODS.Joker({
 		end
 	end,
 	in_pool = function(self, args)
-		for _, joker in ipairs(joker_cards()) do
-			if joker.config.center.key == "j_toma" then
-				return true
+		if G and G.jokers and G.jokers.cards then
+			for _, joker in ipairs(joker_cards()) do
+				if joker.config.center.key == "j_toma" then
+					return true
+				end
 			end
 		end
 		return false
