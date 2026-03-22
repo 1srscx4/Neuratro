@@ -1903,7 +1903,7 @@ SMODS.Joker({
 			"{C:inactive}({C:attention}#3#{C:inactive} rounds left)",
 		},
 	},
-	atlas = "neuroCustomJokers",
+	atlas = "neuroCustomJokers2",
 	pools = { ["neurJoker"] = true },
 	rarity = 3,
 	credits = {
@@ -1917,8 +1917,8 @@ SMODS.Joker({
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = false,
-	pos = { x = 1, y = 0 },
-	config = { extra = { xmult = 1, goal = 3, left = 0, upg = 1 } },
+	pos = { x = 0, y = 1 },
+	config = { extra = { xmult = 1, goal = 3, left = 0, upg = 1, upglevel = 0 } },
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
@@ -1943,6 +1943,9 @@ SMODS.Joker({
 			if card.ability.extra.left >= card.ability.extra.goal then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.upg
 				card.ability.extra.left = 0
+				card.ability.extra.upglevel = card.ability.extra.upglevel + 1
+				--NOTE: the 6 is the max number of sprites in the spritesheet. Increase it if more are added to Long Drive. If the 6th index is reached wrap around to the first again
+				card.children.center:set_sprite_pos({ x = card.ability.extra.upglevel % 6, y = 1 })
 				return { message = "Upgrade!" }
 			end
 			return { message = "Driving" }
@@ -4071,11 +4074,13 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 0, y = 0 },
-	config = { extra = {
-		sel_card = 1,
-		min = 1,
-		max = 10,
-	} },
+	config = {
+		extra = {
+			sel_card = 1,
+			min = 1,
+			max = 10,
+		},
+	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.min, center.ability.extra.max } }
 	end,
