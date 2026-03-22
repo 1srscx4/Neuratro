@@ -41,6 +41,12 @@ SMODS.Atlas({
 	py = 95,
 })
 SMODS.Atlas({
+	key = "neuroCustomJokers2",
+	path = "neuroCustomJokers2.png",
+	px = 71,
+	py = 95,
+})
+SMODS.Atlas({
 	key = "neuroblinds",
 	path = "neuroBlinds.png",
 	atlas_table = "ANIMATION_ATLAS",
