@@ -35,7 +35,7 @@ SMODS.Blind({
 			end
 			SMODS.destroy_cards(rightmost_joker, true)
 			local joker = SMODS.add_card({
-				set = "joker",
+				set = "Joker",
 				key = "j_xdx|",
 				edition = edition_key,
 			})
@@ -60,7 +60,7 @@ SMODS.Blind({
 		},
 	},
 	atlas = "neuroblinds",
-	pos = { y = 0 },
+	pos = { y = 1 },
 	discovered = true,
 	mult = 2,
 	boss = { min = 2 },
@@ -94,7 +94,7 @@ SMODS.Blind({
 		},
 	},
 	atlas = "neuroblinds",
-	pos = { y = 0 },
+	pos = { y = 2 },
 	discovered = true,
 	mult = 2,
 	boss = { min = 3 },

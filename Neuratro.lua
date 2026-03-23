@@ -35,7 +35,54 @@ assert(SMODS.load_file("./modules/utils/random_utils.lua"))()
 assert(SMODS.load_file("./modules/utils/config_builder.lua"))()
 assert(SMODS.load_file("./modules/utils/joker_patterns.lua"))()
 assert(SMODS.load_file("./modules/utils/safety.lua"))()
+
+-- Config defaults
+SMODS.current_mod.config = SMODS.current_mod.config or {}
+SMODS.current_mod.config.palette = SMODS.current_mod.config.palette or "default"
+
+assert(SMODS.load_file("./modules/utils/palette.lua"))()
 --
+
+-- Palette cycle callback
+G.FUNCS.Neurocards_set_palette = function(args)
+	local palette_keys = { "default", "neuro", "evil" }
+	local key = palette_keys[args.to_key] or "default"
+	AKYRS.apply_palette(key)
+	AKYRS.config.palette = key
+	AKYRS.save_palette_pref(key)
+end
+
+-- Config tab shown in Steamodded mod settings
+SMODS.current_mod.config_tab = function()
+	local palette_options = { "Default", "Neuro-sama", "Evil Neuro" }
+	local palette_keys = { "default", "neuro", "evil" }
+	local saved = AKYRS.config.palette or "default"
+	local current = 1
+	for i, k in ipairs(palette_keys) do
+		if k == saved then current = i; break end
+	end
+	return {
+		n = G.UIT.ROOT,
+		config = { align = "cm", padding = 0.2, colour = G.C.CLEAR },
+		nodes = {
+			{
+				n = G.UIT.R,
+				config = { align = "cm", padding = 0.1 },
+				nodes = {
+					{ n = G.UIT.T, config = { text = "Palette  ", scale = 0.4, colour = G.C.UI.TEXT_LIGHT } },
+					create_option_cycle({
+						options = palette_options,
+						current_option = current,
+						opt_callback = "Neurocards_set_palette",
+						w = 3.5,
+						scale = 0.8,
+						colour = AKYRS.palette.primary or G.C.RED,
+					}),
+				},
+			},
+		},
+	}
+end
 
 function SMODS.INIT.DecColors()
 	local dec_mod = SMODS.findModByID("Neurocards")

@@ -1,4 +1,3 @@
--- Utility functions for searching jokers across all card areas
 
 Neuratro = Neuratro or {}
 

@@ -1,5 +1,3 @@
--- Neuratro Constants Module
--- Centralized configuration constants to avoid magic strings and numbers
 
 Neuratro = Neuratro or {}
 
