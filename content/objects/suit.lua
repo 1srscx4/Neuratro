@@ -2,8 +2,9 @@ SMODS.Suit({
 	key = "Glorpsuit",
 	card_key = "G",
 	loc_txt = "Gleebs",
-	pos = { x = 0, y = 0 },
+	pos = { y = 1 },
 	ui_pos = { x = 0, y = 0 },
+	pos = { x = 0, y = 0 },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "Gleeb_desc" }
 	end,

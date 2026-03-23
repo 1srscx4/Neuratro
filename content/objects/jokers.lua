@@ -369,6 +369,9 @@ SMODS.Joker({
 	perishable_compat = true,
 	pos = { x = 8, y = 3 },
 	in_pool = function(self, args)
+		if not (G and G.playing_cards) then
+			return false
+		end
 		local inpool = false
 		for _, playing_card in ipairs(G.playing_cards) do
 			if playing_card.seal then
@@ -1101,6 +1104,9 @@ SMODS.Joker({
 		end
 	end,
 	in_pool = function(self, args)
+		if not (G and G.playing_cards) then
+			return false
+		end
 		local inpool = false
 		for _, cards in ipairs(G.playing_cards) do
 			if SMODS.has_enhancement(cards, "m_twin") then
@@ -2861,6 +2867,9 @@ SMODS.Joker({
 	perishable_compat = true,
 	pos = { x = 9, y = 9 },
 	in_pool = function(self, args)
+		if not (G and G.playing_cards) then
+			return false
+		end
 		for _, pcard in ipairs(G.playing_cards) do
 			if SMODS.has_enhancement(pcard, "m_blood") then
 				return true
@@ -3037,6 +3046,9 @@ SMODS.Joker({
 		G.shared_seals["shoomiminion_seal"] = Sprite(0, 0, 71, 95, G.ASSET_ATLAS["neuroEnh"], { x = 9, y = 0 })
 	end,
 	in_pool = function(self, args)
+		if not (G and G.playing_cards) then
+			return false
+		end
 		local is_in_pool = false
 		for _, playing_card in ipairs(G.playing_cards) do
 			if playing_card.seal == "shoomiminion_seal" then
@@ -3315,6 +3327,9 @@ SMODS.Joker({
 	pools = { ["neurJoker"] = true },
 	pos = { x = 1, y = 0 },
 	in_pool = function(self, args)
+		if not (G and G.playing_cards) then
+			return false
+		end
 		for _, pcard in ipairs(G.playing_cards) do
 			if pcard.seal == "osu_seal" then
 				return true
@@ -3448,7 +3463,7 @@ SMODS.Joker({
 		if G.GAME.selected_back.effect.center.key == "b_glorpdeck" then
 			is_in_pool = true
 		end
-		if not is_in_pool then
+		if not is_in_pool and G and G.playing_cards then
 			for _, playing_card in ipairs(G.playing_cards) do
 				if playing_card:is_suit("Glorpsuit") then
 					is_in_pool = true
@@ -3503,6 +3518,7 @@ SMODS.Joker({
 	calculate = function(self, card, context)
 		if
 			context.open_booster
+			and context.card
 			and context.card.ability.set == "Booster"
 			and context.card.ability.name:find("Standard")
 		then
@@ -3741,6 +3757,7 @@ SMODS.Joker({
 	calculate = function(self, card, context)
 		if
 			context.setting_blind
+			and not context.blueprint
 			and roll_with_odds("schedule", card.ability.extra.base, card.ability.extra.odds)
 			and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 		then
@@ -4098,6 +4115,9 @@ SMODS.Joker({
 		return { vars = { center.ability.extra.mult, center.ability.extra.increase } }
 	end,
 	calculate = function(self, card, context)
+		if not G.playing_cards then
+			return
+		end
 		if context.setting_blind and not context.retrigger_joker then
 			for _, playing_card in ipairs(G.playing_cards) do
 				if playing_card.base.suit == "Hearts" then
@@ -5594,7 +5614,7 @@ SMODS.Joker({
 	end,
 	config = { extra = { upg = 0.2, xmult = 1 } },
 	calculate = function(self, card, context)
-		if context.before then
+		if context.before and G.deck then
 			local uniquecardsTable = {}
 			for index, value in ipairs(G.deck.cards) do
 				local edition = ""

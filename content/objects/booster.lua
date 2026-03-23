@@ -7,7 +7,7 @@ SMODS.Booster({
 	loc_txt = {
 		name = "Neur Pack",
 		text = {
-			"Pick 1 of 2 {C:attention}neuratro{} jokers",
+			"Pick 1 of 2 {C:attention}Neuratro{} jokers",
 		},
 		group_name = "Neur Pack",
 	},
@@ -32,7 +32,7 @@ SMODS.Booster({
 	loc_txt = {
 		name = "Neur Pack",
 		text = {
-			"Pick 1 of 2 {C:attention}neuratro{} jokers",
+			"Pick 1 of 2 {C:attention}Neuratro{} jokers",
 		},
 		group_name = "Neur Pack",
 	},
@@ -57,7 +57,7 @@ SMODS.Booster({
 	loc_txt = {
 		name = "Bwaa Neur Pack",
 		text = {
-			"Pick 1 of 4 {C:attention}neuratro{} jokers",
+			"Pick 1 of 4 {C:attention}Neuratro{} jokers",
 		},
 		group_name = "Bwaa Neur Pack",
 	},
@@ -82,7 +82,7 @@ SMODS.Booster({
 	loc_txt = {
 		name = "Evil Pack",
 		text = {
-			"Pick 2 of 4 {C:attention}neuratro{} jokers",
+			"Pick 2 of 4 {C:attention}Neuratro{} jokers",
 		},
 		group_name = "Evil Pack",
 	},
