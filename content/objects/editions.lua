@@ -28,9 +28,9 @@ SMODS.Edition({
 		return true
 	end,
 	calculate = function(self, card, context)
-		if context.repetition and context.cardarea == (G.play or G.hand or G.deck) and context.other_card == card then
+		if context.repetition and (context.cardarea == G.play or context.cardarea == G.hand or context.cardarea == G.deck) and context.other_card == card then
 			if pseudorandom("filter", 1, 2) == 1 then
-				for _, area in ipairs({ G.jokers.cards, G.playbook_extra.cards }) do
+				for _, area in ipairs({ G.jokers and G.jokers.cards or {}, G.playbook_extra and G.playbook_extra.cards or {} }) do
 					for pos, joker in ipairs(area) do
 						if joker.config.center.key == "j_filtersister" then
 							area[pos].ability.extra.xmult = area[pos].ability.extra.xmult + area[pos].ability.extra.upg
@@ -44,7 +44,7 @@ SMODS.Edition({
 		end
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card == card then
 			if pseudorandom("filter", 1, 2) == 1 then
-				for _, area in ipairs({ G.jokers.cards, G.playbook_extra.cards }) do
+				for _, area in ipairs({ G.jokers and G.jokers.cards or {}, G.playbook_extra and G.playbook_extra.cards or {} }) do
 					for pos, joker in ipairs(area) do
 						if joker.config.center.key == "j_filtersister" then
 							area[pos].ability.extra.xmult = area[pos].ability.extra.xmult + area[pos].ability.extra.upg
@@ -57,7 +57,38 @@ SMODS.Edition({
 			return { repetitions = 1, message = "Again!" }
 		end
 	end,
-	on_apply = function(card) --adds randomness to the filtered effect so they aren't uniform
+	on_apply = function(card)
 		card.edition.filtered_seed = (pseudorandom("filtered_seed") * 2 - 1) * 1000
+	end,
+})
+
+SMODS.Edition({
+	key = "angelic",
+	loc_txt = {
+		name = "Angelic",
+		label = "Angelic",
+		text = {
+			"{C:mult}+3{} Mult",
+			"{C:chips}+30{} Chips",
+		},
+	},
+	credits = {
+		idea = { "1srscx4" },
+		art = { "None" },
+		code = { "1srscx4" },
+	},
+	shader = "foil",
+	in_shop = true,
+	weight = 15,
+	extra_cost = 2,
+	discovered = false,
+	badge_colour = HEX("FFD700"),
+	in_pool = function(self, args)
+		return true
+	end,
+	calculate = function(self, card, context)
+		if context.main_scoring and context.cardarea == G.play then
+			return { mult = 3, chips = 30 }
+		end
 	end,
 })

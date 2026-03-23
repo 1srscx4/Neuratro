@@ -18,10 +18,9 @@
 -- -fix negatives in G.playbook
 
 -- These 5 lines of code are from the mod aikoyori's playbook made by aikoyori. Check their mods out!
-assert(
-	SMODS.current_mod.lovely,
-	"Lovely patches were not loaded.\nMake sure your mod folder is not nested (there should be a bunch of files in the mod folder and not just another folder)."
-)
+if not SMODS.current_mod.lovely then
+	print("[Neuratro] Warning: Lovely patches were not loaded. Some features may not work correctly.")
+end
 AKYRS = SMODS.current_mod
 AKYRS.emplace_funcs = {}
 assert(SMODS.load_file("./modules/hooks/general.lua"))()
