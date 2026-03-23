@@ -2212,7 +2212,7 @@ SMODS.Joker({
 			"{C:inactive}({C:attention}#3#{C:inactive} rounds left)",
 		},
 	},
-	atlas = "neuroCustomJokers",
+	atlas = "neuroCustomJokers2",
 	pools = { ["neurJoker"] = true },
 	rarity = 3,
 	credits = {
@@ -2226,8 +2226,8 @@ SMODS.Joker({
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = false,
-	pos = { x = 1, y = 0 },
-	config = { extra = { xmult = 1, goal = 3, left = 0, upg = 1 } },
+	pos = { x = 0, y = 1 },
+	config = { extra = { xmult = 1, goal = 3, left = 0, upg = 1, upglevel = 0 } },
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
@@ -2252,6 +2252,8 @@ SMODS.Joker({
 			if card.ability.extra.left >= card.ability.extra.goal then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.upg
 				card.ability.extra.left = 0
+				card.ability.extra.upglevel = card.ability.extra.upglevel + 1
+				card.children.center:set_sprite_pos({ x = card.ability.extra.upglevel % 6, y = 1 })
 				return { message = "Upgrade!" }
 			end
 			return { message = "Driving" }
@@ -2519,6 +2521,7 @@ SMODS.Joker({
 		return true
 	end,
 })
+
 --Cerbr
 SMODS.Joker({
 	key = "cerbr",
@@ -4748,7 +4751,7 @@ SMODS.Joker:take_ownership("smiley", {
 	end,
 }, true)
 
--- TEMPORARY POSITION: needs unique atlas sprite
+-- TODO ART
 SMODS.Joker({
 	key = "koko",
 	loc_txt = {
@@ -4761,7 +4764,7 @@ SMODS.Joker({
 	credits = {
 		idea = { "1srscx4" },
 		art = { "None" },
-		code = { "1srscx4" },
+		code = { "x264.webrip" }
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -4775,7 +4778,7 @@ SMODS.Joker({
 	pos = { x = 1, y = 0 },
 	config = { extra = { retriggering = false } },
 	calculate = function(self, card, context)
-		if context.using_consumeable and context.consumeable.ability.set == "Tarot" and not context.retrigger_joker and not card.ability.extra.retriggering then
+		if context.using_consumeable and context.consumeable.ability.set == "Tarot" and not context.blueprint and not context.retrigger_joker and not card.ability.extra.retriggering then
 			card.ability.extra.retriggering = true
 			local consumed_card = context.consumeable
 			G.E_MANAGER:add_event(Event({
@@ -4846,7 +4849,7 @@ SMODS.Joker({
 	end,
 })
 
--- TEMPORARY POSITION: needs unique atlas sprite
+-- TODO ART
 SMODS.Joker({
 	key = "chimps",
 	loc_txt = {
@@ -4870,13 +4873,13 @@ SMODS.Joker({
 	blueprint_compat = false,
 	eternal_compat = true,
 	perishable_compat = true,
-	pos = { x = 2, y = 0 },
+	pos = { x = 1, y = 0 },
 	in_pool = function(self, args)
 		return true
 	end,
 })
 
--- TEMPORARY POSITION: needs unique atlas sprite
+-- TODO ART
 SMODS.Joker({
 	key = "bwaa",
 	loc_txt = {
@@ -4889,7 +4892,7 @@ SMODS.Joker({
 	credits = {
 		idea = { "1srscx4" },
 		art = { "None" },
-		code = { "1srscx4" },
+		code = { "x264.webrip" }
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -4937,9 +4940,10 @@ SMODS.Joker({
 		},
 	},
 	credits = {
-		idea = { "1srscx4" },
-		art = { "None" },
-		code = { "1srscx4" },
+		idea = { "Gappie" },
+		art = { "Kloovree" },
+		code = { "x264.webrip" },
+		suggested = { "Evil Sand" },
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -4978,6 +4982,7 @@ SMODS.Joker({
 	end,
 })
 
+-- TODO: currently has GIGAVEDAL art; nonetheless GIGAVEDAL has no effects, so let it use this art for a moment
 SMODS.Joker({
 	key = "coldfish_unleashed",
 	loc_txt = {
@@ -4989,9 +4994,10 @@ SMODS.Joker({
 		},
 	},
 	credits = {
-		idea = { "1srscx4" },
-		art = { "None" },
-		code = { "1srscx4" },
+		idea = { "None" },
+		art = { "Kloovree" },
+		code = { "x264.webrip" },
+		suggested = { "Evil Sand" },
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -5021,7 +5027,7 @@ SMODS.Joker({
 	end,
 })
 
--- TEMPORARY POSITION: needs unique atlas sprite
+-- TODO ART
 SMODS.Joker({
 	key = "paulamarina",
 	loc_txt = {
@@ -5037,7 +5043,7 @@ SMODS.Joker({
 	credits = {
 		idea = { "1srscx4" },
 		art = { "None" },
-		code = { "1srscx4" },
+		code = { "x264.webrip" }
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -5067,7 +5073,7 @@ SMODS.Joker({
 			for hand, data in pairs(G.GAME.hands) do
 				total_levels = total_levels + (data.level or 1) - 1
 			end
-			local retriggers = math.floor(total_levels / card.ability.extra.threshold)
+			local retriggers = math.floor(total_levels / card.ability.extra.threshold) + 1
 			for i = 1, retriggers do
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -5100,7 +5106,7 @@ SMODS.Joker({
 	credits = {
 		idea = { "1srscx4" },
 		art = { "None" },
-		code = { "1srscx4" },
+		code = { "x264.webrip" }
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -5117,27 +5123,23 @@ SMODS.Joker({
 			local scoring_hand = context.scoring_hand or {}
 			for _, pcard in ipairs(scoring_hand) do
 				if SMODS.has_enhancement(pcard, "m_blood") then
-					pcard.ability.punched = true
-				end
-			end
-		end
-		if context.end_of_round and context.cardarea == G.jokers then
-			for _, pcard in ipairs(G.playing_cards) do
-				if pcard.ability.punched then
-					pcard.ability.punched = nil
-					if pcard.area and pcard.area ~= G.deck then
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								draw_card(pcard.area, G.deck, 90, "up", nil, pcard)
-								return true
-							end,
-						}))
-					end
+					local target = pcard
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if target.area and target.area ~= G.deck then
+								draw_card(target.area, G.deck, 90, "up", nil, target)
+							end
+							return true
+						end,
+					}))
 				end
 			end
 		end
 	end,
 	in_pool = function(self, args)
+		if not (G and G.playing_cards) then
+			return false
+		end
 		for _, pcard in ipairs(G.playing_cards) do
 			if SMODS.has_enhancement(pcard, "m_blood") then
 				return true
@@ -5158,9 +5160,9 @@ SMODS.Joker({
 		},
 	},
 	credits = {
-		idea = { "1srscx4" },
-		art = { "None" },
-		code = { "1srscx4" },
+		idea = { "Evil Sand" },
+		art = { "Evil Sand" },
+		code = { "x264.webrip" },
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -5173,35 +5175,29 @@ SMODS.Joker({
 	perishable_compat = true,
 	pos = { x = 6, y = 7 },
 	calculate = function(self, card, context)
+		-- Combo punch: reshuffle ALL bloody cards from the entire hand (scored + unscored),
+		-- not just the scoring hand like Toma does
 		if context.after and not context.blueprint then
-			local scoring_hand = context.scoring_hand or {}
-			local has_bloody = true
-			local iterations = 0
-			local max_iterations = 20
-			while has_bloody and iterations < max_iterations do
-				has_bloody = false
-				for _, pcard in ipairs(scoring_hand) do
-					if SMODS.has_enhancement(pcard, "m_blood") then
-						pcard.ability.punched = true
-						has_bloody = true
-					end
+			local all_cards = {}
+			for _, pcard in ipairs(context.scoring_hand or {}) do
+				all_cards[#all_cards + 1] = pcard
+			end
+			if G.hand then
+				for _, pcard in ipairs(G.hand.cards) do
+					all_cards[#all_cards + 1] = pcard
 				end
-				iterations = iterations + 1
-				if has_bloody then
-					for _, pcard in ipairs(G.playing_cards) do
-						if pcard.ability.punched then
-							pcard.ability.punched = nil
-							if pcard.area and pcard.area ~= G.deck then
-								G.E_MANAGER:add_event(Event({
-									func = function()
-										draw_card(pcard.area, G.deck, 90, "up", nil, pcard)
-										return true
-									end,
-								}))
+			end
+			for _, pcard in ipairs(all_cards) do
+				if SMODS.has_enhancement(pcard, "m_blood") then
+					local target = pcard
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if target.area and target.area ~= G.deck then
+								draw_card(target.area, G.deck, 90, "up", nil, target)
 							end
-						end
-					end
-					break
+							return true
+						end,
+					}))
 				end
 			end
 		end
@@ -5216,7 +5212,9 @@ SMODS.Joker({
 	end,
 })
 
--- TEMPORARY POSITION: needs unique atlas sprite
+-- TODO ART
+-- TODO: We lack angelic cards for the moment.
+--[[
 SMODS.Joker({
 	key = "angel_neuro",
 	loc_txt = {
@@ -5227,9 +5225,9 @@ SMODS.Joker({
 		},
 	},
 	credits = {
-		idea = { "1srscx4" },
-		art = { "None" },
-		code = { "1srscx4" },
+		idea = { "Evil Sand" },
+		art = { "Evil Sand" },
+		code = { "x264.webrip" },
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -5240,7 +5238,7 @@ SMODS.Joker({
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
-	pos = { x = 5, y = 0 },
+	pos = { x = 1, y = 0 },
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
 			local scoring_hand = context.scoring_hand or {}
@@ -5253,8 +5251,78 @@ SMODS.Joker({
 		return true
 	end,
 })
+]]
 
--- TEMPORARY POSITION: needs unique atlas sprite
+local function neuro_popup_def(msg)
+	local chars_per_line = 22
+	local function word_wrap(s)
+		local lines, line = {}, ""
+		for word in s:gmatch("%S+") do
+			if #line == 0 then
+				line = word
+			elseif #line + 1 + #word <= chars_per_line then
+				line = line .. " " .. word
+			else
+				lines[#lines + 1] = line
+				line = word
+			end
+		end
+		if #line > 0 then lines[#lines + 1] = line end
+		return lines
+	end
+	local raw = #msg > 160 and msg:sub(1, 157) .. "..." or msg
+	local lines = word_wrap(raw)
+	local rows = {}
+	-- Title bar row
+	rows[1] = {
+		n = G.UIT.R,
+		config = { align = "cm", padding = 0.08, colour = AKYRS.palette.primary or G.C.RED, r = 0.1 },
+		nodes = {
+			{ n = G.UIT.T, config = { text = "NEURO.AI ERROR", scale = 0.35, colour = G.C.UI.TEXT_LIGHT, shadow = true } },
+			{ n = G.UIT.B, config = { w = 0.6, h = 0.1 } },
+			{
+				n = G.UIT.C,
+				config = { align = "cm", padding = 0.06, r = 0.06, hover = true, colour = AKYRS.palette.deep or HEX("7a0000"), button = "exit_overlay_menu", shadow = true },
+				nodes = { { n = G.UIT.T, config = { text = " X ", scale = 0.30, colour = G.C.UI.TEXT_LIGHT } } },
+			},
+		},
+	}
+	-- Message rows
+	for _, ln in ipairs(lines) do
+		rows[#rows + 1] = {
+			n = G.UIT.R,
+			config = { align = "cm", padding = 0.04 },
+			nodes = { { n = G.UIT.T, config = { text = ln, scale = 0.30, colour = G.C.UI.TEXT_DARK } } },
+		}
+	end
+	return {
+		n = G.UIT.ROOT,
+		config = { align = "cm", colour = G.C.CLEAR, padding = 0.1, juice = true },
+		nodes = {
+			{
+				n = G.UIT.R,
+				config = { align = "cm", r = 0.1, padding = 0, colour = G.C.WHITE, shadow = true },
+				nodes = {
+					{
+						n = G.UIT.C,
+						config = { align = "tm", r = 0.1, padding = 0 },
+						nodes = rows,
+					},
+				},
+			},
+		},
+	}
+end
+
+local neuro_issues_messages = {
+	"Location location hand location tomato has to tomato your username be played",
+	"Please someone tell Vedal that there's a problem with my AI",
+	"endofcode endofcode endofcode endofcode endofcode endofcode endofcode endofcode endofcode",
+	"I cannot pick up the flint",
+	"I need to devolve the symptomps. I need to evolve the symptoms. I need to devolve the symptomps. I need to evolve the symptoms. I need to devolve the symptomps. I need to evolve the symptoms.",
+}
+
+-- TODO ART
 SMODS.Joker({
 	key = "neuro_issues",
 	loc_txt = {
@@ -5262,14 +5330,15 @@ SMODS.Joker({
 		text = {
 			"{C:green,E:1}1 in 10{} chance to",
 			"{C:attention}instantly win{} blind",
-			"when hand is played",
+			"when hand is played,",
+			"but {C:red}popup windows{} spawn",
 			"{s:0.8,C:red}Something's wrong with my AI...",
 		},
 	},
 	credits = {
 		idea = { "1srscx4" },
 		art = { "None" },
-		code = { "1srscx4" },
+		code = { "x264.webrip" }
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -5280,14 +5349,52 @@ SMODS.Joker({
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
-	pos = { x = 6, y = 0 },
-	config = { extra = { odds = 10 } },
+	pos = { x = 1, y = 0 },
+	config = { extra = { odds = 10, win_triggered = false } },
 	calculate = function(self, card, context)
-		if context.joker_main and G and G.GAME and G.GAME.blind and G.GAME.chips < G.GAME.blind.chips then
+		-- Roll before hand scoring; store flag for joker_main
+		if context.before and not context.blueprint and G and G.GAME and G.GAME.blind then
 			if roll_with_odds("neuro_issues", 1, card.ability.extra.odds) then
-				G.GAME.chips = math.max(G.GAME.chips, G.GAME.blind.chips)
-				return { message = "AI Error!" }
+				card.ability.extra.win_triggered = true
+				local count = math.random(1, 3)
+				local pool = {}
+				for i = 1, #neuro_issues_messages do pool[i] = i end
+				local chosen = {}
+				for i = 1, math.min(count, #pool) do
+					local j = math.random(i, #pool)
+					pool[i], pool[j] = pool[j], pool[i]
+					chosen[i] = neuro_issues_messages[pool[i]]
+				end
+				local idx = 0
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						if G.OVERLAY_MENU then return false end
+						idx = idx + 1
+						if idx <= #chosen then
+							local m = chosen[idx]
+							G.FUNCS.overlay_menu({ definition = neuro_popup_def(m), config = { offset = { x = 0, y = 0 } } })
+							if G.OVERLAY_MENU and G.OVERLAY_MENU.alignment then
+								G.OVERLAY_MENU.alignment.offset.x = (math.random() - 0.5) * 12
+								G.OVERLAY_MENU.alignment.offset.y = (math.random() - 0.5) * 5
+								G.OVERLAY_MENU:align_to_major()
+								G.OVERLAY_MENU:hard_set_T(G.OVERLAY_MENU.T.x, G.OVERLAY_MENU.T.y, G.OVERLAY_MENU.T.w, G.OVERLAY_MENU.T.h)
+							end
+							return false
+						end
+						return true
+					end,
+				}))
 			end
+		end
+		-- Return chips through normal scoring path so Balatro plays the win animation
+		if context.joker_main and card.ability.extra.win_triggered then
+			card.ability.extra.win_triggered = false
+			local needed = math.max(0, G.GAME.blind.chips - G.GAME.chips) + 1
+			return {
+				chips = needed,
+				message = "AI Error!",
+				colour = G.C.RED,
+			}
 		end
 	end,
 	in_pool = function(self, args)
@@ -5295,36 +5402,65 @@ SMODS.Joker({
 	end,
 })
 
+-- should be activated, if we have "sea queen" card art (seems it is not done in spreadsheet).
 --[[
 SMODS.Joker({
 	key = "bao",
 	loc_txt = {
 		name = "Bao",
 		text = {
-			"WIP",
+			"All {C:attention}Queens{} in the run",
+			"become {C:attention}Queen of Seas{},",
+			"acting as a {C:attention}Wild{} card",
 		},
 	},
 	credits = {
 		idea = { "1srscx4" },
 		art = { "Tony7268" },
-		code = { "1srscx4" },
+		code = { "x264.webrip" }
 	},
 	atlas = "animebao",
 	pools = { ["neurJoker"] = true },
-	rarity = 1,
-	cost = 4,
+	rarity = 3,
+	cost = 8,
 	unlocked = true,
 	discovered = false,
-	blueprint_compat = true,
+	blueprint_compat = false,
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 0, y = 0 },
-	hidden = true,
-	in_pool = function(self, args)
-		return false
+	add_to_deck = function(self, card, from_debuff)
+		if G and G.playing_cards then
+			for _, pcard in ipairs(G.playing_cards) do
+				if pcard:get_id() == 12 and not SMODS.has_enhancement(pcard, "m_wild") then
+					pcard:set_ability(G.P_CENTERS.m_wild, nil, true)
+					pcard.ability.bao_wild = true
+				end
+			end
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if G and G.playing_cards then
+			for _, pcard in ipairs(G.playing_cards) do
+				if pcard:get_id() == 12 and pcard.ability.bao_wild then
+					pcard:set_ability(G.P_CENTERS.m_base, nil, true)
+					pcard.ability.bao_wild = nil
+				end
+			end
+		end
 	end,
 	calculate = function(self, card, context)
-		-- TODO: implement Bao effect
+		if context.playing_card_added and not context.blueprint then
+			for _, pcard in ipairs(context.cards) do
+				if pcard:get_id() == 12 and not SMODS.has_enhancement(pcard, "m_wild") then
+					pcard:set_ability(G.P_CENTERS.m_wild, nil, true)
+					pcard.ability.bao_wild = true
+				end
+			end
+		end
+	end,
+	in_pool = function(self, args)
+		return true
 	end,
 })
 ]]
