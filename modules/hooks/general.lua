@@ -39,6 +39,16 @@ AKYRS.card_conf_any_drag = function(area, card)
 	return cfc(area, card)
 end
 
+local _set_sprites = Card.set_sprites
+function Card:set_sprites(center, ...)
+	if center and center.atlas and G.ANIMATION_ATLAS and G.ANIMATION_ATLAS[center.atlas] then
+		if not (G.ASSET_ATLAS and G.ASSET_ATLAS[center.atlas]) then
+			G.ASSET_ATLAS[center.atlas] = G.ANIMATION_ATLAS[center.atlas]
+		end
+	end
+	return _set_sprites(self, center, ...)
+end
+
 local cardUpdateHook = Card.update
 function Card:update(dt)
 	self.playbook_click_delay = math.max((self.playbook_click_delay or 0) - dt, 0)
