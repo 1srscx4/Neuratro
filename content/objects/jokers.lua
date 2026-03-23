@@ -4860,9 +4860,9 @@ SMODS.Joker({
 		},
 	},
 	credits = {
-		idea = { "1srscx4" },
+		idea = { "PandoraMau" },
 		art = { "None" },
-		code = { "1srscx4" },
+		code = { "x264.webrip" },
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -4890,9 +4890,10 @@ SMODS.Joker({
 		},
 	},
 	credits = {
-		idea = { "1srscx4" },
-		art = { "None" },
-		code = { "x264.webrip" }
+		suggested = { "Evil Sand" },
+		idea = { "Gappie" },
+		art = { "Kloovree" },
+		code = { "x264.webrip" },
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -4940,10 +4941,10 @@ SMODS.Joker({
 		},
 	},
 	credits = {
-		idea = { "Gappie" },
+		suggested = { "Emuz" },
+		idea = { "Evil Sand" },
 		art = { "Kloovree" },
 		code = { "x264.webrip" },
-		suggested = { "Evil Sand" },
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
@@ -4988,7 +4989,6 @@ SMODS.Joker({
 	loc_txt = {
 		name = "Coldfish Unleashed",
 		text = {
-			"Counts as a {C:attention}Vedal{} card",
 			"{C:attention}Gold{} and {C:attention}Donation{} cards",
 			"give {C:mult}+#1#{} mult when scored",
 		},
@@ -5154,9 +5154,9 @@ SMODS.Joker({
 	loc_txt = {
 		name = "Tomaniacs",
 		text = {
-			"{C:attention}Combo punch{} all {C:attention}Bloody{} cards",
-			"in played hand until no",
-			"{C:attention}Bloody{} cards are scored",
+			"{C:attention}Combo punch{} all {C:attention}Bloody{}",
+			"cards until no {C:attention}Bloody{} cards",
+			"are scored",
 		},
 	},
 	credits = {
@@ -5175,29 +5175,40 @@ SMODS.Joker({
 	perishable_compat = true,
 	pos = { x = 6, y = 7 },
 	calculate = function(self, card, context)
-		-- Combo punch: reshuffle ALL bloody cards from the entire hand (scored + unscored),
-		-- not just the scoring hand like Toma does
 		if context.after and not context.blueprint then
-			local all_cards = {}
-			for _, pcard in ipairs(context.scoring_hand or {}) do
-				all_cards[#all_cards + 1] = pcard
+			local found = true
+			while found do
+				found = false
+				for i = #(context.scoring_hand or {}), 1, -1 do
+					local pcard = context.scoring_hand[i]
+					if SMODS.has_enhancement(pcard, "m_blood") then
+						found = true
+						table.remove(context.scoring_hand, i)
+						local target = pcard
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								if target.area and target.area ~= G.deck then
+									draw_card(target.area, G.deck, 90, "up", nil, target)
+								end
+								return true
+							end,
+						}))
+					end
+				end
 			end
 			if G.hand then
 				for _, pcard in ipairs(G.hand.cards) do
-					all_cards[#all_cards + 1] = pcard
-				end
-			end
-			for _, pcard in ipairs(all_cards) do
-				if SMODS.has_enhancement(pcard, "m_blood") then
-					local target = pcard
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if target.area and target.area ~= G.deck then
-								draw_card(target.area, G.deck, 90, "up", nil, target)
-							end
-							return true
-						end,
-					}))
+					if SMODS.has_enhancement(pcard, "m_blood") then
+						local target = pcard
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								if target.area and target.area ~= G.deck then
+									draw_card(target.area, G.deck, 90, "up", nil, target)
+								end
+								return true
+							end,
+						}))
+					end
 				end
 			end
 		end
@@ -5472,6 +5483,7 @@ local vedals_items = {
 	["j_tutelsoup"] = true,
 	["j_vedds"] = true,
 	["j_abandonedarchive"] = true,
+	["j_coldfish"] = true,
 	["j_coldfish_unleashed"] = true,
 }
 SMODS.Joker({
