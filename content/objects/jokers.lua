@@ -1943,9 +1943,10 @@ SMODS.Joker({
 			if card.ability.extra.left >= card.ability.extra.goal then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.upg
 				card.ability.extra.left = 0
-				card.ability.extra.upglevel = card.ability.extra.upglevel + 1
-				--NOTE: the 6 is the max number of sprites in the spritesheet. Increase it if more are added to Long Drive. If the 6th index is reached wrap around to the first again
-				card.children.center:set_sprite_pos({ x = card.ability.extra.upglevel % 6, y = 1 })
+				local sprite_frame_list = { 0, 1, 2, 3, 4, 5 } -- The Sprites X Locations. Add to this list if more Long Drive Sprites get created
+				table.remove(sprite_frame_list, card.ability.extra.upglevel + 1)
+				card.ability.extra.upglevel = pseudorandom_element(sprite_frame_list, pseudoseed("seed"))
+				card.children.center:set_sprite_pos({ x = card.ability.extra.upglevel, y = 1 })
 				return { message = "Upgrade!" }
 			end
 			return { message = "Driving" }
