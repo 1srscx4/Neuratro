@@ -4,6 +4,10 @@ SMODS.PokerHandPart({
 	func = function(hand)
 		-- calculate threshold
 		local threshold = 5
+		local suit_keys = {}
+		for suit, _ in pairs(SMODS.Suits) do
+			suit_keys[#suit_keys + 1] = suit
+		end
 		if next(SMODS.find_card("j_fourtoes")) then
 			sendDebugMessage("Four Toes detected, threshold = 4", "part._mix")
 			threshold = 4
@@ -12,14 +16,13 @@ SMODS.PokerHandPart({
 		if #hand < threshold then
 			return {}
 		end
-		--sendDebugMessage("----------------", "part._mix")
 		-- find all suits that can apply to each card
 		local applicable_suits = {}
 		for i = 1, #hand do
 			if not SMODS.has_enhancement(hand[i], "m_wild") then -- optimization #1: place non-wild cards before wild cards to minimize backtracking later on
 				local index = #applicable_suits + 1
 				applicable_suits[index] = {}
-				for suit, _ in pairs(SMODS.Suits) do
+				for _, suit in ipairs(suit_keys) do
 					if hand[i]:is_suit(suit, true) then
 						applicable_suits[index][#applicable_suits[index] + 1] = suit
 					end
@@ -30,14 +33,13 @@ SMODS.PokerHandPart({
 			if SMODS.has_enhancement(hand[i], "m_wild") then
 				local index = #applicable_suits + 1
 				applicable_suits[index] = {}
-				for suit, _ in pairs(SMODS.Suits) do
+				for _, suit in ipairs(suit_keys) do
 					if hand[i]:is_suit(suit, true) then
 						applicable_suits[index][#applicable_suits[index] + 1] = suit
 					end
 				end
 			end
 		end
-		--sendDebugMessage("applicable_suits: " .. inspectDepth(applicable_suits), "part._mix")
 		-- backtrack through all possible suit interpretations and get max num of unique suits among all of them
 		local function get_max_unique(applicable_suits, suits, i, count) -- due to early pruning the number is a little low sometimes but it always gets it right if hand contains a mix
 			if i > #hand then
@@ -48,32 +50,26 @@ SMODS.PokerHandPart({
 				local suit = applicable_suits[i][j]
 				local is_new_suit = false
 				if not suit then
-				--sendDebugMessage("[i,j] = [" .. tostring(i) .. "," .. tostring(j) .. "]: no suit", "part._mix")
 				elseif suits[suit] then
-					--sendDebugMessage("[i,j] = [" .. tostring(i) .. "," .. tostring(j) .. "]: suit \"" .. tostring(suit) .. "\" already taken", "part._mix")
 				end
 				if suit and not suits[suit] then
 					is_new_suit = true
 					suits[suit] = true
-					--sendDebugMessage("[i,j] = [" .. tostring(i) .. "," .. tostring(j) .. "]: set suit[" .. tostring(suit) .. "] to " .. tostring(suits[suit]), "part._mix")
 					count = count + 1
 				end
 				local repeats = i - count
 				if #hand - repeats < threshold then -- optimization #2: prunes this branch of the function once it detects the num of repeat suits is too high
-					--sendDebugMessage("[i,j] = [" .. tostring(i) .. "," .. tostring(j) .. "]: pruning branch (repeats = " .. tostring(repeats) .. ")", "part._mix")
 					goto continue
 				end
 				local local_max = get_max_unique(applicable_suits, suits, i + 1, count)
 				if local_max > max_count then
 					max_count = local_max
 					if max_count >= threshold then -- optimization #3: shortcuts execution once it detects max_count is high
-						--sendDebugMessage("[i,j] = [" .. tostring(i) .. "," .. tostring(j) .. "]: shortcut execution (max_count) = " .. tostring(max_count) .. ")", "part._mix")
 						return max_count
 					end
 				end
 				if is_new_suit then
 					suits[suit] = false
-					--sendDebugMessage("[i,j] = [" .. tostring(i) .. "," .. tostring(j) .. "]: set suit[" .. tostring(suit) .. "] to " .. tostring(suits[suit]), "part._mix")
 					count = count - 1
 				end
 				::continue::
@@ -83,7 +79,6 @@ SMODS.PokerHandPart({
 		-- check
 		local suits_var = {}
 		local unique_suits = get_max_unique(applicable_suits, suits_var, 1, 0)
-		--sendDebugMessage("there are " .. unique_suits .. " unique suits", "part._mix")
 		if unique_suits >= threshold then
 			return { hand }
 		end
