@@ -25,6 +25,8 @@ AKYRS = SMODS.current_mod
 AKYRS.emplace_funcs = {}
 assert(SMODS.load_file("./modules/hooks/general.lua"))()
 assert(SMODS.load_file("./modules/content/cardarea.lua"))()
+assert(SMODS.load_file("./modules/utils/joker_utils.lua"))()
+assert(SMODS.load_file("./modules/utils/probability.lua"))()
 --
 
 function SMODS.INIT.DecColors()
