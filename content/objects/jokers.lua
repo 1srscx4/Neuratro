@@ -3959,7 +3959,7 @@ SMODS.Joker({
 				if pcard.config.center.key == "j_nwooper" then
 					return {
 						remove_default_message = true,
-						xmult = card.ability.extra.power,
+						mult = (mult ^ card.ability.extra.power) - mult,
 						message = { "^" .. tostring(card.ability.extra.power) },
 						colour = G.C.DARK_EDITION,
 						sound = "emultsfx",
@@ -3970,7 +3970,7 @@ SMODS.Joker({
 				if pcard.config.center.key == "j_nwooper" then
 					return {
 						remove_default_message = true,
-						xmult = card.ability.extra.power,
+						mult = (mult ^ card.ability.extra.power) - mult,
 						message = { "^" .. tostring(card.ability.extra.power) },
 						colour = G.C.DARK_EDITION,
 						sound = "emultsfx",
@@ -4473,7 +4473,11 @@ SMODS.Joker({
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
+			local cards_to_destroy = {}
 			for _, playing_card in ipairs(full_hand) do
+				cards_to_destroy[#cards_to_destroy + 1] = playing_card
+			end
+			for _, playing_card in ipairs(cards_to_destroy) do
 				SMODS.destroy_cards(playing_card)
 			end
 			card.ability.extra.joker = card.ability.extra.joker + 1
