@@ -38,3 +38,9 @@ end
 function Neuratro.has_joker(joker_key)
 	return Neuratro.find_joker(joker_key) ~= nil
 end
+
+function Neuratro.trigger_filtersister_upgrade()
+	for _, joker in ipairs(Neuratro.find_jokers("j_filtersister")) do
+		joker.ability.extra.xmult = joker.ability.extra.xmult + joker.ability.extra.upg
+	end
+end

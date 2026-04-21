@@ -29,28 +29,16 @@ SMODS.Edition({
 	end,
 	calculate = function(self, card, context)
 		if context.repetition and (context.cardarea == G.play or context.cardarea == G.hand or context.cardarea == G.deck) and context.other_card == card then
-			if pseudorandom("filter", 1, 2) == 1 then
-				for _, area in ipairs({ G.jokers and G.jokers.cards or {}, G.playbook_extra and G.playbook_extra.cards or {} }) do
-					for pos, joker in ipairs(area) do
-						if joker.config.center.key == "j_filtersister" then
-							area[pos].ability.extra.xmult = area[pos].ability.extra.xmult + area[pos].ability.extra.upg
-						end
-					end
-				end
+			if Neuratro.coin_flip("filter") then
+				Neuratro.trigger_filtersister_upgrade()
 				SMODS.debuff_card(card, true, "filter")
 				return { repetitions = 0, message = "[Filtered]" }
 			end
 			return { repetitions = 1 }
 		end
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card == card then
-			if pseudorandom("filter", 1, 2) == 1 then
-				for _, area in ipairs({ G.jokers and G.jokers.cards or {}, G.playbook_extra and G.playbook_extra.cards or {} }) do
-					for pos, joker in ipairs(area) do
-						if joker.config.center.key == "j_filtersister" then
-							area[pos].ability.extra.xmult = area[pos].ability.extra.xmult + area[pos].ability.extra.upg
-						end
-					end
-				end
+			if Neuratro.coin_flip("filter") then
+				Neuratro.trigger_filtersister_upgrade()
 				SMODS.debuff_card(card, true, "filter")
 				return { repetitions = 0, message = "[Filtered]" }
 			end
