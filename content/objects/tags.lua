@@ -20,20 +20,22 @@ SMODS.Tag({
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
-			local _applied = nil
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
 				local lock = tag.ID
-				G.CONTROLLER.locks[lock] = true
+				if G.CONTROLLER and G.CONTROLLER.locks then
+					G.CONTROLLER.locks[lock] = true
+				end
 				context.card.temp_edition = true
 				tag:yep("+", G.C.DARK_EDITION, function()
 					context.card:set_edition({ filtered = true }, true)
 					context.card.ability.couponed = true
 					context.card:set_cost()
 					context.card.temp_edition = nil
-					G.CONTROLLER.locks[lock] = nil
+					if G.CONTROLLER and G.CONTROLLER.locks then
+						G.CONTROLLER.locks[lock] = nil
+					end
 					return true
 				end)
-				_applied = true
 				tag.triggered = true
 			end
 		end
@@ -60,7 +62,9 @@ SMODS.Tag({
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			local lock = tag.ID
-			G.CONTROLLER.locks[lock] = true
+			if G.CONTROLLER and G.CONTROLLER.locks then
+				G.CONTROLLER.locks[lock] = true
+			end
 			tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
 				local key = "p_neurpack4"
 				local card = Card(
@@ -76,7 +80,9 @@ SMODS.Tag({
 				card.from_tag = true
 				G.FUNCS.use_card({ config = { ref_table = card } })
 				card:start_materialize()
-				G.CONTROLLER.locks[lock] = nil
+				if G.CONTROLLER and G.CONTROLLER.locks then
+					G.CONTROLLER.locks[lock] = nil
+				end
 				return true
 			end)
 			tag.triggered = true

@@ -1,4 +1,8 @@
 --Enhancement
+local function enhancement_probability_scale()
+	return (G and G.GAME and G.GAME.probabilities and G.GAME.probabilities.normal) or 1
+end
+
 SMODS.Enhancement({
 	key = "m_twin",
 	loc_txt = {
@@ -32,7 +36,7 @@ SMODS.Enhancement({
 			local msg = false
 			local msg_pos = 1
 			local area = nil
-			for pos, joker in ipairs(G.jokers.cards) do
+			for pos, joker in ipairs(G.jokers and G.jokers.cards or {}) do
 				if joker.config.center.key == "j_highlighted" and not joker.debuff then
 					msg = true
 					msg_pos = pos
@@ -40,8 +44,8 @@ SMODS.Enhancement({
 					break
 				end
 			end
-			if not msg then
-				for pos, joker in ipairs(G.playbook_extra.cards) do
+			if not msg and G.playbook_extra then
+				for pos, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
 					if joker.config.center.key == "j_highlighted" and not joker.debuff then
 						msg = true
 						msg_pos = pos
@@ -50,7 +54,7 @@ SMODS.Enhancement({
 					end
 				end
 			end
-			if msg then
+			if msg and area and area.cards and area.cards[msg_pos] then
 				return { xmult = area.cards[msg_pos].ability.extra.xmult }
 			else
 				return { dollars = card.ability.extra.money }
@@ -71,8 +75,7 @@ SMODS.Enhancement({
 	pos = { x = 2, y = 0 },
 	weight = 0,
 	in_pool = function(self, args)
-		args = false
-		return
+		return false
 	end,
 	calculate = function(self, card, context)
 		if context.before then
@@ -98,30 +101,28 @@ SMODS.Enhancement({
 	pos = { x = 6, y = 1 },
 	config = { extra = { base = 1, odds = 3 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.base * (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+		return { vars = { card.ability.extra.base * enhancement_probability_scale(), card.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
 		if context.after then
+			local full_hand = context.full_hand or {}
 			local trg = false
-			for pos, pcard in ipairs(context.full_hand) do
-				if
-					pcard == card
-					and pseudorandom("blood")
-						< (card.ability.extra.base * (G.GAME.probabilities.normal or 1)) / card.ability.extra.odds
-				then
-					if context.full_hand[pos - 1] then
+			for pos, pcard in ipairs(full_hand) do
+				local safe_odds = tonumber(card.ability.extra.odds) or 0
+				local chance = safe_odds > 0 and (card.ability.extra.base * enhancement_probability_scale()) / safe_odds
+					or 0
+				if pcard == card and pseudorandom("blood") < math.min(chance, 1) then
+					local left_card = full_hand[pos - 1]
+					if left_card then
 						sea(function()
-							if context.full_hand[pos - 1] then
-								context.full_hand[pos - 1]:set_ability(G.P_CENTERS["m_blood"], nil, true)
-							end
+							left_card:set_ability(G.P_CENTERS["m_blood"], nil, true)
 							return true
 						end)
 					end
-					if context.full_hand[pos + 1] then
+					local right_card = full_hand[pos + 1]
+					if right_card then
 						sea(function()
-							if context.full_hand[pos + 1] then
-								context.full_hand[pos + 1]:set_ability(G.P_CENTERS["m_blood"], nil, true)
-							end
+							right_card:set_ability(G.P_CENTERS["m_blood"], nil, true)
 							return true
 						end)
 					end
@@ -139,7 +140,7 @@ SMODS.Seal({
 	key = "shoomiminion_seal",
 	loc_txt = {
 		name = "Shoominion seal",
-		label = "Shominion seal",
+		label = "Shoomiminion seal",
 		text = {
 			"When this card is {C:attention}destroyed{},",
 			"create {C:attention}two{} copies of it",
@@ -154,8 +155,6 @@ SMODS.Seal({
 	calculate = function(self, card, context)
 		if context.remove_playing_cards then
 			for i = 1, #context.removed do
-				local _suit = context.removed[i].base.suit
-				local _rank = tostring(context.removed[i]:get_id())
 				if context.removed[i].seal == "shoomiminion_seal" and context.removed[i] == card then
 					for l = 1, 2 do
 						local copy_card = copy_card(context.removed[i], nil, nil, G.playing_card)
@@ -199,7 +198,7 @@ SMODS.Seal({
 	end,
 	calculate = function(self, card, context)
 		if context.before then
-			for _, pcard in ipairs(context.full_hand) do
+			for _, pcard in ipairs(context.full_hand or {}) do
 				if pcard == card then
 					card.ability.seal.mult = card.ability.seal.mult + card.ability.seal.upg
 					return { message = "Upgrade!" }
@@ -248,7 +247,7 @@ SMODS.Enhancement:take_ownership("m_steel", {
 			local pipes = false
 			local pipes_pos = 1
 			local area = nil
-			for pos, joker in ipairs(G.jokers.cards) do
+			for pos, joker in ipairs(G.jokers and G.jokers.cards or {}) do
 				if joker.config.center.key == "j_pipes" and not joker.debuff then
 					pipes = true
 					pipes_pos = pos
@@ -256,15 +255,17 @@ SMODS.Enhancement:take_ownership("m_steel", {
 					break
 				end
 			end
-			for pos, joker in ipairs(G.playbook_extra.cards) do
-				if joker.config.center.key == "j_pipes" and not joker.debuff then
-					pipes = true
-					pipes_pos = pos
-					area = joker.area
-					break
+			if G.playbook_extra then
+				for pos, joker in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
+					if joker.config.center.key == "j_pipes" and not joker.debuff then
+						pipes = true
+						pipes_pos = pos
+						area = joker.area
+						break
+					end
 				end
 			end
-			if pipes then
+			if pipes and area and area.cards and area.cards[pipes_pos] then
 				return { xmult = area.cards[pipes_pos].ability.extra.xmult, message = "Pipe!", sound = "pipe_sfx" }
 			else
 				return { xmult = card.ability.extra.xmult }
@@ -280,7 +281,10 @@ SMODS.Enhancement:take_ownership("m_stone", {
 	replace_base_card = true,
 	calculate = function(self, card, context)
 		if context.main_scoring and context.cardarea == G.play then
-			for _, area in ipairs({ G.jokers.cards, G.playbook_extra.cards }) do
+			for _, area in ipairs({
+				G.jokers and G.jokers.cards or {},
+				G.playbook_extra and G.playbook_extra.cards or {},
+			}) do
 				for _, joker in ipairs(area) do
 					if joker.config.center.key == "j_breadge" then
 						return { mult = joker.ability.extra.mult or 21 }

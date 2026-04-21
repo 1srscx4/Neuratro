@@ -1,27 +1,17 @@
 local er_ref = end_round
 function end_round()
 	er_ref()
-	local hiyori = false
-	for _, joker in ipairs(G.jokers.cards) do
-		if joker.config.center.key == "j_hiyori" then
-			hiyori = true
-		end
-	end
-	for _, joker in ipairs(G.playbook_extra.cards) do
-		if joker.config.center.key == "j_hiyori" then
-			hiyori = true
-		end
-	end
-	for _, v in ipairs(G.playing_cards) do
+	local hiyori = Neuratro.has_joker("j_hiyori")
+	for _, v in ipairs(G.playing_cards or {}) do
 		SMODS.debuff_card(v, false, "filter")
 		if v:is_suit("Hearts") and hiyori then
 			SMODS.debuff_card(v, true, "filter")
 		end
 	end
-	for _, v in ipairs(G.jokers.cards) do
+	for _, v in ipairs(G.jokers and G.jokers.cards or {}) do
 		SMODS.debuff_card(v, false, "filter")
 	end
-	for _, v in ipairs(G.playbook_extra.cards) do
+	for _, v in ipairs(G.playbook_extra and G.playbook_extra.cards or {}) do
 		SMODS.debuff_card(v, false, "filter")
 	end
 end
@@ -38,8 +28,10 @@ end
 
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
-	smcmb(obj, badges)
-	if obj and obj.credits then
+	if smcmb then
+		smcmb(obj, badges)
+	end
+	if obj and obj.credits and badges then
 		local function calc_scale_fac(text)
 			local size = 0.9
 			local font = G.LANG.font
@@ -62,13 +54,13 @@ function SMODS.create_mod_badges(obj, badges)
 				if obj.credits[v] then
 					for i = 1, #obj.credits[v] do
 						if pos == 1 then
-							strings[#strings + 1] = "Suggested by: " .. obj.credits.sug[1]
+							strings[#strings + 1] = "Suggested by: " .. obj.credits.sug[i]
 						elseif pos == 2 then
 							strings[#strings + 1] = "Idea: " .. obj.credits.idea[i]
 						elseif pos == 3 then
-							strings[#strings + 1] = "Art: " .. obj.credits.art[1]
+							strings[#strings + 1] = "Art: " .. obj.credits.art[i]
 						elseif pos == 4 then
-							strings[#strings + 1] = "Code: " .. obj.credits.code[1]
+							strings[#strings + 1] = "Code: " .. obj.credits.code[i]
 						end
 					end
 				end
@@ -150,29 +142,32 @@ function Card:get_chip_bonus()
 	return g
 end
 
-SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypass_roll)
-	if
-		G.GAME.stake ~= 8
-		or pseudorandom("rentalapply") <= 0.7
-		or card.ability.set ~= "Joker"
-		or card.config.center.rarity == "dev"
-		or card.config.center.rarity == 4
-	then
-		return false
+if SMODS.Stickers and SMODS.Stickers["rental"] then
+	SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypass_roll)
+		if
+			G.GAME.stake ~= 8
+			or pseudorandom("rentalapply") <= 0.7
+			or card.ability.set ~= "Joker"
+			or card.config.center.rarity == "dev"
+			or card.config.center.rarity == 4
+		then
+			return false
+		end
+		return true
 	end
-	return true
 end
 
 local Game_update = Game.update
 local prev_money = 0
-MONEY_EARNED = 0
+Neuratro = Neuratro or {}
+Neuratro.MONEY_EARNED = 0
 function Game:update(dt)
 	Game_update(self, dt)
 
 	if self.GAME and self.GAME.dollars then
 		local money = self.GAME.dollars
 		if money > prev_money then
-			MONEY_EARNED = MONEY_EARNED + money - prev_money
+			Neuratro.MONEY_EARNED = Neuratro.MONEY_EARNED + money - prev_money
 		end
 		prev_money = money
 	end
@@ -180,7 +175,7 @@ end
 
 local start_run = G.FUNCS.start_run
 function G.FUNCS.start_run(e, args)
-	MONEY_EARNED = 0
+	Neuratro.MONEY_EARNED = 0
 	prev_money = 0
 	start_run(e, args)
 end
@@ -195,12 +190,24 @@ function Game:draw(args)
 	local x = { drawg(self, args) }
 	if G.SHADERS["CRT"] and not originalshader then
 		originalshader = G.SHADERS["CRT"]
-	else
-		if false then
-			G.SHADERS["CRT"] = G.SHADERS["arg"]
-		else
-			G.SHADERS["CRT"] = originalshader
-		end
+	elseif originalshader and not G.SHADERS["CRT"] then
+		G.SHADERS["CRT"] = originalshader
 	end
-	return x
+	return unpack(x)
+end
+
+local op_ref = open_booster
+function open_booster(self, booster, edition, skin, skip_anims)
+	local chimps = Neuratro.has_joker("j_chimps")
+	if
+		chimps
+		and booster
+		and booster.ability
+		and booster.ability.name:find("Arcana")
+		and booster.config
+		and booster.config.extra
+	then
+		booster.config.extra = booster.config.extra + 1
+	end
+	return op_ref(self, booster, edition, skin, skip_anims)
 end
