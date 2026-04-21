@@ -21,7 +21,7 @@ SMODS.Tag({
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
 			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
-			local lock = tag.ID
+				local lock = tag.ID
 				if G.CONTROLLER and G.CONTROLLER.locks then
 					G.CONTROLLER.locks[lock] = true
 				end

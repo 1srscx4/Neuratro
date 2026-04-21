@@ -28,7 +28,11 @@ SMODS.Edition({
 		return true
 	end,
 	calculate = function(self, card, context)
-		if context.repetition and (context.cardarea == G.play or context.cardarea == G.hand or context.cardarea == G.deck) and context.other_card == card then
+		if
+			context.repetition
+			and (context.cardarea == G.play or context.cardarea == G.hand or context.cardarea == G.deck)
+			and context.other_card == card
+		then
 			if Neuratro.coin_flip("filter") then
 				Neuratro.trigger_filtersister_upgrade()
 				SMODS.debuff_card(card, true, "filter")

@@ -103,7 +103,7 @@ function eval_card(c, ctx)
 end
 
 local dpc_h = draw_card
-function draw_card(from, to, percent, dir, sort, card,Delay, mute, resolved, final_lag)
+function draw_card(from, to, percent, dir, sort, card, Delay, mute, resolved, final_lag)
 	if card and card.ability and card.ability.set == "Default" and G and G.jokers and G.jokers.cards then
 		local coldfish = nil
 		for _, joker in ipairs(G.jokers.cards) do
@@ -118,5 +118,5 @@ function draw_card(from, to, percent, dir, sort, card,Delay, mute, resolved, fin
 			SMODS.calculate_context({ preventing_glass_break = true, card = card })
 		end
 	end
-	return dpc_h(from, to, percent, dir, sort, card,Delay, mute, resolved, final_lag)
+	return dpc_h(from, to, percent, dir, sort, card, Delay, mute, resolved, final_lag)
 end

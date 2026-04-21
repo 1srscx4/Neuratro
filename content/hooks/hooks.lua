@@ -28,7 +28,9 @@ end
 
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
-	if smcmb then smcmb(obj, badges) end
+	if smcmb then
+		smcmb(obj, badges)
+	end
 	if obj and obj.credits and badges then
 		local function calc_scale_fac(text)
 			local size = 0.9
@@ -140,7 +142,6 @@ function Card:get_chip_bonus()
 	return g
 end
 
-
 if SMODS.Stickers and SMODS.Stickers["rental"] then
 	SMODS.Stickers["rental"].should_apply = function(self, card, center, area, bypass_roll)
 		if
@@ -198,7 +199,14 @@ end
 local op_ref = open_booster
 function open_booster(self, booster, edition, skin, skip_anims)
 	local chimps = Neuratro.has_joker("j_chimps")
-	if chimps and booster and booster.ability and booster.ability.name:find("Arcana") and booster.config and booster.config.extra then
+	if
+		chimps
+		and booster
+		and booster.ability
+		and booster.ability.name:find("Arcana")
+		and booster.config
+		and booster.config.extra
+	then
 		booster.config.extra = booster.config.extra + 1
 	end
 	return op_ref(self, booster, edition, skin, skip_anims)

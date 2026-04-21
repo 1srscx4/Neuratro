@@ -396,16 +396,21 @@ SMODS.Joker({
 				local source_idx = #full_hand + 1 - pos
 				local source_card = full_hand[source_idx]
 				local next_card = full_hand[source_idx + 1]
-				if source_card and source_card.seal and next_card and roll_with_odds("anteater", card.ability.extra.base, self.config.extra.odds) then
+				if
+					source_card
+					and source_card.seal
+					and next_card
+					and roll_with_odds("anteater", card.ability.extra.base, self.config.extra.odds)
+				then
 					sea(function()
 						next_card:flip()
 						next_card:juice_up(0.3, 0.3)
 						return true
 					end, 0.35, "before")
-				sea(function()
-					next_card:set_seal(source_card.seal)
-					return true
-				end, 0.55, "before")
+					sea(function()
+						next_card:set_seal(source_card.seal)
+						return true
+					end, 0.55, "before")
 					sea(function()
 						next_card:flip()
 						next_card:juice_up(0.3, 0.3)
@@ -578,7 +583,15 @@ SMODS.Joker({
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.before and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker and G.GAME and G.GAME.current_round and G.GAME.current_round.discards_left > 0 then
+		if
+			context.before
+			and context.cardarea == G.jokers
+			and not context.blueprint
+			and not context.retrigger_joker
+			and G.GAME
+			and G.GAME.current_round
+			and G.GAME.current_round.discards_left > 0
+		then
 			if roll_with_odds("seed", card.ability.extra.base, card.ability.extra.odds) then
 				G.GAME.current_round.discards_left = 0
 				return { message = "Harpooned!" }
@@ -915,7 +928,11 @@ SMODS.Joker({
 			local activate = false
 			local full_hand = context.full_hand or {}
 			if card.ability.extra.cycle == 1 then
-				activate = #full_hand == 2 and full_hand[1] and full_hand[2] and full_hand[1]:get_id() == 9 and full_hand[2]:get_id() == 9
+				activate = #full_hand == 2
+					and full_hand[1]
+					and full_hand[2]
+					and full_hand[1]:get_id() == 9
+					and full_hand[2]:get_id() == 9
 			elseif card.ability.extra.cycle == 2 then
 				activate = #full_hand == 1 and full_hand[1] and full_hand[1]:get_id() == 9
 			elseif card.ability.extra.cycle == 3 then
@@ -1275,7 +1292,10 @@ SMODS.Joker({
 			if breaking then
 				return {
 					chips = pseudorandom("rum", card.ability.extra.chips_min, card.ability.extra.chips_max) * 3,
-					func = function() SMODS.destroy_cards(card) return true end,
+					func = function()
+						SMODS.destroy_cards(card)
+						return true
+					end,
 					message = "Drunk!",
 				}
 			else
@@ -2162,10 +2182,20 @@ SMODS.Joker({
 		return { vars = { center.ability.extra.xmult } }
 	end,
 	calculate = function(self, card, context)
-		if context.repetition and context.cardarea == G.play and context.other_card and context.other_card:get_id() == 6 then
+		if
+			context.repetition
+			and context.cardarea == G.play
+			and context.other_card
+			and context.other_card:get_id() == 6
+		then
 			return { repetitions = 1, card = card }
 		end
-		if context.individual and context.cardarea == G.play and context.other_card and context.other_card:get_id() == 6 then
+		if
+			context.individual
+			and context.cardarea == G.play
+			and context.other_card
+			and context.other_card:get_id() == 6
+		then
 			return { xmult = card.ability.extra.xmult }
 		end
 	end,
@@ -2308,7 +2338,12 @@ SMODS.Joker({
 	pos = { x = 4, y = 4 },
 	calculate = function(self, card, context)
 		local full_hand = context.full_hand or {}
-		if context.individual and context.cardarea == G.play and context.other_card and context.other_card:get_id() == 3 then
+		if
+			context.individual
+			and context.cardarea == G.play
+			and context.other_card
+			and context.other_card:get_id() == 3
+		then
 			for key, playing_card in pairs(full_hand) do
 				if playing_card == context.other_card then
 					if key - 1 > 0 then
@@ -2425,12 +2460,7 @@ SMODS.Joker({
 		return { vars = { center.ability.extra.upg, center.ability.extra.mult } }
 	end,
 	calculate = function(self, card, context)
-		if
-			context.individual
-			and context.cardarea == G.play
-			and not context.blueprint
-			and context.retrigger_joker
-		then
+		if context.individual and context.cardarea == G.play and not context.blueprint and context.retrigger_joker then
 			if context.other_card then
 				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.upg
 				G.E_MANAGER:add_event(Event({
@@ -2524,7 +2554,12 @@ SMODS.Joker({
 					wans = wans + 1
 				end
 			end
-			if context.other_card and context.other_card:get_id() == 11 and context.other_card:is_suit("Diamonds") and cerbr < wans then
+			if
+				context.other_card
+				and context.other_card:get_id() == 11
+				and context.other_card:is_suit("Diamonds")
+				and cerbr < wans
+			then
 				return {
 					repetitions = pseudorandom(
 						"Milc",
@@ -3365,7 +3400,12 @@ SMODS.Joker({
 				return { message = "X", colour = G.C.RED }
 			end
 		end
-		if context.individual and context.cardarea == G.play and context.other_card and context.other_card.seal == "osu_seal" then
+		if
+			context.individual
+			and context.cardarea == G.play
+			and context.other_card
+			and context.other_card.seal == "osu_seal"
+		then
 			return { xmult = card.ability.extra.xmult }
 		end
 	end,
@@ -3518,7 +3558,12 @@ SMODS.Joker({
 	pos = { x = 6, y = 1 },
 	config = { extra = { odds = 3, base = 1 } },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { (G.GAME and G.GAME.probabilities and G.GAME.probabilities.normal or 1) * center.ability.extra.base, center.ability.extra.odds } }
+		return {
+			vars = {
+				(G.GAME and G.GAME.probabilities and G.GAME.probabilities.normal or 1) * center.ability.extra.base,
+				center.ability.extra.odds,
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if
@@ -3783,7 +3828,13 @@ SMODS.Joker({
 				end,
 			}))
 		end
-		if context.card_added and context.card and context.card.config and context.card.config.center and context.card.config.center.key == "j_oops" then
+		if
+			context.card_added
+			and context.card
+			and context.card.config
+			and context.card.config.center
+			and context.card.config.center.key == "j_oops"
+		then
 			card.ability.extra.oa6added = tostring((tonumber(card.ability.extra.oa6added) or 0) + 1)
 		end
 	end,
@@ -4255,7 +4306,10 @@ SMODS.Joker({
 			if context.destroy_card:get_id() == 2 or context.destroy_card:get_id() == 3 then
 				local scoring_hand = context.scoring_hand or {}
 				for _key, val in ipairs(scoring_hand) do
-					if context.destroy_card == val and roll_with_odds("anteater", card.ability.extra.base, self.config.extra.odds) then
+					if
+						context.destroy_card == val
+						and roll_with_odds("anteater", card.ability.extra.base, self.config.extra.odds)
+					then
 						return { remove = true }
 					end
 				end
@@ -4595,10 +4649,8 @@ SMODS.Joker({
 		end
 		for pos, joker in ipairs(joker_cards()) do
 			if joker.config.center.key == "j_evilsand" and joker ~= card then
-				G.playbook_extra.config.card_limit = math.min(
-					((G.playbook_extra.config.card_limit - 2) * 2) + 2,
-					PLAYBOOK_MAX_CARD_LIMIT
-				)
+				G.playbook_extra.config.card_limit =
+					math.min(((G.playbook_extra.config.card_limit - 2) * 2) + 2, PLAYBOOK_MAX_CARD_LIMIT)
 				SMODS.destroy_cards(card)
 				return true
 			end
@@ -4688,10 +4740,8 @@ SMODS.Joker({
 			card.ability.extra.sold = card.ability.extra.sold + context.card.sell_cost
 			if card.ability.extra.sold >= card.ability.extra.goal then
 				card.ability.extra.sold = card.ability.extra.sold - card.ability.extra.goal
-				G.playbook_extra.config.card_limit = math.min(
-					(G.playbook_extra.config.card_limit or 0) + 1,
-					PLAYBOOK_MAX_CARD_LIMIT
-				)
+				G.playbook_extra.config.card_limit =
+					math.min((G.playbook_extra.config.card_limit or 0) + 1, PLAYBOOK_MAX_CARD_LIMIT)
 			end
 			local thing = copy_card(context.card)
 			G.playbook_extra:emplace(thing)
@@ -4749,7 +4799,6 @@ SMODS.Joker({
 		if context.before and not context.blueprint and not context.retrigger_joker then
 			local extra_scoring_cards = {}
 			for _, pcard in ipairs(playbook_cards()) do
-
 				if pcard.ability.set == "Default" then
 					local added = copy_card(pcard)
 					SMODS.debuff_card(added, false, "sand")
@@ -4850,7 +4899,12 @@ SMODS.Joker({
 	pos = { x = 1, y = 0 },
 	config = { extra = { retriggering = false } },
 	calculate = function(self, card, context)
-		if context.using_consumeable and context.consumeable.ability.set == "Tarot" and not context.retrigger_joker and not card.ability.extra.retriggering then
+		if
+			context.using_consumeable
+			and context.consumeable.ability.set == "Tarot"
+			and not context.retrigger_joker
+			and not card.ability.extra.retriggering
+		then
 			card.ability.extra.retriggering = true
 			local consumed_card = context.consumeable
 			G.E_MANAGER:add_event(Event({
@@ -5084,7 +5138,10 @@ SMODS.Joker({
 	end,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and context.other_card then
-			if SMODS.has_enhancement(context.other_card, "m_gold") or SMODS.has_enhancement(context.other_card, "m_dono") then
+			if
+				SMODS.has_enhancement(context.other_card, "m_gold")
+				or SMODS.has_enhancement(context.other_card, "m_dono")
+			then
 				return { mult = card.ability.extra.mult }
 			end
 		end
@@ -5133,7 +5190,11 @@ SMODS.Joker({
 		return { vars = { retriggers, total_levels } }
 	end,
 	calculate = function(self, card, context)
-		if context.using_consumeable and context.consumeable.ability.set == "Planet" and not context.retrigger_joker then
+		if
+			context.using_consumeable
+			and context.consumeable.ability.set == "Planet"
+			and not context.retrigger_joker
+		then
 			local consumed_card = context.consumeable
 			local total_levels = 0
 			for hand, data in pairs(G.GAME.hands) do

@@ -197,11 +197,18 @@ SMODS.Consumable({
 	loc_vars = function(self, info_queue, card)
 		local cfg = card and card.ability.consumeable or self.config
 		local ht = G.GAME and G.GAME.hands and G.GAME.hands[cfg.hand_type]
-		if not ht then return {} end
-		return { vars = {
-			ht.level, localize(cfg.hand_type, 'poker_hands'), ht.l_mult, ht.l_chips,
-			colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
-		} }
+		if not ht then
+			return {}
+		end
+		return {
+			vars = {
+				ht.level,
+				localize(cfg.hand_type, "poker_hands"),
+				ht.l_mult,
+				ht.l_chips,
+				colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
+			},
+		}
 	end,
 	loc_txt = {
 		name = "Io",
@@ -229,11 +236,18 @@ SMODS.Consumable({
 	loc_vars = function(self, info_queue, card)
 		local cfg = card and card.ability.consumeable or self.config
 		local ht = G.GAME and G.GAME.hands and G.GAME.hands[cfg.hand_type]
-		if not ht then return {} end
-		return { vars = {
-			ht.level, localize(cfg.hand_type, 'poker_hands'), ht.l_mult, ht.l_chips,
-			colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
-		} }
+		if not ht then
+			return {}
+		end
+		return {
+			vars = {
+				ht.level,
+				localize(cfg.hand_type, "poker_hands"),
+				ht.l_mult,
+				ht.l_chips,
+				colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
+			},
+		}
 	end,
 	loc_txt = {
 		name = "Europa",
@@ -261,11 +275,18 @@ SMODS.Consumable({
 	loc_vars = function(self, info_queue, card)
 		local cfg = card and card.ability.consumeable or self.config
 		local ht = G.GAME and G.GAME.hands and G.GAME.hands[cfg.hand_type]
-		if not ht then return {} end
-		return { vars = {
-			ht.level, localize(cfg.hand_type, 'poker_hands'), ht.l_mult, ht.l_chips,
-			colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
-		} }
+		if not ht then
+			return {}
+		end
+		return {
+			vars = {
+				ht.level,
+				localize(cfg.hand_type, "poker_hands"),
+				ht.l_mult,
+				ht.l_chips,
+				colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
+			},
+		}
 	end,
 	loc_txt = {
 		name = "Ganymede",
@@ -293,11 +314,18 @@ SMODS.Consumable({
 	loc_vars = function(self, info_queue, card)
 		local cfg = card and card.ability.consumeable or self.config
 		local ht = G.GAME and G.GAME.hands and G.GAME.hands[cfg.hand_type]
-		if not ht then return {} end
-		return { vars = {
-			ht.level, localize(cfg.hand_type, 'poker_hands'), ht.l_mult, ht.l_chips,
-			colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
-		} }
+		if not ht then
+			return {}
+		end
+		return {
+			vars = {
+				ht.level,
+				localize(cfg.hand_type, "poker_hands"),
+				ht.l_mult,
+				ht.l_chips,
+				colours = { ht.level == 1 and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[math.min(7, ht.level)] },
+			},
+		}
 	end,
 	loc_txt = {
 		name = "Callisto",

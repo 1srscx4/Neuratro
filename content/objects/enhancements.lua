@@ -109,12 +109,9 @@ SMODS.Enhancement({
 			local trg = false
 			for pos, pcard in ipairs(full_hand) do
 				local safe_odds = tonumber(card.ability.extra.odds) or 0
-				local chance = safe_odds > 0 and (card.ability.extra.base * enhancement_probability_scale()) / safe_odds or 0
-				if
-					pcard == card
-					and pseudorandom("blood")
-						< math.min(chance, 1)
-				then
+				local chance = safe_odds > 0 and (card.ability.extra.base * enhancement_probability_scale()) / safe_odds
+					or 0
+				if pcard == card and pseudorandom("blood") < math.min(chance, 1) then
 					local left_card = full_hand[pos - 1]
 					if left_card then
 						sea(function()
@@ -284,7 +281,10 @@ SMODS.Enhancement:take_ownership("m_stone", {
 	replace_base_card = true,
 	calculate = function(self, card, context)
 		if context.main_scoring and context.cardarea == G.play then
-			for _, area in ipairs({ G.jokers and G.jokers.cards or {}, G.playbook_extra and G.playbook_extra.cards or {} }) do
+			for _, area in ipairs({
+				G.jokers and G.jokers.cards or {},
+				G.playbook_extra and G.playbook_extra.cards or {},
+			}) do
 				for _, joker in ipairs(area) do
 					if joker.config.center.key == "j_breadge" then
 						return { mult = joker.ability.extra.mult or 21 }
