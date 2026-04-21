@@ -66,7 +66,7 @@ SMODS.Atlas({
 	key = "animebao",
 	path = "animation/AnimeBao.png",
 	atlas_table = "ANIMATION_ATLAS",
-	frames = 6,
+	frames = 24,
 	px = 71,
 	py = 95,
 })
