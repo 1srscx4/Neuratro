@@ -2327,58 +2327,6 @@ SMODS.Joker({
 })
 
 SMODS.Joker({
-	key = "cerber",
-	loc_txt = {
-		name = "Cerber",
-		text = { "All 2s become {C:dark_edition}Negative{}" },
-	},
-	atlas = "neuroCustomJokers",
-	pools = { ["neurJoker"] = true },
-	credits = {
-		idea = { "Evil Sand" },
-		art = { "Tony7268" },
-		code = { "Adesi" },
-	},
-	rarity = 3,
-	cost = 8,
-	unlocked = true,
-	discovered = false,
-	blueprint_compat = false,
-	eternal_compat = true,
-	perishable_compat = false,
-	pos = { x = 1, y = 0 },
-	add_to_deck = function(self, card, from_debuff)
-		if G.GAME and G.deck and #G.deck.cards > 0 then
-			for index, value in ipairs(G.deck.cards) do
-				if value:get_id() == 2 then
-					value:set_edition("e_negative", true)
-				end
-			end
-			for index, value in ipairs(G.hand.cards) do
-				if value:get_id() == 2 then
-					value:set_edition("e_negative", true)
-					value:juice_up(0.3, 0.3)
-				end
-			end
-		end
-	end,
-	calculate = function(self, card, context)
-		if G.GAME and G.deck and #G.deck.cards > 0 and context.playing_card_added and not context.blueprint then
-			if card and card:get_id() == 2 then
-				card:set_edition("e_negative", true)
-			end
-			for index, value in ipairs(G.deck.cards) do
-				if value:get_id() == 2 then
-					value:set_edition("e_negative", true)
-				end
-			end
-		end
-	end,
-	in_pool = function(self, args)
-		return true
-	end,
-})
-SMODS.Joker({
 	key = "cerbr",
 	loc_txt = {
 		name = "Yippee!",
