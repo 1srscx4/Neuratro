@@ -1871,7 +1871,7 @@ SMODS.Joker({
 	credits = {
 		idea = { "Bigbuckies" },
 		art = { "Evil Sand" },
-		code = { "1srscx4" },
+		code = { "1srscx4", "Adesi" },
 	},
 	cost = 8,
 	unlocked = true,
