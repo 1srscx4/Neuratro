@@ -52,7 +52,7 @@ SMODS.Consumable({
 SMODS.Consumable({
 	key = "blood_set",
 	loc_txt = {
-		name = "The Juice",
+		name = "The Harpoon",
 		text = {
 			"Enhance {C:attention}1{}",
 			"selected card to",
@@ -62,7 +62,7 @@ SMODS.Consumable({
 	set = "Tarot",
 	discovered = false,
 	atlas = "neuroCons",
-	pos = { x = 2, y = 0 },
+	pos = { x = 8, y = 0 },
 	config = { max_highlighted = 1, mod_conv = "m_blood" },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.mod_conv]
