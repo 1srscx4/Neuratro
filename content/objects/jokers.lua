@@ -5430,7 +5430,7 @@ SMODS.Joker({
 					delay = 0.1,
 					func = function()
 						if consumed_card and not consumed_card.removed and consumed_card.area then
-							consumed_card:use(consumed_card.config.center, consumed_card)
+							consumed_card:use_consumeable(consumed_card.config.center, consumed_card)
 						end
 						return true
 					end,
