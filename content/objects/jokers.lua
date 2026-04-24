@@ -2286,7 +2286,7 @@ SMODS.Joker({
 		text = {
 			"All {C:attention}2s{} become",
 			"{C:dark_edition}Negative{} when",
-			"obtained or transformed",
+			"received or transformed",
 		},
 	},
 	credits = {

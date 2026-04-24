@@ -70,7 +70,9 @@ function Neuratro.trigger_cerber_on_cards(cards, joker_already_verified)
 	local triggered = false
 
 	for _, card in ipairs(cards) do
-		triggered = Neuratro.trigger_cerber_on_card(card, true) or triggered
+		if Neuratro.trigger_cerber_on_card(card, true) then
+			triggered = true
+		end
 	end
 
 	return triggered

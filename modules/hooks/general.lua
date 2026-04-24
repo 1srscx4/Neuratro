@@ -51,15 +51,21 @@ end
 
 local card_set_base = Card.set_base
 function Card:set_base(...)
+	local previous_id = self:get_id()
 	local x = { card_set_base(self, ...) }
-	Neuratro.trigger_cerber_on_card(self)
+	if previous_id ~= 2 and self:get_id() == 2 then
+		Neuratro.trigger_cerber_on_card(self)
+	end
 	return unpack(x)
 end
 
 local smods_change_base = SMODS.change_base
 function SMODS.change_base(card, ...)
+	local previous_id = card and card.get_id and card:get_id()
 	local x = { smods_change_base(card, ...) }
-	Neuratro.trigger_cerber_on_card(card)
+	if card and previous_id ~= 2 and card:get_id() == 2 then
+		Neuratro.trigger_cerber_on_card(card)
+	end
 	return unpack(x)
 end
 
