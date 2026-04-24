@@ -40,11 +40,13 @@ function Neuratro.has_joker(joker_key)
 end
 
 function Neuratro.cerberify_card(card)
+	local card_id = card and card.base and card.base.id
 	if
 		not card
+		or not card_id
 		or not card.ability
 		or card.ability.set ~= "Default"
-		or card:get_id() ~= 2
+		or card_id ~= 2
 		or (card.edition and card.edition.key == "e_negative")
 	then
 		return false
