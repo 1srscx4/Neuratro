@@ -195,19 +195,3 @@ function Game:draw(args)
 	end
 	return unpack(x)
 end
-
-local op_ref = open_booster
-function open_booster(self, booster, edition, skin, skip_anims)
-	local chimps = Neuratro.has_joker("j_chimps")
-	if
-		chimps
-		and booster
-		and booster.ability
-		and booster.ability.name:find("Arcana")
-		and booster.config
-		and booster.config.extra
-	then
-		booster.config.extra = booster.config.extra + 1
-	end
-	return op_ref(self, booster, edition, skin, skip_anims)
-end

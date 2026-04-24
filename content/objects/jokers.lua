@@ -2887,6 +2887,14 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 5, y = 0 },
+	calculate = function(self, card, context)
+		if context.open_booster and context.booster and context.booster.name:find("Arcana") then
+			local tarot_card = context.card
+			if tarot_card and tarot_card.ability.extra then
+				tarot_card.ability.extra = tarot_card.ability.extra + 1
+			end
+		end
+	end,
 	in_pool = function(self, args)
 		return true
 	end,
