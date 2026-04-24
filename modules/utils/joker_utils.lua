@@ -54,28 +54,36 @@ function Neuratro.cerberify_card(card)
 	return true
 end
 
-function Neuratro.trigger_cerber_on_card(card, joker_already_verified)
-	if not card or (not joker_already_verified and not Neuratro.has_joker("j_cerber")) then
-		return false
-	end
-
-	return Neuratro.cerberify_card(card)
-end
-
-function Neuratro.trigger_cerber_on_cards(cards, joker_already_verified)
-	if not cards or (not joker_already_verified and not Neuratro.has_joker("j_cerber")) then
+function Neuratro.cerberify_cards(cards)
+	if not cards then
 		return false
 	end
 
 	local triggered = false
 
 	for _, card in ipairs(cards) do
-		if Neuratro.trigger_cerber_on_card(card, true) then
+		if Neuratro.cerberify_card(card) then
 			triggered = true
 		end
 	end
 
 	return triggered
+end
+
+function Neuratro.trigger_cerber_on_card(card)
+	if not card or not Neuratro.has_joker("j_cerber") then
+		return false
+	end
+
+	return Neuratro.cerberify_card(card)
+end
+
+function Neuratro.trigger_cerber_on_cards(cards)
+	if not cards or not Neuratro.has_joker("j_cerber") then
+		return false
+	end
+
+	return Neuratro.cerberify_cards(cards)
 end
 
 function Neuratro.trigger_filtersister_upgrade()
