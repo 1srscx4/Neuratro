@@ -2306,12 +2306,12 @@ SMODS.Joker({
 	pos = { x = 4, y = 0 },
 	add_to_deck = function(self, card, from_debuff)
 		if G.playing_cards and not card.debuff then
-			Neuratro.trigger_cerber(G.playing_cards, true)
+			Neuratro.trigger_cerber_on_cards(G.playing_cards, true)
 		end
 	end,
 	calculate = function(self, card, context)
 		if context.playing_card_added and not context.blueprint and not context.retrigger_joker then
-			Neuratro.trigger_cerber(context.cards, true)
+			Neuratro.trigger_cerber_on_cards(context.cards, true)
 		end
 	end,
 	in_pool = function(self, args)
