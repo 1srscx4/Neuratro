@@ -198,15 +198,15 @@ end
 
 local op_ref = open_booster
 function open_booster(self, booster, edition, skin, skip_anims)
-	local chimps = #Neuratro.find_jokers("j_chimps")
+	local chimps_count = #Neuratro.find_jokers("j_chimps")
 	if
-		chimps > 0
+		chimps_count > 0
 		and booster
 		and booster.ability
 		and booster.ability.name:find("Arcana")
 		and booster.ability.extra
 	then
-		booster.ability.extra = booster.ability.extra + chimps
+		booster.ability.extra = booster.ability.extra + chimps_count
 	end
 	return op_ref(self, booster, edition, skin, skip_anims)
 end
