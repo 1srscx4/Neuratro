@@ -49,6 +49,20 @@ function Card:set_sprites(center, ...)
 	return _set_sprites(self, center, ...)
 end
 
+local card_set_base = Card.set_base
+function Card:set_base(...)
+	local x = { card_set_base(self, ...) }
+	Neuratro.trigger_cerber({ self })
+	return unpack(x)
+end
+
+local smods_change_base = SMODS.change_base
+function SMODS.change_base(card, ...)
+	local x = { smods_change_base(card, ...) }
+	Neuratro.trigger_cerber({ card })
+	return unpack(x)
+end
+
 local cardUpdateHook = Card.update
 function Card:update(dt)
 	self.playbook_click_delay = math.max((self.playbook_click_delay or 0) - dt, 0)

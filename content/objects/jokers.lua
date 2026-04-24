@@ -2285,7 +2285,7 @@ SMODS.Joker({
 		name = "Cerber",
 		text = {
 			"All {C:attention}2s{} become",
-			"{C:dark_edition}Negative{} when obtained",
+			"{C:dark_edition}Negative{}",
 		},
 	},
 	credits = {
@@ -2305,20 +2305,12 @@ SMODS.Joker({
 	pos = { x = 4, y = 0 },
 	add_to_deck = function(self, card, from_debuff)
 		if G.playing_cards and not card.debuff then
-			for _, pcard in ipairs(G.playing_cards) do
-				if pcard:get_id() == 2 and not (pcard.edition and pcard.edition.key == "e_negative") then
-					pcard:set_edition("e_negative", true)
-				end
-			end
+			Neuratro.trigger_cerber(G.playing_cards, true)
 		end
 	end,
 	calculate = function(self, card, context)
 		if context.playing_card_added and not context.blueprint and not context.retrigger_joker then
-			for _, pcard in ipairs(context.cards) do
-				if pcard:get_id() == 2 and not (pcard.edition and pcard.edition.key == "e_negative") then
-					pcard:set_edition("e_negative", true)
-				end
-			end
+			Neuratro.trigger_cerber(context.cards, true)
 		end
 	end,
 	in_pool = function(self, args)

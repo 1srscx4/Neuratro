@@ -74,19 +74,6 @@ SMODS.Back({
 						}, G.deck, nil, nil, { G.C.SECONDARY_SET.Enhanced })
 						_card:set_ability(G.P_CENTERS["m_glorp"], nil, true)
 						SMODS.change_base(_card, "Glorpsuit")
-						-- Check if Cerber joker exists and apply Negative to 2s
-						local has_cerber = false
-						if G and G.jokers and G.jokers.cards then
-							for _, joker in ipairs(G.jokers.cards) do
-								if joker.config and joker.config.center and joker.config.center.key == "j_cerber" then
-									has_cerber = true
-									break
-								end
-							end
-						end
-						if has_cerber and _rank == "2" then
-							_card:set_edition("e_negative", true)
-						end
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								return true
