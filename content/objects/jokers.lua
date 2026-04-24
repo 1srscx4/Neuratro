@@ -685,6 +685,8 @@ SMODS.Joker({
 		text = {
 			"Apply {C:dark_edition}Angelic{} edition",
 			"to all scored cards",
+			"{C:red,E:2}breaks{} after giving the 6th blessing",
+			"{C:inactive}({C:attention}#1#{C:inactive} blessing left)",
 		},
 	},
 	credits = {
@@ -702,11 +704,20 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 1, y = 0 },
+	config = { extra = { blessings = 0 } },
+	loc_vars = function(self, info_queue, center)
+		return { vars = { 6 - center.ability.extra.blessings } }
+	end,
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
 			local scoring_hand = context.scoring_hand or {}
 			for _, pcard in ipairs(scoring_hand) do
 				pcard:set_edition("e_angelic", true)
+				card.ability.extra.blessings = card.ability.extra.blessings + 1
+				if card.ability.extra.blessings >= 6 then
+					SMODS.destroy_cards(card)
+					return { message = "Broken" }
+				end
 			end
 		end
 	end,

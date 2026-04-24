@@ -62,6 +62,7 @@ SMODS.Edition({
 		text = {
 			"{C:mult}+3{} Mult",
 			"{C:chips}+30{} Chips",
+			"{C:attention}debuff immune{}",
 		},
 	},
 	credits = {
@@ -82,5 +83,8 @@ SMODS.Edition({
 		if context.main_scoring and context.cardarea == G.play then
 			return { mult = 3, chips = 30 }
 		end
+	end,
+	on_apply = function(card)
+		SMODS.debuff_card(card, "prevent_debuff", "any")
 	end,
 })
