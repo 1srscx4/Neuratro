@@ -52,14 +52,14 @@ end
 local card_set_base = Card.set_base
 function Card:set_base(...)
 	local x = { card_set_base(self, ...) }
-	Neuratro.trigger_cerber({ self })
+	Neuratro.trigger_cerber(self)
 	return unpack(x)
 end
 
 local smods_change_base = SMODS.change_base
 function SMODS.change_base(card, ...)
 	local x = { smods_change_base(card, ...) }
-	Neuratro.trigger_cerber({ card })
+	Neuratro.trigger_cerber(card)
 	return unpack(x)
 end
 

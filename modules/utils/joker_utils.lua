@@ -54,9 +54,13 @@ function Neuratro.cerberify_card(card)
 	return true
 end
 
-function Neuratro.trigger_cerber(cards, force)
-	if not cards or (#cards == 0) or (not force and not Neuratro.has_joker("j_cerber")) then
+function Neuratro.trigger_cerber(cards, skip_joker_check)
+	if not cards or (not skip_joker_check and not Neuratro.has_joker("j_cerber")) then
 		return false
+	end
+
+	if cards.ability then
+		return Neuratro.cerberify_card(cards)
 	end
 
 	local triggered = false

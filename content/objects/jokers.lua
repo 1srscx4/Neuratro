@@ -2285,7 +2285,8 @@ SMODS.Joker({
 		name = "Cerber",
 		text = {
 			"All {C:attention}2s{} become",
-			"{C:dark_edition}Negative{}",
+			"{C:dark_edition}Negative{} when",
+			"obtained or transformed",
 		},
 	},
 	credits = {
