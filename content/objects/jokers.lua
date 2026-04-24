@@ -2927,22 +2927,44 @@ SMODS.Joker({
 	perishable_compat = true,
 	pos = { x = 5, y = 7 },
 	calculate = function(self, card, context)
-		if context.after and not context.blueprint then
+		local has_bloody = false
+		local old_cards = {}
+		if context.before and not context.blueprint then
 			local scoring_hand = context.scoring_hand or {}
 			for _, pcard in ipairs(scoring_hand) do
 				if SMODS.has_enhancement(pcard, "m_blood") then
 					pcard.ability.punched = true
+					has_bloody = true
+					print("Punching card", pcard.config.center.name)
+				else
+					table.insert(old_cards, pcard)
 				end
 			end
 		end
-		if context.end_of_round and context.cardarea == G.jokers then
-			for _, pcard in ipairs(G.playing_cards) do
+		if context.before and context.scoring_hand and has_bloody then
+			print("End of round " .. inspect(context.scoring_hand))
+			local scoringHandArea
+			for _, pcard in ipairs(context.scoring_hand) do
 				if pcard.ability.punched then
 					pcard.ability.punched = nil
 					if pcard.area and pcard.area ~= G.deck then
+						scoringHandArea = pcard.area
+						print("Reshuffling punched card into deck")
 						G.E_MANAGER:add_event(Event({
+							event = "before",
 							func = function()
 								draw_card(pcard.area, G.deck, 90, "up", nil, pcard)
+								draw_card(G.deck, scoringHandArea, 90, "up", nil)
+								G.E_MANAGER:add_event(Event({
+									delay = 0.1,
+									event = "before",
+									func = function()
+										for _, pcard in ipairs(SMODS.drawn_cards) do
+											SMODS.score_card(pcard, context)
+										end
+										return true
+									end,
+								}))
 								return true
 							end,
 						}))
