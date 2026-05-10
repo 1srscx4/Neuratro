@@ -2847,7 +2847,7 @@ SMODS.Joker({
 				trigger = "after",
 				delay = 0.1,
 				func = function()
-					if consumed_card and not consumed_card.removed and consumed_card.area then
+					if consumed_card and not consumed_card.removed then
 						if consumed_card.ability.name == "The Fool" then
 							if G.consumeables.config.card_limit > #G.consumeables.cards then
 								play_sound("timpani")
