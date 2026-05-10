@@ -3531,7 +3531,7 @@ SMODS.Joker({
 	},
 	credits = {
 		idea = { "1srscx4" },
-		art = { "None" },
+		art = { "Tony7268" },
 		code = { "1srscx4" },
 	},
 	cost = 8,
@@ -3541,9 +3541,9 @@ SMODS.Joker({
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = false,
-	atlas = "neuroCustomJokers",
+	atlas = "neuroCustomJokers2",
 	pools = { ["neurJoker"] = true },
-	pos = { x = 1, y = 0 },
+	pos = { x = 6, y = 0 },
 	in_pool = function(self, args)
 		if not (G and G.playing_cards) then
 			return false
