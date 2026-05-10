@@ -80,6 +80,9 @@ SMODS.Edition({
 		return true
 	end,
 	calculate = function(self, card, context)
+		if context.drawing_cards then
+			SMODS.debuff_card(card, "prevent_debuff", "any")
+		end
 		if context.main_scoring and context.cardarea == G.play then
 			return { mult = 3, chips = 30 }
 		end
