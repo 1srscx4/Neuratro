@@ -2729,11 +2729,16 @@ SMODS.Joker({
 	calculate = function(self, card, context)
 		if context.before then
 			local scoring_hand = context.scoring_hand or {}
+			local has_nine = false
 			for _, play_card in ipairs(scoring_hand) do
 				if play_card:get_id() == 9 then
-					card.ability.extra.works = true
-					return { message = "Active" }
+					has_nine = true
 				end
+			end
+
+			card.ability.extra.works = has_nine
+			if card.ability.extra.works then
+				return { message = "Active" }
 			end
 		end
 		if context.individual and context.cardarea == G.play and context.other_card and card.ability.extra.works then
