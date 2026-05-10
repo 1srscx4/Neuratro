@@ -2848,7 +2848,26 @@ SMODS.Joker({
 				delay = 0.1,
 				func = function()
 					if consumed_card and not consumed_card.removed and consumed_card.area then
-						consumed_card:use_consumeable(consumed_card.config.center, consumed_card)
+						if consumed_card.ability.name == "The Fool" then
+							if G.consumeables.config.card_limit > #G.consumeables.cards then
+								play_sound("timpani")
+								local card = create_card(
+									"Tarot_Planet",
+									G.consumeables,
+									nil,
+									nil,
+									nil,
+									nil,
+									G.GAME.last_tarot_planet,
+									"fool"
+								)
+								card:add_to_deck()
+								G.consumeables:emplace(card)
+								consumed_card:juice_up(0.3, 0.5)
+							end
+						else
+							consumed_card:use_consumeable(consumed_card.config.center, consumed_card)
+						end
 					end
 					card.ability.extra.retriggering = false
 					return true
