@@ -5429,7 +5429,7 @@ SMODS.Joker({
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
-	rarity = 3,
+	rarity = "dev",
 	cost = 8,
 	unlocked = true,
 	discovered = false,
