@@ -3342,7 +3342,7 @@ SMODS.Joker({
 SMODS.Joker({
 	key = "lucy",
 	loc_txt = {
-		name = "Lucy",
+		name = "Lucy Pyre",
 		text = {
 			"Gains {C:mult}+#1#{} mult if played",
 			"hand contains a {C:attention}flush{}.",
