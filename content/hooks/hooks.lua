@@ -173,11 +173,11 @@ function Game:update(dt)
 	end
 end
 
-local start_run = G.FUNCS.start_run
-function G.FUNCS.start_run(e, args)
+local start_run = G.start_run
+function G:start_run(args)
 	Neuratro.MONEY_EARNED = 0
 	prev_money = 0
-	start_run(e, args)
+	start_run(self, args)
 end
 
 -- arg shader for her deck. simple. scuffed. gets the job done
