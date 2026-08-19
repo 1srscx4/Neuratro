@@ -1826,7 +1826,7 @@ SMODS.Joker({
 		text = {
 			"Counts as a {C:attention}Vedal{} card",
 			"{C:attention}Gold{} and {C:attention}Donation{} cards",
-			"give {C:mult}+#1#{} mult when scored",
+			"earn {C:money}$#1#{} when scored",
 		},
 	},
 	credits = {
@@ -1845,11 +1845,11 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 2, y = 0 },
-	config = { extra = { mult = 2 } },
+	config = { extra = { dollars = 4 } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_dono
-		return { vars = { center.ability.extra.mult } }
+		return { vars = { center.ability.extra.dollars } }
 	end,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and context.other_card then
@@ -1857,7 +1857,7 @@ SMODS.Joker({
 				SMODS.has_enhancement(context.other_card, "m_gold")
 				or SMODS.has_enhancement(context.other_card, "m_dono")
 			then
-				return { mult = card.ability.extra.mult }
+				return { dollars = card.ability.extra.dollars }
 			end
 		end
 	end,
@@ -3342,7 +3342,7 @@ SMODS.Joker({
 SMODS.Joker({
 	key = "lucy",
 	loc_txt = {
-		name = "Lucy",
+		name = "Lucy Pyre",
 		text = {
 			"Gains {C:mult}+#1#{} mult if played",
 			"hand contains a {C:attention}flush{}.",
@@ -5429,7 +5429,7 @@ SMODS.Joker({
 	},
 	atlas = "neuroCustomJokers",
 	pools = { ["neurJoker"] = true },
-	rarity = 3,
+	rarity = "dev",
 	cost = 8,
 	unlocked = true,
 	discovered = false,
@@ -5460,6 +5460,7 @@ SMODS.Joker({
 				total_levels = total_levels + (data.level or 1) - 1
 			end
 			local retriggers = math.floor(total_levels / card.ability.extra.threshold)
+			retriggers = to_big and to_number(retriggers) or retriggers -- Amulet compatibility
 			for i = 1, retriggers do
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
