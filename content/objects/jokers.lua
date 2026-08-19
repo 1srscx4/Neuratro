@@ -5460,6 +5460,7 @@ SMODS.Joker({
 				total_levels = total_levels + (data.level or 1) - 1
 			end
 			local retriggers = math.floor(total_levels / card.ability.extra.threshold)
+			retriggers = to_big and to_number(retriggers) or retriggers -- Amulet compatibility
 			for i = 1, retriggers do
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
