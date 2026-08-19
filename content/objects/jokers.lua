@@ -5523,10 +5523,10 @@ SMODS.Joker({
 	loc_txt = {
 		name = "Vedal",
 		text = {
-			"Gives {X:mult,C:white}X#1#{} Mult for every {C:money}$#2#{} gained this {C:attention}run{}.",
+			"Gives {X:chips,C:white}X#1#{} Chips for every {C:money}$#2#{} gained this {C:attention}run{}.",
 			"Each {C:attention}Vedal Item {C:inactive}(Currently owned: #5#){}",
-			"increases the base amount by {X:mult,C:white}X#3#{} Mult",
-			"{C:inactive}(Currently {X:mult,C:white}X#4#{} {C:inactive}Mult){}",
+			"increases the base amount by {X:chips,C:white}X#3#{} Chips",
+			"{C:inactive}(Currently {X:chips,C:white}X#4#{} {C:inactive}Chips){}",
 		},
 	},
 	credits = {
@@ -5558,14 +5558,14 @@ SMODS.Joker({
 			end
 		end
 		local money_earned = (Neuratro and Neuratro.MONEY_EARNED) or 0
-		local mult = math.floor(money_earned / card.ability.extra.dollars)
+		local chips = math.floor(money_earned / card.ability.extra.dollars)
 			* (ved_cards * card.ability.extra.vedal_bonus + card.ability.extra.upg)
 		return {
 			vars = {
 				card.ability.extra.upg,
 				card.ability.extra.dollars,
 				card.ability.extra.vedal_bonus,
-				mult + 1,
+				chips + 1,
 				ved_cards,
 			},
 		}
@@ -5581,9 +5581,9 @@ SMODS.Joker({
 				end
 			end
 			local money_earned = (Neuratro and Neuratro.MONEY_EARNED) or 0
-			local mult = math.floor(money_earned / card.ability.extra.dollars)
+			local chips = math.floor(money_earned / card.ability.extra.dollars)
 				* (ved_cards * card.ability.extra.vedal_bonus + card.ability.extra.upg)
-			return { xmult = mult + 1 }
+			return { xchips = chips + 1 }
 		end
 	end,
 })
