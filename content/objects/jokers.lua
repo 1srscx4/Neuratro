@@ -1762,7 +1762,30 @@ SMODS.Joker({
 		return true
 	end,
 })
---doesnt work
+
+-- changes vanilla glass behavior to account for the presence of Coldfish
+SMODS.Enhancement:take_ownership('glass', {
+	calculate = function(self, card, context)
+		if (
+			context.destroy_card and
+			context.cardarea == G.play and
+			context.destroy_card == card and
+			SMODS.pseudorandom_probability(card, 'glass', 1, card.ability.extra)
+		) then
+			local coldfish_found = false
+			for _, joker in ipairs(G.jokers.cards) do
+				if joker.config.center.key == "j_coldfish" and not joker.debuff then
+					coldfish_found = true
+					SMODS.calculate_context({ preventing_glass_break = true, card = joker })
+					break
+				end
+			end
+			card.glass_trigger = true
+			return { remove = not coldfish_found }
+		end
+	end,
+})
+
 SMODS.Joker({
 	key = "coldfish",
 	loc_txt = {
@@ -1770,7 +1793,7 @@ SMODS.Joker({
 		text = {
 			"{C:attention}Glass{} cards don't break",
 			"On the {C:attention}6th{} prevention,",
-			"{C:green,E:1}1 in 6{} chance to {C:red}break{}",
+			"{C:green,E:1}#2# in #3#{} chance to {C:red}break{}",
 			"the bag and become {C:attention}Unleashed",
 			"{C:inactive}[Preventions: #1#]",
 		},
@@ -1791,15 +1814,36 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 8, y = 6 },
-	config = { extra = { prevented = 0, odds = 6 } },
+	config = { extra = {
+		prevented = 0,
+		unleashed = false,
+		numerator = 1,
+		denominator = 6
+	} },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.prevented } }
+		local numerator, denominator = SMODS.get_probability_vars(
+			center,
+			center.ability.extra.numerator,
+			center.ability.extra.denominator,
+			"coldfish"
+		)
+		return { vars = {
+			center.ability.extra.prevented,
+			numerator,
+			denominator
+		} }
 	end,
 	calculate = function(self, card, context)
 		if context.preventing_glass_break and not context.blueprint then
 			card.ability.extra.prevented = card.ability.extra.prevented + 1
-			if card.ability.extra.prevented >= 6 then
-				if roll_with_odds("coldfish", 1, card.ability.extra.odds) then
+			if card.ability.extra.prevented >= 6 and not card.ability.extra.unleashed then
+				if SMODS.pseudorandom_probability(
+					card,
+					'coldfish',
+					card.ability.extra.numerator,
+					card.ability.extra.denominator
+				) then
+					card.ability.extra.unleashed = true
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							card:start_dissolve()
