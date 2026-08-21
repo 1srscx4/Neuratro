@@ -1764,14 +1764,14 @@ SMODS.Joker({
 })
 
 -- changes vanilla glass behavior to account for the presence of Coldfish
-SMODS.Enhancement:take_ownership('glass', {
+SMODS.Enhancement:take_ownership("glass", {
 	calculate = function(self, card, context)
-		if (
-			context.destroy_card and
-			context.cardarea == G.play and
-			context.destroy_card == card and
-			SMODS.pseudorandom_probability(card, 'glass', 1, card.ability.extra)
-		) then
+		if
+			context.destroy_card
+			and context.cardarea == G.play
+			and context.destroy_card == card
+			and SMODS.pseudorandom_probability(card, "glass", 1, card.ability.extra)
+		then
 			local coldfish_found = false
 			for _, joker in ipairs(G.jokers.cards) do
 				if joker.config.center.key == "j_coldfish" and not joker.debuff then
@@ -1818,7 +1818,7 @@ SMODS.Joker({
 		prevented = 0,
 		unleashed = false,
 		numerator = 1,
-		denominator = 6
+		denominator = 6,
 	} },
 	loc_vars = function(self, info_queue, center)
 		local numerator, denominator = SMODS.get_probability_vars(
@@ -1830,19 +1830,21 @@ SMODS.Joker({
 		return { vars = {
 			center.ability.extra.prevented,
 			numerator,
-			denominator
+			denominator,
 		} }
 	end,
 	calculate = function(self, card, context)
 		if context.preventing_glass_break and not context.blueprint then
 			card.ability.extra.prevented = card.ability.extra.prevented + 1
 			if card.ability.extra.prevented >= 6 and not card.ability.extra.unleashed then
-				if SMODS.pseudorandom_probability(
-					card,
-					'coldfish',
-					card.ability.extra.numerator,
-					card.ability.extra.denominator
-				) then
+				if
+					SMODS.pseudorandom_probability(
+						card,
+						"coldfish",
+						card.ability.extra.numerator,
+						card.ability.extra.denominator
+					)
+				then
 					card.ability.extra.unleashed = true
 					G.E_MANAGER:add_event(Event({
 						func = function()
