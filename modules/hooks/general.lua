@@ -125,4 +125,3 @@ function eval_card(c, ctx)
 	local x = { evalc_h(c, ctx) }
 	return unpack(x)
 end
-
