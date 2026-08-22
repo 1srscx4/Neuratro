@@ -701,7 +701,7 @@ SMODS.Joker({
 	unlocked = true,
 	discovered = false,
 	blueprint_compat = true,
-	eternal_compat = true,
+	eternal_compat = false,
 	perishable_compat = true,
 	pos = { x = 1, y = 0 },
 	config = { extra = { blessings = 0 } },
