@@ -701,7 +701,7 @@ SMODS.Joker({
 	unlocked = true,
 	discovered = false,
 	blueprint_compat = true,
-	eternal_compat = true,
+	eternal_compat = false,
 	perishable_compat = true,
 	pos = { x = 1, y = 0 },
 	config = { extra = { blessings = 0 } },
@@ -1890,7 +1890,7 @@ SMODS.Joker({
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
-	pos = { x = 2, y = 0 },
+	pos = { x = 3, y = 0 },
 	config = { extra = { dollars = 4 } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
