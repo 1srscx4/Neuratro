@@ -2409,43 +2409,43 @@ SMODS.Joker({
 		return { vars = { center.ability.extra.upg, center.ability.extra.mult } }
 	end,
 	calculate = function(self, card, context)
-		if context.individual and context.cardarea == G.play and not context.blueprint and context.retrigger_joker then
-			if context.other_card then
-				card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.upg
-				G.E_MANAGER:add_event(Event({
+		if context.individual and context.cardarea == G.play and not context.blueprint then
+			if context.other_card and context.other_card.repetition_trigger then
+				return {
+					message = "Yippee!",
+					sound = "Yippee",
 					func = function()
-						card.ability.extra.yippee = card.ability.extra.yippee + 5
-						if card.ability.extra.yippee > 0 and card.ability.extra.yippee <= 20 then
-							card.children.floating_sprite:set_sprite_pos({ x = 1, y = 2 })
-						end
-						if card.ability.extra.yippee > 20 and card.ability.extra.yippee <= 40 then
-							card.children.floating_sprite:set_sprite_pos({ x = 2, y = 2 })
-						end
-						if card.ability.extra.yippee > 40 and card.ability.extra.yippee <= 60 then
-							card.children.floating_sprite:set_sprite_pos({ x = 3, y = 2 })
-						end
-						if card.ability.extra.yippee > 60 and card.ability.extra.yippee <= 80 then
-							card.children.floating_sprite:set_sprite_pos({ x = 4, y = 2 })
-						end
-						if card.ability.extra.yippee > 80 then
-							card.children.floating_sprite:set_sprite_pos({ x = 5, y = 2 })
-						end
-						return true
-					end,
-				}))
-				return { message = "Yippee!", sound = "Yippee" }
+						SMODS.scale_card(card, {
+							ref_table = card.ability.extra,
+							ref_value = "mult",
+							scalar_value = "upg"
+						})
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								card.ability.extra.yippee = card.ability.extra.yippee + 5
+								if card.ability.extra.yippee > 0 and card.ability.extra.yippee <= 20 then
+									card.children.floating_sprite:set_sprite_pos({ x = 1, y = 2 })
+								end
+								if card.ability.extra.yippee > 20 and card.ability.extra.yippee <= 40 then
+									card.children.floating_sprite:set_sprite_pos({ x = 2, y = 2 })
+								end
+								if card.ability.extra.yippee > 40 and card.ability.extra.yippee <= 60 then
+									card.children.floating_sprite:set_sprite_pos({ x = 3, y = 2 })
+								end
+								if card.ability.extra.yippee > 60 and card.ability.extra.yippee <= 80 then
+									card.children.floating_sprite:set_sprite_pos({ x = 4, y = 2 })
+								end
+								if card.ability.extra.yippee > 80 then
+									card.children.floating_sprite:set_sprite_pos({ x = 5, y = 2 })
+								end
+								return true
+							end,
+						}))
+					end
+				}
 			end
 		end
 		if context.joker_main then
-			local scoring_hand = context.scoring_hand or {}
-			local debuffs = 0
-			for _, playing_card in ipairs(scoring_hand) do
-				if playing_card.debuff then
-					debuffs = debuffs + 1
-				end
-			end
-			card.ability.extra.mult = card.ability.extra.mult
-				- (#scoring_hand * card.ability.extra.upg - debuffs * card.ability.extra.upg)
 			return { mult = card.ability.extra.mult }
 		end
 		if context.end_of_round and context.cardarea == G.jokers then
