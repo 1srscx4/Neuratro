@@ -1849,7 +1849,13 @@ SMODS.Joker({
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							card:start_dissolve()
-							SMODS.add_card({ set = "Joker", area = G.jokers, key = "j_coldfish_unleashed" })
+							print("Current edition: " .. tostring(card.edition))
+							SMODS.add_card({
+								set = "Joker",
+								area = G.jokers,
+								key = "j_coldfish_unleashed",
+								edition = card.edition
+							})
 							return true
 						end,
 					}))
@@ -1890,7 +1896,7 @@ SMODS.Joker({
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
-	pos = { x = 3, y = 0 },
+	pos = { x = 2, y = 0 },
 	config = { extra = { dollars = 4 } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
@@ -1905,6 +1911,30 @@ SMODS.Joker({
 			then
 				return { dollars = card.ability.extra.dollars }
 			end
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		-- fixed 1 in 3 chance to change sprite to x = 3 when added to deck
+		if SMODS.pseudorandom_probability(
+			card,
+			"coldfish_unleashed",
+			1,
+			3,
+			"coldfish_unleashed",
+			true
+		) then
+			card.children.center = Sprite(
+				card.T.x,
+				card.T.y,
+				card.T.w,
+				card.T.h,
+				SMODS.get_atlas(card.config.center.atlas or "Joker"),
+				{ x = 3, y = card.config.center.pos.y }
+			)
+			card.children.center:set_role(
+				{major = card, role_type = 'Glued', draw_major = card}
+			)
+			card:set_sprites()
 		end
 	end,
 	in_pool = function(self, args)
