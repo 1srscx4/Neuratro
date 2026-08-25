@@ -1854,7 +1854,7 @@ SMODS.Joker({
 								set = "Joker",
 								area = G.jokers,
 								key = "j_coldfish_unleashed",
-								edition = card.edition
+								edition = card.edition,
 							})
 							return true
 						end,
@@ -1915,14 +1915,7 @@ SMODS.Joker({
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		-- fixed 1 in 3 chance to change sprite to x = 3 when added to deck
-		if SMODS.pseudorandom_probability(
-			card,
-			"coldfish_unleashed",
-			1,
-			3,
-			"coldfish_unleashed",
-			true
-		) then
+		if SMODS.pseudorandom_probability(card, "coldfish_unleashed", 1, 3, "coldfish_unleashed", true) then
 			card.children.center = Sprite(
 				card.T.x,
 				card.T.y,
@@ -1931,9 +1924,7 @@ SMODS.Joker({
 				SMODS.get_atlas(card.config.center.atlas or "Joker"),
 				{ x = 3, y = card.config.center.pos.y }
 			)
-			card.children.center:set_role(
-				{major = card, role_type = 'Glued', draw_major = card}
-			)
+			card.children.center:set_role({ major = card, role_type = "Glued", draw_major = card })
 			card:set_sprites()
 		end
 	end,
@@ -2448,7 +2439,7 @@ SMODS.Joker({
 						SMODS.scale_card(card, {
 							ref_table = card.ability.extra,
 							ref_value = "mult",
-							scalar_value = "upg"
+							scalar_value = "upg",
 						})
 						G.E_MANAGER:add_event(Event({
 							func = function()
@@ -2471,7 +2462,7 @@ SMODS.Joker({
 								return true
 							end,
 						}))
-					end
+					end,
 				}
 			end
 		end
