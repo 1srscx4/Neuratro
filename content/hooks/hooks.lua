@@ -203,10 +203,7 @@ function Card:set_edition(edition, immediate, silent, delay)
 		do_recalc_debuff = true
 	elseif
 		self.edition
-		and (
-			self.edition.key == "e_negative"
-			or self.edition.key == "e_angelic"
-		)
+		and (self.edition.key == "e_negative" or self.edition.key == "e_angelic")
 		and not (edition == "e_angelic")
 	then
 		do_recalc_debuff = true
@@ -218,6 +215,6 @@ function Card:set_edition(edition, immediate, silent, delay)
 	set_edition_function(self, edition, immediate, silent, delay)
 	if do_recalc_debuff then
 		SMODS.recalc_debuff(self)
-		SMODS.calculate_context({ stay_flipped = true, other_card = self})
+		SMODS.calculate_context({ stay_flipped = true, other_card = self })
 	end
 end

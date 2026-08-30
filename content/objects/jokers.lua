@@ -5147,18 +5147,10 @@ SMODS.Joker({
 			end
 			return { remove = true }
 		end
-		if
-			context.debuff_card
-			and context.debuff_card.edition
-			and context.debuff_card.edition.key == "e_negative"
-		then
+		if context.debuff_card and context.debuff_card.edition and context.debuff_card.edition.key == "e_negative" then
 			return { prevent_debuff = true }
 		end
-		if
-			context.stay_flipped
-			and context.other_card.edition
-			and context.other_card.edition.key == "e_negative"
-		then
+		if context.stay_flipped and context.other_card.edition and context.other_card.edition.key == "e_negative" then
 			if context.other_card.facing == "back" then
 				context.other_card:flip()
 			end

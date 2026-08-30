@@ -92,5 +92,5 @@ SMODS.Edition({
 	end,
 	on_remove = function(card)
 		SMODS.debuff_card(card, false, "any")
-	end
+	end,
 })
