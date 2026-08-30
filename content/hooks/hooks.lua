@@ -195,3 +195,29 @@ function Game:draw(args)
 	end
 	return unpack(x)
 end
+
+local set_edition_function = Card.set_edition
+function Card:set_edition(edition, immediate, silent, delay)
+	local do_recalc_debuff = false
+	if edition == "e_negative" then
+		do_recalc_debuff = true
+	elseif
+		self.edition
+		and (
+			self.edition.key == "e_negative"
+			or self.edition.key == "e_angelic"
+		)
+		and not (edition == "e_angelic")
+	then
+		do_recalc_debuff = true
+		local flags = SMODS.calculate_context({ debuff_card = self, ignore_debuff = true })
+		if flags and flags.prevent_debuff then
+			flags.prevent_debuff = false
+		end
+	end
+	set_edition_function(self, edition, immediate, silent, delay)
+	if do_recalc_debuff then
+		SMODS.recalc_debuff(self)
+		SMODS.calculate_context({ stay_flipped = true, other_card = self})
+	end
+end
