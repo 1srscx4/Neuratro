@@ -5024,13 +5024,15 @@ SMODS.Joker({
 		text = {
 			{
 				"{C:dark_edition}Negative{} cards give ",
-				"{C:attention}#1#x{} their base {C:chips}chip{} value and {C:mult}+#1#{} mult.",
+				"{C:attention}#1#x{} their {C:chips}base Chip value{}",
+				"and {C:mult}+#1#{} Mult when scored",
 				"and cannot be debuffed nor flipped",
 			},
 			{
-				"First {C:red}discarded{} card turns {C:dark_edition}negative{}",
-				"If you discard exactly 3 {C:dark_edition}negative{}",
-				"cards, {C:attention}destroy{} them and",
+				"First {C:red}discarded{} card each round",
+				"turns {C:dark_edition}negative{}.",
+				"Every time you {C:red}discard{} exactly",
+				"{C:attention}3{} {C:dark_edition}negative{} cards, {C:attention}destroy{} them and",
 				"gain a {E:1}random{} {C:dark_edition}negative{} joker.",
 			},
 		},
@@ -5050,7 +5052,7 @@ SMODS.Joker({
 	perishable_compat = false,
 	rental_compat = false,
 	pos = { x = 3, y = 1 },
-	config = { extra = { joker = 0, mult = 10 } },
+	config = { extra = { mult = 10 } },
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		return { vars = { center.ability.extra.mult } }
@@ -5131,15 +5133,7 @@ SMODS.Joker({
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			local cards_to_destroy = {}
-			for _, playing_card in ipairs(full_hand) do
-				cards_to_destroy[#cards_to_destroy + 1] = playing_card
-			end
-			for _, playing_card in ipairs(cards_to_destroy) do
-				SMODS.destroy_cards(playing_card)
-			end
-			card.ability.extra.joker = card.ability.extra.joker + 1
-			if card.ability.extra.joker >= 3 then
+			if context.other_card == full_hand[3] then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.4,
@@ -5150,33 +5144,25 @@ SMODS.Joker({
 						return true
 					end,
 				}))
-				card.ability.extra.joker = 0
 			end
+			return { remove = true }
 		end
-		if context.hand_drawn and not context.blueprint and not context.retrigger_joker then
-			for i = 1, #(G.hand and G.hand.cards or {}) do
-				if
-					G.hand
-					and G.hand.cards
-					and G.hand.cards[i]
-					and G.hand.cards[i].edition
-					and G.hand.cards[i].edition.key == "e_negative"
-					and G.hand.cards[i].debuff
-				then
-					SMODS.debuff_card(G.hand.cards[i], "prevent_debuff", "any")
-					G.hand:change_size(1)
-				end
-				if
-					G.hand
-					and G.hand.cards
-					and G.hand.cards[i]
-					and G.hand.cards[i].edition
-					and G.hand.cards[i].edition.key == "e_negative"
-					and G.hand.cards[i].facing == "back"
-				then
-					G.hand.cards[i]:flip()
-				end
+		if
+			context.debuff_card
+			and context.debuff_card.edition
+			and context.debuff_card.edition.key == "e_negative"
+		then
+			return { prevent_debuff = true }
+		end
+		if
+			context.stay_flipped
+			and context.other_card.edition
+			and context.other_card.edition.key == "e_negative"
+		then
+			if context.other_card.facing == "back" then
+				context.other_card:flip()
 			end
+			return { prevent_stay_flipped = true }
 		end
 	end,
 	in_pool = function(self, args)

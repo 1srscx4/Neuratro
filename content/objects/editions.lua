@@ -90,4 +90,7 @@ SMODS.Edition({
 	on_apply = function(card)
 		SMODS.debuff_card(card, "prevent_debuff", "any")
 	end,
+	on_remove = function(card)
+		SMODS.debuff_card(card, false, "any")
+	end
 })
