@@ -5509,28 +5509,20 @@ SMODS.Joker({
 				total_levels = total_levels + (data.level or 1) - 1
 			end
 			local retriggers = math.floor(total_levels / card.ability.extra.threshold) + 1
-			retriggers = (
-			to_big
-				and to_number
-				and to_number(retriggers)
-				or retriggers
-			) -- Amulet compatibility
+			retriggers = (to_big and to_number and to_number(retriggers) or retriggers) -- Amulet compatibility
 			for i = 1, retriggers do
 				if consumed_card and not consumed_card.removed then
 					SMODS.calculate_context({
 						using_consumeable = true,
 						consumeable = consumed_card,
 						retrigger_joker = true,
-						area = context.area
+						area = context.area,
 					})
 					SMODS.calculate_effect({
 						message = "Again!",
 						func = function()
-							consumed_card:use_consumeable(
-								consumed_card.config.center,
-								consumed_card
-							)
-						end
+							consumed_card:use_consumeable(consumed_card.config.center, consumed_card)
+						end,
 					}, card)
 				end
 			end
