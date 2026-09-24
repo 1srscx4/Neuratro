@@ -5461,7 +5461,7 @@ SMODS.Joker({
 		name = "PaulaMarina",
 		text = {
 			"Retrigger {C:planet}Planet{} cards",
-			"{C:attention}#1#{} additional time",
+			"{C:attention}#1#{} additional time#3#",
 			"Increase by {C:attention}1{} every {C:attention}16",
 			"upgraded levels across all hands",
 			"{C:inactive}[Total: #2# levels]",
@@ -5491,7 +5491,11 @@ SMODS.Joker({
 			end
 		end
 		local retriggers = math.floor(total_levels / center.ability.extra.threshold) + 1
-		return { vars = { retriggers, total_levels } }
+		local plural_s = ""
+		if retriggers > 1 then
+			plural_s = "s"
+		end
+		return { vars = { retriggers, total_levels, plural_s } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -5504,19 +5508,31 @@ SMODS.Joker({
 			for hand, data in pairs(G.GAME.hands) do
 				total_levels = total_levels + (data.level or 1) - 1
 			end
-			local retriggers = math.floor(total_levels / card.ability.extra.threshold)
-			retriggers = to_big and to_number(retriggers) or retriggers -- Amulet compatibility
+			local retriggers = math.floor(total_levels / card.ability.extra.threshold) + 1
+			retriggers = (
+			to_big
+				and to_number
+				and to_number(retriggers)
+				or retriggers
+			) -- Amulet compatibility
 			for i = 1, retriggers do
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.1,
-					func = function()
-						if consumed_card and not consumed_card.removed then
-							consumed_card:use_consumeable(consumed_card.config.center, consumed_card)
+				if consumed_card and not consumed_card.removed then
+					SMODS.calculate_context({
+						using_consumeable = true,
+						consumeable = consumed_card,
+						retrigger_joker = true,
+						area = context.area
+					})
+					SMODS.calculate_effect({
+						message = "Again!",
+						func = function()
+							consumed_card:use_consumeable(
+								consumed_card.config.center,
+								consumed_card
+							)
 						end
-						return true
-					end,
-				}))
+					}, card)
+				end
 			end
 		end
 	end,
