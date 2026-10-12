@@ -5473,7 +5473,6 @@ SMODS.Joker({
 		code = { "x264.webrip" },
 	},
 	atlas = "neuroCustomJokers",
-	pools = { ["neurJoker"] = true },
 	rarity = "dev",
 	cost = 8,
 	unlocked = true,
