@@ -2889,8 +2889,7 @@ SMODS.Joker({
 			"{C:tarot}Tarot{} cards can affect {C:attention}double{} the",
 			"number of selected cards {C:inactive}(max 5)",
 			"{C:tarot}The Fool{} creates {C:attention}2{} copies",
-			"{C:tarot}Hermit{}, {C:tarot}Temperance{}, {C:tarot}Emperor{} and",
-			"{C:tarot}High Priestess{} are used {C:attention}twice{}",
+			"All other tarot cards used {C:attention}twice{}",
 		},
 	},
 	credits = {
@@ -2908,7 +2907,7 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 1, y = 0 },
-	-- Selection limits are doubled in the Card:update hook (content/hooks/hooks.lua)
+	-- Selection limits are doubled in hooks.lua
 	calculate = function(self, card, context)
 		if
 			context.using_consumeable
@@ -2939,11 +2938,28 @@ SMODS.Joker({
 				or name == "Temperance"
 				or name == "The Emperor"
 				or name == "The High Priestess"
+				or name == "Judgement"
+				or name == "The Wheel of Fortune"
 			then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.1,
 					func = function()
+						-- Only adds new joker if slots are available
+						if name == "Judgement" and #G.jokers.cards >= G.jokers.config.card_limit then
+							return true
+						elseif name == "The Wheel of Fortune" then
+							local eligible = {}
+							for _, joker in ipairs(G.jokers.cards) do
+								if joker.ability.set == "Joker" and not joker.edition then
+									eligible[#eligible + 1] = joker
+								end
+							end
+							if #eligible == 0 then
+								return true
+							end
+							consumed_card.eligible_strength_jokers = eligible
+						end
 						play_sound("timpani")
 						consumed_card:use_consumeable(context.area or G.consumeables, consumed_card)
 						card:juice_up(0.3, 0.5)

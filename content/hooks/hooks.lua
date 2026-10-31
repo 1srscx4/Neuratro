@@ -219,8 +219,8 @@ function Card:set_edition(edition, immediate, silent, delay)
 	end
 end
 
--- Koko: Tarot cards can select double the cards (still capped at 5 by the game).
--- Death needs a card to copy plus the cards to convert, so only the converted cards double.
+-- Koko: Tarot cards can select double the cards (still capped at 5).
+-- Death copies 2 target cards to the left
 local card_update_ref = Card.update
 function Card:update(dt)
 	card_update_ref(self, dt)
