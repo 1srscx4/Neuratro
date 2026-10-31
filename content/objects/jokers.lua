@@ -313,13 +313,13 @@ SMODS.Joker({
 		}
 	end,
 	calculate = function(self, card, context)
-		if (context.buying_card or context.open_booster) and not context.retrigger_joker then
+		if (context.buying_card or context.open_booster) and not context.blueprint and not context.retrigger_joker then
 			card.ability.extra.current = card.ability.extra.current + context.card.cost
 		end
 		if context.end_of_round and G.GAME.current_round.free_rerolls == 0 and not context.retrigger_joker then
 			card.ability.extra.triggers = true
 		end
-		if context.reroll_shop and G.GAME.current_round.free_rerolls == 0 and not context.retrigger_joker then
+		if context.reroll_shop and G.GAME.current_round.free_rerolls == 0 and not context.blueprint and not context.retrigger_joker then
 			if card.ability.extra.triggers then
 				card.ability.extra.current = card.ability.extra.current + G.GAME.current_round.reroll_cost - 1
 			end
@@ -1614,7 +1614,7 @@ SMODS.Joker({
 				return { xmult = card.ability.extra.xmult }
 			end
 		end
-		if context.end_of_round and context.cardarea == G.jokers and not context.retrigger_joker then
+		if context.end_of_round and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker then
 			card.ability.extra.rounds = card.ability.extra.rounds + 1
 			if card.ability.extra.rounds >= card.ability.extra.goal then
 				SMODS.destroy_cards(card)
@@ -2035,7 +2035,7 @@ SMODS.Joker({
 			for _, pcard in ipairs(scoring_hand) do
 				local suit = pseudorandom_element({ "Hearts", "Diamonds", "Spades", "Clubs" }, pseudoseed("Erm"))
 				local rank = pseudorandom_element(
-					{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" },
+					{ "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" },
 					pseudoseed("Erm2")
 				)
 				pcard:set_ability(SMODS.poll_enhancement({ guaranteed = true, type_key = "Erm3" }))
@@ -2886,8 +2886,10 @@ SMODS.Joker({
 	loc_txt = {
 		name = "Koko",
 		text = {
-			"{C:attention}Double{} the effect",
-			"of {C:tarot}Tarot{} cards",
+			"{C:tarot}Tarot{} cards can affect {C:attention}double{} the",
+			"number of selected cards {C:inactive}(max 5)",
+			"{C:tarot}The Fool{} creates {C:attention}2{} copies",
+			"All other tarot cards used {C:attention}twice{}",
 		},
 	},
 	credits = {
@@ -2905,48 +2907,67 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 1, y = 0 },
-	config = { extra = { retriggering = false } },
+	-- Selection limits are doubled in hooks.lua
 	calculate = function(self, card, context)
 		if
 			context.using_consumeable
+			and context.consumeable
 			and context.consumeable.ability.set == "Tarot"
+			and not context.blueprint
 			and not context.retrigger_joker
-			and not card.ability.extra.retriggering
 		then
-			card.ability.extra.retriggering = true
 			local consumed_card = context.consumeable
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.1,
-				func = function()
-					if consumed_card and not consumed_card.removed then
-						play_sound("timpani")
-						if consumed_card.ability.name == "The Fool" then
-							if G.consumeables.config.card_limit > #G.consumeables.cards then
-								local card = create_card(
-									"Tarot_Planet",
-									G.consumeables,
-									nil,
-									nil,
-									nil,
-									nil,
-									G.GAME.last_tarot_planet,
-									"fool"
-								)
-								card:add_to_deck()
-								G.consumeables:emplace(card)
-								consumed_card:juice_up(0.3, 0.5)
-							end
-						else
-							consumed_card:use_consumeable(consumed_card.config.center, consumed_card)
-							consumed_card:juice_up(0.3, 0.5)
+			local name = consumed_card.ability.name
+			if name == "The Fool" then
+				local last_used = G.GAME.last_tarot_planet
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.1,
+					func = function()
+						if last_used and G.consumeables.config.card_limit > #G.consumeables.cards then
+							play_sound("timpani")
+							SMODS.add_card({ key = last_used, area = G.consumeables, key_append = "koko" })
+							card:juice_up(0.3, 0.5)
 						end
-					end
-					card.ability.extra.retriggering = false
-					return true
-				end,
-			}))
-			return { message = "Again!" }
+						return true
+					end,
+				}))
+				return { message = "Again!" }
+			elseif
+				name == "The Hermit"
+				or name == "Temperance"
+				or name == "The Emperor"
+				or name == "The High Priestess"
+				or name == "Judgement"
+				or name == "The Wheel of Fortune"
+			then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.1,
+					func = function()
+						-- Only adds new joker if slots are available
+						if name == "Judgement" and #G.jokers.cards >= G.jokers.config.card_limit then
+							return true
+						elseif name == "The Wheel of Fortune" then
+							local eligible = {}
+							for _, joker in ipairs(G.jokers.cards) do
+								if joker.ability.set == "Joker" and not joker.edition then
+									eligible[#eligible + 1] = joker
+								end
+							end
+							if #eligible == 0 then
+								return true
+							end
+							consumed_card.eligible_strength_jokers = eligible
+						end
+						play_sound("timpani")
+						consumed_card:use_consumeable(context.area or G.consumeables, consumed_card)
+						card:juice_up(0.3, 0.5)
+						return true
+					end,
+				}))
+				return { message = "Again!" }
+			end
 		end
 	end,
 	in_pool = function(self, args)
@@ -4136,7 +4157,7 @@ SMODS.Joker({
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local _rank = pseudorandom_element(
-							{ "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" },
+							{ "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A" },
 							pseudoseed("seed")
 						)
 						local _card = create_playing_card({
@@ -4265,7 +4286,7 @@ SMODS.Joker({
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local _rank = pseudorandom_element(
-							{ "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" },
+							{ "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A" },
 							pseudoseed("seed")
 						)
 						local _suit = pseudorandom_element({ "S", "H", "D", "C" }, pseudoseed("seed"))
@@ -5566,7 +5587,7 @@ local vedals_items = {
 	["j_vedalsdrink"] = true,
 	["j_tutel_credit"] = true,
 	["j_tutelsoup"] = true,
-	["j_vedds"] = true,
+	["j_Vedds"] = true,
 	["j_abandonedarchive"] = true,
 	["j_coldfish_unleashed"] = true,
 }
@@ -5758,10 +5779,10 @@ SMODS.Joker({
 		if G.GAME and G.deck and #G.deck.cards > 0 then
 			for index, value in ipairs(G.deck.cards) do
 				local edition = ""
-				if value.config.card.edition == nil then
+				if value.edition == nil then
 					edition = "0"
 				else
-					edition = value.config.card.edition.type
+					edition = value.edition.type
 				end
 				local sealname = ""
 				if value.seal then
@@ -5790,10 +5811,10 @@ SMODS.Joker({
 			local uniquecardsTable = {}
 			for index, value in ipairs(G.deck.cards) do
 				local edition = ""
-				if value.config.card.edition == nil then
+				if value.edition == nil then
 					edition = "0"
 				else
-					edition = value.config.card.edition.type
+					edition = value.edition.type
 				end
 				local sealname = ""
 				if value.seal then
