@@ -2886,8 +2886,11 @@ SMODS.Joker({
 	loc_txt = {
 		name = "Koko",
 		text = {
-			"{C:attention}Double{} the effect",
-			"of {C:tarot}Tarot{} cards",
+			"{C:tarot}Tarot{} cards can affect {C:attention}double{} the",
+			"number of selected cards {C:inactive}(max 5)",
+			"{C:tarot}The Fool{} creates {C:attention}2{} copies",
+			"{C:tarot}Hermit{}, {C:tarot}Temperance{}, {C:tarot}Emperor{} and",
+			"{C:tarot}High Priestess{} are used {C:attention}twice{}",
 		},
 	},
 	credits = {
@@ -2905,48 +2908,50 @@ SMODS.Joker({
 	eternal_compat = true,
 	perishable_compat = true,
 	pos = { x = 1, y = 0 },
-	config = { extra = { retriggering = false } },
+	-- Selection limits are doubled in the Card:update hook (content/hooks/hooks.lua)
 	calculate = function(self, card, context)
 		if
 			context.using_consumeable
+			and context.consumeable
 			and context.consumeable.ability.set == "Tarot"
+			and not context.blueprint
 			and not context.retrigger_joker
-			and not card.ability.extra.retriggering
 		then
-			card.ability.extra.retriggering = true
 			local consumed_card = context.consumeable
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.1,
-				func = function()
-					if consumed_card and not consumed_card.removed then
-						play_sound("timpani")
-						if consumed_card.ability.name == "The Fool" then
-							if G.consumeables.config.card_limit > #G.consumeables.cards then
-								local card = create_card(
-									"Tarot_Planet",
-									G.consumeables,
-									nil,
-									nil,
-									nil,
-									nil,
-									G.GAME.last_tarot_planet,
-									"fool"
-								)
-								card:add_to_deck()
-								G.consumeables:emplace(card)
-								consumed_card:juice_up(0.3, 0.5)
-							end
-						else
-							consumed_card:use_consumeable(consumed_card.config.center, consumed_card)
-							consumed_card:juice_up(0.3, 0.5)
+			local name = consumed_card.ability.name
+			if name == "The Fool" then
+				local last_used = G.GAME.last_tarot_planet
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.1,
+					func = function()
+						if last_used and G.consumeables.config.card_limit > #G.consumeables.cards then
+							play_sound("timpani")
+							SMODS.add_card({ key = last_used, area = G.consumeables, key_append = "koko" })
+							card:juice_up(0.3, 0.5)
 						end
-					end
-					card.ability.extra.retriggering = false
-					return true
-				end,
-			}))
-			return { message = "Again!" }
+						return true
+					end,
+				}))
+				return { message = "Again!" }
+			elseif
+				name == "The Hermit"
+				or name == "Temperance"
+				or name == "The Emperor"
+				or name == "The High Priestess"
+			then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.1,
+					func = function()
+						play_sound("timpani")
+						consumed_card:use_consumeable(context.area or G.consumeables, consumed_card)
+						card:juice_up(0.3, 0.5)
+						return true
+					end,
+				}))
+				return { message = "Again!" }
+			end
 		end
 	end,
 	in_pool = function(self, args)

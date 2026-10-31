@@ -218,3 +218,27 @@ function Card:set_edition(edition, immediate, silent, delay)
 		SMODS.calculate_context({ stay_flipped = true, other_card = self })
 	end
 end
+
+-- Koko: Tarot cards can select double the cards (still capped at 5 by the game).
+-- Death needs a card to copy plus the cards to convert, so only the converted cards double.
+local card_update_ref = Card.update
+function Card:update(dt)
+	card_update_ref(self, dt)
+	local consumeable = self.ability and self.ability.consumeable
+	if
+		consumeable
+		and consumeable.max_highlighted
+		and self.ability.set == "Tarot"
+		and G.jokers
+		and G.STAGE == G.STAGES.RUN
+	then
+		for _, joker in ipairs(Neuratro.find_jokers("j_koko")) do
+			if not joker.debuff then
+				local base = consumeable.max_highlighted
+				local doubled = self.ability.name == "Death" and (base - 1) * 2 + 1 or base * 2
+				consumeable.mod_num = math.min(5, doubled)
+				break
+			end
+		end
+	end
+end
