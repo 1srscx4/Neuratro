@@ -5779,10 +5779,10 @@ SMODS.Joker({
 		if G.GAME and G.deck and #G.deck.cards > 0 then
 			for index, value in ipairs(G.deck.cards) do
 				local edition = ""
-				if value.config.card.edition == nil then
+				if value.edition == nil then
 					edition = "0"
 				else
-					edition = value.config.card.edition.type
+					edition = value.edition.type
 				end
 				local sealname = ""
 				if value.seal then
@@ -5811,10 +5811,10 @@ SMODS.Joker({
 			local uniquecardsTable = {}
 			for index, value in ipairs(G.deck.cards) do
 				local edition = ""
-				if value.config.card.edition == nil then
+				if value.edition == nil then
 					edition = "0"
 				else
-					edition = value.config.card.edition.type
+					edition = value.edition.type
 				end
 				local sealname = ""
 				if value.seal then
