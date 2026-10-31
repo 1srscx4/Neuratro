@@ -313,13 +313,13 @@ SMODS.Joker({
 		}
 	end,
 	calculate = function(self, card, context)
-		if (context.buying_card or context.open_booster) and not context.retrigger_joker then
+		if (context.buying_card or context.open_booster) and not context.blueprint and not context.retrigger_joker then
 			card.ability.extra.current = card.ability.extra.current + context.card.cost
 		end
 		if context.end_of_round and G.GAME.current_round.free_rerolls == 0 and not context.retrigger_joker then
 			card.ability.extra.triggers = true
 		end
-		if context.reroll_shop and G.GAME.current_round.free_rerolls == 0 and not context.retrigger_joker then
+		if context.reroll_shop and G.GAME.current_round.free_rerolls == 0 and not context.blueprint and not context.retrigger_joker then
 			if card.ability.extra.triggers then
 				card.ability.extra.current = card.ability.extra.current + G.GAME.current_round.reroll_cost - 1
 			end
@@ -1614,7 +1614,7 @@ SMODS.Joker({
 				return { xmult = card.ability.extra.xmult }
 			end
 		end
-		if context.end_of_round and context.cardarea == G.jokers and not context.retrigger_joker then
+		if context.end_of_round and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker then
 			card.ability.extra.rounds = card.ability.extra.rounds + 1
 			if card.ability.extra.rounds >= card.ability.extra.goal then
 				SMODS.destroy_cards(card)
@@ -2035,7 +2035,7 @@ SMODS.Joker({
 			for _, pcard in ipairs(scoring_hand) do
 				local suit = pseudorandom_element({ "Hearts", "Diamonds", "Spades", "Clubs" }, pseudoseed("Erm"))
 				local rank = pseudorandom_element(
-					{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" },
+					{ "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" },
 					pseudoseed("Erm2")
 				)
 				pcard:set_ability(SMODS.poll_enhancement({ guaranteed = true, type_key = "Erm3" }))
@@ -4157,7 +4157,7 @@ SMODS.Joker({
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local _rank = pseudorandom_element(
-							{ "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" },
+							{ "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A" },
 							pseudoseed("seed")
 						)
 						local _card = create_playing_card({
@@ -4286,7 +4286,7 @@ SMODS.Joker({
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local _rank = pseudorandom_element(
-							{ "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" },
+							{ "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A" },
 							pseudoseed("seed")
 						)
 						local _suit = pseudorandom_element({ "S", "H", "D", "C" }, pseudoseed("seed"))
@@ -5587,7 +5587,7 @@ local vedals_items = {
 	["j_vedalsdrink"] = true,
 	["j_tutel_credit"] = true,
 	["j_tutelsoup"] = true,
-	["j_vedds"] = true,
+	["j_Vedds"] = true,
 	["j_abandonedarchive"] = true,
 	["j_coldfish_unleashed"] = true,
 }
