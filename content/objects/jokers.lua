@@ -319,7 +319,12 @@ SMODS.Joker({
 		if context.end_of_round and G.GAME.current_round.free_rerolls == 0 and not context.retrigger_joker then
 			card.ability.extra.triggers = true
 		end
-		if context.reroll_shop and G.GAME.current_round.free_rerolls == 0 and not context.blueprint and not context.retrigger_joker then
+		if
+			context.reroll_shop
+			and G.GAME.current_round.free_rerolls == 0
+			and not context.blueprint
+			and not context.retrigger_joker
+		then
 			if card.ability.extra.triggers then
 				card.ability.extra.current = card.ability.extra.current + G.GAME.current_round.reroll_cost - 1
 			end
@@ -1614,7 +1619,12 @@ SMODS.Joker({
 				return { xmult = card.ability.extra.xmult }
 			end
 		end
-		if context.end_of_round and context.cardarea == G.jokers and not context.blueprint and not context.retrigger_joker then
+		if
+			context.end_of_round
+			and context.cardarea == G.jokers
+			and not context.blueprint
+			and not context.retrigger_joker
+		then
 			card.ability.extra.rounds = card.ability.extra.rounds + 1
 			if card.ability.extra.rounds >= card.ability.extra.goal then
 				SMODS.destroy_cards(card)
