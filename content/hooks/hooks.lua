@@ -213,7 +213,7 @@ function Card:set_edition(edition, immediate, silent, delay)
 		end
 	end
 	set_edition_function(self, edition, immediate, silent, delay)
-	if do_recalc_debuff then
+	if do_recalc_debuff and G.GAME.blind then
 		SMODS.recalc_debuff(self)
 		SMODS.calculate_context({ stay_flipped = true, other_card = self })
 	end

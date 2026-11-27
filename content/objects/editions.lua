@@ -88,9 +88,14 @@ SMODS.Edition({
 		end
 	end,
 	on_apply = function(card)
-		SMODS.debuff_card(card, "prevent_debuff", "any")
+		if G.GAME.blind then
+			SMODS.debuff_card(card, "prevent_debuff", "any")
+		end
 	end,
 	on_remove = function(card)
-		SMODS.debuff_card(card, false, "any")
+		if G.GAME.blind then
+			SMODS.debuff_card(card, false, "any")
+		end
 	end,
 })
+
